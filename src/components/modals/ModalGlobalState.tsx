@@ -15,7 +15,7 @@ type ModalGlobalStateInternalProps = {
   mapStyle: StyleSpecificationWithId;
   isOpen: boolean;
   onStyleChanged(style: StyleSpecificationWithId): void;
-  onOpenToggle(): void
+  onOpenToggle(): void;
 } & WithTranslation;
 
 type GlobalStateVariable = {
@@ -23,14 +23,16 @@ type GlobalStateVariable = {
   value: any;
 };
 
-const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props) => {
+const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (
+  props
+) => {
   const getGlobalStateVariables = (): GlobalStateVariable[] => {
     const style = props.mapStyle;
     const globalState = style.state || {};
 
     return Object.entries(globalState).map(([key, value]) => ({
       key,
-      value: value.default
+      value: value.default,
     }));
   };
 
@@ -42,7 +44,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
     for (const variable of variables) {
       if (variable.key.trim() !== "") {
         globalState[variable.key] = {
-          default: variable.value
+          default: variable.value,
         };
       }
     }
@@ -55,7 +57,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
   const onAddVariable = () => {
     const variables = getGlobalStateVariables();
     let index = 1;
-    while (variables.find(v => v.key === `key${index}`)) {
+    while (variables.find((v) => v.key === `key${index}`)) {
       index++;
     }
     variables.push({ key: `key${index}`, value: "value" });
@@ -101,7 +103,7 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
           data-wd-key={"global-state-variable-value:" + index}
         />
       </td>
-      <td style={{ verticalAlign: "middle"}}>
+      <td style={{ verticalAlign: "middle" }}>
         <InputButton
           onClick={() => onRemoveVariable(index)}
           title={props.t("Remove variable")}
@@ -120,24 +122,24 @@ const ModalGlobalStateInternal: React.FC<ModalGlobalStateInternalProps> = (props
       onOpenToggle={props.onOpenToggle}
       title={props.t("Global State Variables")}
     >
-
-      {variables.length === 0 &&
-            <div>
-              <p>{props.t("No global state variables defined. Add variables to create reusable values in your style.")}</p>
-              <div key="doc" className="maputnik-doc-inline">
-                <Doc fieldSpec={latest.$root.state} />
-              </div>
-            </div>
-      }
-      {variables.length > 0 &&
-      <table>
-        <thead>
-        </thead>
-        <tbody>
-          {variableFields}
-        </tbody>
-      </table>
-      }
+      {variables.length === 0 && (
+        <div>
+          <p>
+            {props.t(
+              "No global state variables defined. Add variables to create reusable values in your style."
+            )}
+          </p>
+          <div key="doc" className="maputnik-doc-inline">
+            <Doc fieldSpec={latest.$root.state} />
+          </div>
+        </div>
+      )}
+      {variables.length > 0 && (
+        <table>
+          <thead></thead>
+          <tbody>{variableFields}</tbody>
+        </table>
+      )}
       <div>
         <InputButton
           onClick={onAddVariable}

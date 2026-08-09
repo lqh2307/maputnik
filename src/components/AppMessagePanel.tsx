@@ -5,17 +5,17 @@ import { type WithTranslation, withTranslation } from "react-i18next";
 import { type MappedError } from "../libs/definitions";
 
 type AppMessagePanelInternalProps = {
-  errors?: MappedError[]
-  infos?: string[]
-  mapStyle?: StyleSpecification
+  errors?: MappedError[];
+  infos?: string[];
+  mapStyle?: StyleSpecification;
   onLayerSelect?(index: number): void;
-  currentLayer?: LayerSpecification
-  selectedLayerIndex?: number
+  currentLayer?: LayerSpecification;
+  selectedLayerIndex?: number;
 } & WithTranslation;
 
 class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalProps> {
   static defaultProps = {
-    onLayerSelect: () => { },
+    onLayerSelect: () => {},
   };
 
   render() {
@@ -27,8 +27,9 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
         const layerId = this.props.mapStyle?.layers[parsed.data.index].id;
         content = (
           <>
-            {t("Layer")} <span>{formatLayerId(layerId)}</span>: {parsed.data.message}
-            {selectedLayerIndex !== parsed.data.index &&
+            {t("Layer")} <span>{formatLayerId(layerId)}</span>:{" "}
+            {parsed.data.message}
+            {selectedLayerIndex !== parsed.data.index && (
               <>
                 &nbsp;&mdash;&nbsp;
                 <button
@@ -38,26 +39,29 @@ class AppMessagePanelInternal extends React.Component<AppMessagePanelInternalPro
                   {t("switch to layer")}
                 </button>
               </>
-            }
+            )}
           </>
         );
-      }
-      else {
+      } else {
         content = error.message;
       }
-      return <p key={"error-" + idx} className="maputnik-message-panel-error">
-        {content}
-      </p>;
+      return (
+        <p key={"error-" + idx} className="maputnik-message-panel-error">
+          {content}
+        </p>
+      );
     });
 
     const infos = this.props.infos?.map((m, i) => {
       return <p key={"info-" + i}>{m}</p>;
     });
 
-    return <div className="maputnik-message-panel">
-      {errors}
-      {infos}
-    </div>;
+    return (
+      <div className="maputnik-message-panel">
+        {errors}
+        {infos}
+      </div>
+    );
   }
 }
 

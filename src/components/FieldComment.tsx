@@ -5,9 +5,9 @@ import { InputString } from "./InputString";
 import { type WithTranslation, withTranslation } from "react-i18next";
 
 type FieldCommentInternalProps = {
-  value?: string
-  onChange(value: string | undefined): unknown
-  error: {message: string}
+  value?: string;
+  onChange(value: string | undefined): unknown;
+  error: { message: string };
 } & WithTranslation;
 
 const FieldCommentInternal: React.FC<FieldCommentInternalProps> = (props) => {

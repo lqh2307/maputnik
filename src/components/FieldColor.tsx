@@ -1,14 +1,12 @@
 import { Block } from "./Block";
 import { InputColor, type InputColorProps } from "./InputColor";
 
-
 type FieldColorProps = InputColorProps & {
-  label?: string
+  label?: string;
   fieldSpec?: {
-    doc: string
-  }
+    doc: string;
+  };
 };
-
 
 export const FieldColor: React.FC<FieldColorProps> = (props) => {
   return (

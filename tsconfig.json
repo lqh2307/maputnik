@@ -1,27 +1,19 @@
 {
-    "compilerOptions": {
-      "target": "ES2020",
-      "useDefineForClassFields": true,
-      "lib": ["ES2020", "DOM", "DOM.Iterable"],
-      "types": ["geojson", "@types/wicg-file-system-access", "node"],
-      "module": "ESNext",
-      "skipLibCheck": true,
-
-      /* Bundler mode */
-      "moduleResolution": "bundler",
-      "allowImportingTsExtensions": true,
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "noEmit": true,
-      "jsx": "react-jsx",
-
-      /* Linting */
-      "strict": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noFallthroughCasesInSwitch": true
-    },
-    "include": ["src", "e2e"],
-    "exclude": ["dist"],
-    "references": [{ "path": "./tsconfig.node.json" }]
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true,
+    "strict": false,
+    "strictNullChecks": false,
+    "allowUmdGlobalAccess": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "module": "es2022",
+    "outDir": "./build",
+    "rootDir": "./src",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "./build"]
 }

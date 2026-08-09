@@ -11,12 +11,14 @@ export function getStyleUrlFromAddressbarAndRemoveItIfNeeded(): string | null {
   return styleUrl;
 }
 
-export async function loadStyleUrl(styleUrl: string): Promise<StyleSpecificationWithId> {
+export async function loadStyleUrl(
+  styleUrl: string
+): Promise<StyleSpecificationWithId> {
   console.log("Loading style", styleUrl);
   try {
     const response = await fetch(styleUrl, {
       mode: "cors",
-      credentials: "same-origin"
+      credentials: "same-origin",
     });
     const body = await response.json();
     return ensureStyleValidity(body);
@@ -30,20 +32,22 @@ export const enum ErrorType {
   None,
   EmptyHttpsProtocol,
   EmptyHttpOrHttpsProtocol,
-  CorsError
+  CorsError,
 }
 
-function getProtocolSafe(url: string): { protocol?: string, isLocal?: boolean } {
+function getProtocolSafe(url: string): {
+  protocol?: string;
+  isLocal?: boolean;
+} {
   try {
     const urlObj = new URL(url);
     const { protocol, hostname } = urlObj;
     const isLocal = /^(localhost|\[::1\]|127(.[0-9]{1,3}){3})/i.test(hostname);
     return { protocol, isLocal };
-  }
-  catch (_err) {
+  } catch (_err) {
     return {};
   }
-};
+}
 
 export function validate(url?: string): ErrorType {
   if (!url) {
@@ -64,10 +68,12 @@ export function validate(url?: string): ErrorType {
   if (!protocol) {
     return ErrorType.EmptyHttpOrHttpsProtocol;
   }
-  if (protocol &&
+  if (
+    protocol &&
     protocol === "http:" &&
     window.location.protocol === "https:" &&
-    !isLocal) {
+    !isLocal
+  ) {
     return ErrorType.CorsError;
   }
   return ErrorType.None;

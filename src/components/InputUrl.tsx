@@ -5,24 +5,34 @@ import { Trans, type WithTranslation, withTranslation } from "react-i18next";
 import { type TFunction } from "i18next";
 import { ErrorType, validate } from "../libs/urlopen";
 
-function errorTypeToJsx(errorType: ErrorType | undefined, t: TFunction): JSX.Element | undefined {
+function errorTypeToJsx(
+  errorType: ErrorType | undefined,
+  t: TFunction
+): JSX.Element | undefined {
   switch (errorType) {
     case ErrorType.EmptyHttpsProtocol:
       return (
         <SmallError>
-          <Trans t={t}>Must provide protocol: <code>https://</code></Trans>
+          <Trans t={t}>
+            Must provide protocol: <code>https://</code>
+          </Trans>
         </SmallError>
       );
     case ErrorType.EmptyHttpOrHttpsProtocol:
       return (
         <SmallError>
-          <Trans t={t}>Must provide protocol: <code>http://</code> or <code>https://</code></Trans>
+          <Trans t={t}>
+            Must provide protocol: <code>http://</code> or <code>https://</code>
+          </Trans>
         </SmallError>
       );
     case ErrorType.CorsError:
       return (
         <SmallError>
-          <Trans t={t}>CORS policy won&apos;t allow fetching resources served over http from https, use a <code>https://</code> domain</Trans>
+          <Trans t={t}>
+            CORS policy won&apos;t allow fetching resources served over http
+            from https, use a <code>https://</code> domain
+          </Trans>
         </SmallError>
       );
     default:
@@ -31,31 +41,34 @@ function errorTypeToJsx(errorType: ErrorType | undefined, t: TFunction): JSX.Ele
 }
 
 export type FieldUrlProps = {
-  "data-wd-key"?: string
-  value: string
-  style?: object
-  default?: string
-  onChange(...args: unknown[]): unknown
-  onInput?(...args: unknown[]): unknown
-  multi?: boolean
-  required?: boolean
-  "aria-label"?: string
-  type?: string
-  className?: string
+  "data-wd-key"?: string;
+  value: string;
+  style?: object;
+  default?: string;
+  onChange(...args: unknown[]): unknown;
+  onInput?(...args: unknown[]): unknown;
+  multi?: boolean;
+  required?: boolean;
+  "aria-label"?: string;
+  type?: string;
+  className?: string;
 };
 
 type InputUrlInternalProps = FieldUrlProps & WithTranslation;
 
 type InputUrlState = {
-  error?: ErrorType
+  error?: ErrorType;
 };
 
-class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlState> {
+class InputUrlInternal extends React.Component<
+  InputUrlInternalProps,
+  InputUrlState
+> {
   static defaultProps = {
     onInput: () => {},
   };
 
-  constructor (props: InputUrlInternalProps) {
+  constructor(props: InputUrlInternalProps) {
     super(props);
     this.state = {
       error: validate(props.value),
@@ -76,7 +89,7 @@ class InputUrlInternal extends React.Component<InputUrlInternalProps, InputUrlSt
     this.props.onChange(url);
   };
 
-  render () {
+  render() {
     return (
       <div>
         <InputString

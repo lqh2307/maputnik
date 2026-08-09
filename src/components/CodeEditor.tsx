@@ -11,17 +11,26 @@ export type CodeEditorProps = {
 } & WithTranslation;
 
 const CodeEditorInternal: React.FC<CodeEditorProps> = (props) => {
-
-  return <>
-    <button className="maputnik-button" onClick={props.onClose} aria-label={props.t("Close")} style={{ position: "sticky", top: "0", zIndex: 1 }}>{props.t("Click to close the editor")}</button>
-    <InputJson
-      lintType="style"
-      value={props.value}
-      onChange={props.onChange}
-      className={"maputnik-code-editor"}
-      withScroll={true}
-    />;
-  </>;
+  return (
+    <>
+      <button
+        className="maputnik-button"
+        onClick={props.onClose}
+        aria-label={props.t("Close")}
+        style={{ position: "sticky", top: "0", zIndex: 1 }}
+      >
+        {props.t("Click to close the editor")}
+      </button>
+      <InputJson
+        lintType="style"
+        value={props.value}
+        onChange={props.onChange}
+        className={"maputnik-code-editor"}
+        withScroll={true}
+      />
+      ;
+    </>
+  );
 };
 
 export const CodeEditor = withTranslation()(CodeEditorInternal);

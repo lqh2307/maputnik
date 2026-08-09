@@ -1,14 +1,12 @@
 import { Block } from "./Block";
 import { InputSelect, type InputSelectProps } from "./InputSelect";
 
-
 type FieldSelectProps = InputSelectProps & {
-  label?: string
+  label?: string;
   fieldSpec?: {
-    doc: string
-  }
+    doc: string;
+  };
 };
-
 
 export const FieldSelect: React.FC<FieldSelectProps> = (props) => {
   return (

@@ -1,11 +1,9 @@
 import { InputMultiInput, type InputMultiInputProps } from "./InputMultiInput";
 import { Fieldset } from "./Fieldset";
 
-
 type FieldMultiInputProps = InputMultiInputProps & {
-  label?: string
+  label?: string;
 };
-
 
 export const FieldMultiInput: React.FC<FieldMultiInputProps> = (props) => {
   return (

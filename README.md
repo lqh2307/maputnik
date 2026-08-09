@@ -1,15 +1,15 @@
 <img width="200" alt="Maputnik logo" src="https://cdn.jsdelivr.net/gh/maputnik/design/logos/logo-color.png" />
 
 # Maputnik
+
 [![GitHub CI status](https://github.com/maplibre/maputnik/workflows/ci/badge.svg)][github-action-ci]
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 
 [github-action-ci]: https://github.com/maplibre/maputnik/actions?query=workflow%3Aci
-[license]:          https://tldrlegal.com/license/mit-license
+[license]: https://tldrlegal.com/license/mit-license
 
 A free and open visual editor for the [MapLibre GL styles](https://maplibre.org/maplibre-style-spec/)
 targeted at developers and map designers.
-
 
 ## Usage
 
@@ -22,9 +22,11 @@ docker run -it --rm -p 8888:8000 ghcr.io/maplibre/maputnik:main
 ```
 
 To see the CLI options (for example file watching or style serving) run:
+
 ```bash
 docker run -it --rm -p 8888:8000 ghcr.io/maplibre/maputnik:main --help
 ```
+
 You might need to mount a volume (`-v`) to be able to use these options.
 
 ## Documentation
@@ -45,6 +47,7 @@ We ensure building and developing Maputnik works with the [current active LTS No
 Check out our [Internationalization guide](./src/locales/README.md) for UI text related changes.
 
 ### Getting Involved
+
 Join the #maplibre or #maputnik slack channel at OSMUS: get an invite at https://slack.openstreetmap.us/ Read the the below guide in order to get familiar with how we do things around here.
 
 Install the deps, start the dev server and open the web browser on `http://localhost:8888/`.
@@ -56,7 +59,7 @@ npm install
 npm run start
 ```
 
-If you want Maputnik to be accessible externally use the [`--host` option](https://vitejs.dev/config/server-options.html#server-host):
+If you want Maputnik to be accessible externally, configure the development server host as described in the [Create React App documentation](https://create-react-app.dev/docs/advanced-configuration/):
 
 ```bash
 # start externally accessible dev server
@@ -112,23 +115,13 @@ npx playwright test --ui
 
 Running the E2E tests also produces a code-coverage report in `coverage/` (collected via istanbul instrumentation of the dev server).
 
-### Unit & component tests
-
-Unit tests and component tests run with [Vitest](https://vitest.dev/); component tests (`*.browser.test.tsx`) use Vitest's browser mode with the Playwright provider.
-
-```
-npm run test-unit
-```
-
 ## Release process
 
 1. Review [`CHANGELOG.md`](/CHANGELOG.md)
    - Double-check that all changes included in the release are appropriately documented.
    - To-be-released changes should be under the "main" header.
    - Commit any final changes to the changelog.
-2. Run [Create bump version PR](https://github.com/maplibre/maputnik/actions/workflows/create-bump-version-pr.yml) by manual workflow dispatch and set the version number in the input. This will create a PR that changes the changelog and `package.json` file to review and merge.
-3. Once merged, an automatic process will kick in and creates a GitHub release and uploads release assets.
-
+2. Once merged, an automatic process will kick in and creates a GitHub release and uploads release assets.
 
 ## Sponsors
 

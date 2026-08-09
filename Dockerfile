@@ -1,14 +1,22 @@
-FROM golang:1.23-alpine AS builder
-WORKDIR /maputnik
+ARG BUILDER_IMAGE=node:24.12.0
+ARG TARGET_IMAGE=nginx:1.29.4-alpine
 
-RUN apk add --no-cache nodejs npm make git gcc g++ libc-dev
+FROM ${BUILDER_IMAGE} AS builder
 
-# Build maputnik
-COPY . .
-RUN npm ci
-RUN CGO_ENABLED=1 GOOS=linux npm run build-linux
-
-FROM alpine:latest
 WORKDIR /app
-COPY --from=builder /maputnik/desktop/bin/linux ./
-ENTRYPOINT ["/app/maputnik"]
+
+COPY . .
+
+RUN yarn
+
+RUN yarn build
+
+
+FROM ${TARGET_IMAGE} AS final
+
+COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /app/docker/etc/nginx /etc/nginx/conf.d
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

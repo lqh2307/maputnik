@@ -4,17 +4,29 @@ import { type Map } from "maplibre-gl";
 
 export type LayerWatcherOptions = {
   onSourcesChange?: (sources: { [sourceId: string]: string[] }) => void;
-  onVectorLayersChange?: (vectorLayers: { [vectorLayerId: string]: { [propertyName: string]: { [propertyValue: string]: {} } } }) => void;
+  onVectorLayersChange?: (vectorLayers: {
+    [vectorLayerId: string]: {
+      [propertyName: string]: { [propertyValue: string]: {} };
+    };
+  }) => void;
 };
 
 /** Listens to map events to build up a store of available vector
  * layers contained in the tiles */
 export class LayerWatcher {
   onSourcesChange: (sources: { [sourceId: string]: string[] }) => void;
-  onVectorLayersChange: (vectorLayers: { [vectorLayerId: string]: { [propertyName: string]: { [propertyValue: string]: {} } } }) => void;
+  onVectorLayersChange: (vectorLayers: {
+    [vectorLayerId: string]: {
+      [propertyName: string]: { [propertyValue: string]: {} };
+    };
+  }) => void;
   throttledAnalyzeVectorLayerFields: (map: any) => void;
   _sources: { [sourceId: string]: string[] };
-  _vectorLayers: { [vectorLayerId: string]: { [propertyName: string]: { [propertyValue: string]: {} } } };
+  _vectorLayers: {
+    [vectorLayerId: string]: {
+      [propertyName: string]: { [propertyValue: string]: {} };
+    };
+  };
 
   constructor(opts: LayerWatcherOptions = {}) {
     this.onSourcesChange = opts.onSourcesChange || (() => {});
@@ -26,7 +38,10 @@ export class LayerWatcher {
     // Since we scan over all features we want to avoid this as much as
     // possible and only do it after a batch of data has loaded because
     // we only care eventually about knowing the fields in the vector layers
-    this.throttledAnalyzeVectorLayerFields = throttle(this.analyzeVectorLayerFields, 5000);
+    this.throttledAnalyzeVectorLayerFields = throttle(
+      this.analyzeVectorLayerFields,
+      5000
+    );
   }
 
   analyzeMap(map: Map) {
@@ -35,10 +50,11 @@ export class LayerWatcher {
     for (const sourceId of Object.keys(map.style.tileManagers)) {
       //NOTE: This heavily depends on the internal API of Maplibre GL
       //so this breaks between Maplibre GL JS releases
-      this._sources[sourceId] = map.style.tileManagers[sourceId]._source.vectorLayerIds as string[];
-    };
+      this._sources[sourceId] = map.style.tileManagers[sourceId]._source
+        .vectorLayerIds as string[];
+    }
 
-    if(!isEqual(previousSources, this._sources)) {
+    if (!isEqual(previousSources, this._sources)) {
       this.onSourcesChange(this._sources);
     }
 
@@ -48,12 +64,12 @@ export class LayerWatcher {
   analyzeVectorLayerFields(map: Map) {
     const previousVectorLayers = { ...this._vectorLayers };
 
-    Object.keys(this._sources).forEach(sourceId => {
-      (this._sources[sourceId] || []).forEach(vectorLayerId => {
+    Object.keys(this._sources).forEach((sourceId) => {
+      (this._sources[sourceId] || []).forEach((vectorLayerId) => {
         const knownProperties = this._vectorLayers[vectorLayerId] || {};
         const params = { sourceLayer: vectorLayerId };
-        map.querySourceFeatures(sourceId, params as any).forEach(feature => {
-          Object.keys(feature.properties).forEach(propertyName => {
+        map.querySourceFeatures(sourceId, params as any).forEach((feature) => {
+          Object.keys(feature.properties).forEach((propertyName) => {
             const knownPropertyValues = knownProperties[propertyName] || {};
             knownPropertyValues[feature.properties[propertyName]] = {};
             knownProperties[propertyName] = knownPropertyValues;
@@ -64,10 +80,9 @@ export class LayerWatcher {
       });
     });
 
-    if(!isEqual(previousVectorLayers, this._vectorLayers)) {
+    if (!isEqual(previousVectorLayers, this._vectorLayers)) {
       this.onVectorLayersChange(this._vectorLayers);
     }
-
   }
 
   /** Access all known sources and their vector tile ids */

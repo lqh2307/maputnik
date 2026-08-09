@@ -1,13 +1,20 @@
 import { Block, type BlockProps } from "./Block";
-import { InputSpec, type FieldSpecType, type InputSpecProps } from "./InputSpec";
+import {
+  InputSpec,
+  type FieldSpecType,
+  type InputSpecProps,
+} from "./InputSpec";
 import { Fieldset, type FieldsetProps } from "./Fieldset";
 
-function getElementFromType(fieldSpec: { type?: FieldSpecType, values?: unknown[] }): typeof Fieldset | typeof Block {
-  switch(fieldSpec.type) {
+function getElementFromType(fieldSpec: {
+  type?: FieldSpecType;
+  values?: unknown[];
+}): typeof Fieldset | typeof Block {
+  switch (fieldSpec.type) {
     case "color":
       return Block;
     case "enum":
-      return (Object.keys(fieldSpec.values!).length <= 3 ? Fieldset : Block);
+      return Object.keys(fieldSpec.values!).length <= 3 ? Fieldset : Block;
     case "boolean":
       return Block;
     case "array":
@@ -40,7 +47,12 @@ export const FieldSpec: React.FC<FieldSpecProps> = (props) => {
   const TypeBlock = getElementFromType(props.fieldSpec!);
 
   return (
-    <TypeBlock label={props.label} action={props.action} fieldSpec={props.fieldSpec} error={props.error}>
+    <TypeBlock
+      label={props.label}
+      action={props.action}
+      fieldSpec={props.fieldSpec}
+      error={props.error}
+    >
       <InputSpec {...props} />
     </TypeBlock>
   );

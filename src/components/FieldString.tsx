@@ -2,11 +2,11 @@ import { Block } from "./Block";
 import { InputString, type InputStringProps } from "./InputString";
 
 type FieldStringProps = InputStringProps & {
-  name?: string
-  label?: string
+  name?: string;
+  label?: string;
   fieldSpec?: {
-    doc: string
-  }
+    doc: string;
+  };
 };
 
 export const FieldString: React.FC<FieldStringProps> = (props) => {

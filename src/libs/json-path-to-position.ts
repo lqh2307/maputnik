@@ -1,6 +1,9 @@
 import { type PropertyNode, type ValueNode } from "json-to-ast";
 
-export function jsonPathToPosition(path: string[], node: ValueNode | PropertyNode | undefined,) {
+export function jsonPathToPosition(
+  path: string[],
+  node: ValueNode | PropertyNode | undefined
+) {
   if (!node) {
     return undefined;
   }

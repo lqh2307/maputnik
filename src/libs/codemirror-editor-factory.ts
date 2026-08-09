@@ -4,7 +4,11 @@ import { EditorState, Compartment } from "@codemirror/state";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
 import { linter, lintGutter, type Diagnostic } from "@codemirror/lint";
 import { oneDark } from "@codemirror/theme-one-dark";
-import { expression, type StylePropertySpecification, validateStyleMin } from "@maplibre/maplibre-gl-style-spec";
+import {
+  expression,
+  type StylePropertySpecification,
+  validateStyleMin,
+} from "@maplibre/maplibre-gl-style-spec";
 import jsonToAst, { type ValueNode, type PropertyNode } from "json-to-ast";
 import { jsonPathToPosition } from "./json-path-to-position";
 
@@ -15,10 +19,13 @@ type LinterError = {
   message: string;
 };
 
-function getDiagnosticsFromExpressionErrors(errors: LinterError[], ast: ValueNode | PropertyNode) {
+function getDiagnosticsFromExpressionErrors(
+  errors: LinterError[],
+  ast: ValueNode | PropertyNode
+) {
   const diagnostics: Diagnostic[] = [];
   for (const error of errors) {
-    const {key, message} = error;
+    const { key, message } = error;
     if (!key) {
       diagnostics.push({
         from: 0,
@@ -27,7 +34,10 @@ function getDiagnosticsFromExpressionErrors(errors: LinterError[], ast: ValueNod
         message: message,
       });
     } else {
-      const path = key.replace(/^\[|\]$/g, "").split(/\.|[[\]]+/).filter(Boolean);
+      const path = key
+        .replace(/^\[|\]$/g, "")
+        .split(/\.|[[\]]+/)
+        .filter(Boolean);
       const node = jsonPathToPosition(path, ast);
       if (!node) {
         console.warn("Something went wrong parsing error:", error);
@@ -57,25 +67,25 @@ function createMaplibreLayerLinter() {
 
       // Run the maplibre-gl-style-spec validator.
       const validationErrors = validateStyleMin({
-        "version": 8,
-        "name": "Empty Style",
-        "metadata": {},
-        "sources": {},
-        "sprite": "",
-        "glyphs": "https://example.com/glyphs/{fontstack}/{range}.pbf",
-        "layers": [
-          parsedJson
-        ]
+        version: 8,
+        name: "Empty Style",
+        metadata: {},
+        sources: {},
+        sprite: "",
+        glyphs: "https://example.com/glyphs/{fontstack}/{range}.pbf",
+        layers: [parsedJson],
       });
 
       const linterErrors = validationErrors
-        .filter(err => {
+        .filter((err) => {
           // Remove missing 'layer source' errors, because we don't include them
           return !err.message.match(/^layers\[0\]: source ".*" not found$/);
         })
-        .map(err => {
+        .map((err) => {
           // Remove the 'layers[0].' as we're validating the layer only here
-          const errMessageParts = err.message.replace(/^layers\[0\]./, "").split(":");
+          const errMessageParts = err.message
+            .replace(/^layers\[0\]./, "")
+            .split(":");
           return {
             key: errMessageParts[0],
             message: errMessageParts[1],
@@ -100,7 +110,7 @@ function createMaplibreStyleLinter() {
 
       // Run the maplibre-gl-style-spec validator.
       const validationErrors = validateStyleMin(parsedJson);
-      const linterErrors = validationErrors.map(err => {
+      const linterErrors = validationErrors.map((err) => {
         return {
           key: err.message.split(":")[0],
           message: err.message,
@@ -129,13 +139,13 @@ function createMaplibreExpressionLinter(spec?: StylePropertySpecification) {
 }
 
 export function createEditor(props: {
-  parent: HTMLElement,
-  value: string,
-  lintType: LintType,
-  onChange: (value: string) => void,
-  onFocus: () => void,
-  onBlur: () => void,
-  spec?: StylePropertySpecification,
+  parent: HTMLElement;
+  value: string;
+  lintType: LintType;
+  onChange: (value: string) => void;
+  onFocus: () => void;
+  onBlur: () => void;
+  spec?: StylePropertySpecification;
 }): EditorView {
   let specificLinter: (view: EditorView) => Diagnostic[] = () => [];
   switch (props.lintType) {
@@ -162,8 +172,8 @@ export function createEditor(props: {
       new Compartment().of(EditorState.tabSize.of(2)),
       EditorView.theme({
         "&": {
-          fontSize: "9pt"
-        }
+          fontSize: "9pt",
+        },
       }),
       EditorView.updateListener.of((update) => {
         if (update.docChanged) {
@@ -186,7 +196,7 @@ export function createEditor(props: {
           return jsonErrors;
         }
         return specificLinter(view);
-      })
+      }),
     ],
     parent: props.parent,
   });

@@ -1,14 +1,12 @@
 import { InputNumber, type InputNumberProps } from "./InputNumber";
 import { Block } from "./Block";
 
-
 type FieldNumberProps = InputNumberProps & {
-  label?: string
+  label?: string;
   fieldSpec?: {
-    doc: string
-  }
+    doc: string;
+  };
 };
-
 
 export const FieldNumber: React.FC<FieldNumberProps> = (props) => {
   return (

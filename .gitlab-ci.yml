@@ -1,5 +1,5 @@
 stages:
-  - package
+  - deploy
 
 debian-pack:
   stage: package
@@ -8,7 +8,7 @@ debian-pack:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
     SERVER_HOST: localhost
-    SERVER_PORT: 30000
+    SERVER_PORT: 6969
   script:
     - make release-debian
   when: always
@@ -20,7 +20,7 @@ image-pack:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
     DOCKER_USER: admin
-    DOCKER_PASSWORD: Chdk@2019
+    DOCKER_PASSWORD: admin
   script:
     - make release-docker-image
   when: always

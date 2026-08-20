@@ -1,0 +1,3586 @@
+{
+  "guideText": {
+    "emptyShapeList": {
+      "title": "Guide: Create a shape to start"
+    },
+    "noSelectedId": {
+      "title": "Guide: Click a shape to start edit"
+    },
+    "drawing": {
+      "title": "Guide: Press Esc to exit"
+    },
+    "selectBGFromMapImage": {
+      "title": "Guide: Hold Ctrl + Drag mouse to select area"
+    },
+    "size": {
+      "title": "Size"
+    },
+    "preview": {
+      "title": "Preview"
+    }
+  },
+  "threeDView": {
+    "title": "3D view",
+    "children": {
+      "shapeCount": {
+        "title": "{{count}} objects"
+      },
+      "hint": {
+        "title": "Drag a shape in to add • Drag an existing shape to move • Drag the background to orbit • Shift-drag to pan • Scroll to zoom"
+      },
+      "mapHint": {
+        "title": "Drag to pan • Right-drag to rotate • Scroll to zoom"
+      },
+      "reset": {
+        "title": "Reset camera"
+      },
+      "empty": {
+        "title": "Add shapes on the 2D canvas to see a 3D model"
+      },
+      "error": {
+        "title": "The browser could not initialize the 3D view"
+      },
+      "canvasLabel": {
+        "title": "Interactive 3D model view"
+      }
+    }
+  },
+  "dialog": {
+    "uploadImage": {
+      "title": "Upload Image",
+      "children": {
+        "source": {
+          "title": "Source"
+        },
+        "link": {
+          "title": "Link"
+        },
+        "image": {
+          "title": "Image"
+        },
+        "size": {
+          "title": "Size",
+          "children": {
+            "width": {
+              "title": "Width (px)"
+            },
+            "height": {
+              "title": "Height (px)"
+            },
+            "followImageSize": {
+              "title": "Follow Image Size"
+            }
+          }
+        }
+      }
+    },
+    "uploadVideo": {
+      "title": "Upload Video",
+      "children": {
+        "source": {
+          "title": "Source"
+        },
+        "link": {
+          "title": "Link"
+        },
+        "video": {
+          "title": "Video"
+        },
+        "size": {
+          "title": "Size",
+          "children": {
+            "width": {
+              "title": "Width (px)"
+            },
+            "height": {
+              "title": "Height (px)"
+            },
+            "followVideoSize": {
+              "title": "Follow Video Size"
+            }
+          }
+        }
+      }
+    },
+    "selectBGFromImage": {
+      "title": "Select Background From Image",
+      "children": {
+        "source": {
+          "title": "Source"
+        },
+        "image": {
+          "title": "Image"
+        },
+        "link": {
+          "title": "Link"
+        },
+        "style": {
+          "title": "Style"
+        },
+        "size": {
+          "title": "Size",
+          "children": {
+            "width": {
+              "title": "Width (px)"
+            },
+            "height": {
+              "title": "Height (px)"
+            },
+            "followImageSize": {
+              "title": "Follow Image Size"
+            }
+          }
+        },
+        "bboxAndScale": {
+          "title": "Bounding Box And Scale",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "scale": {
+              "title": "Scale (1:X)"
+            },
+            "srid": {
+              "title": "Coordinate System"
+            },
+            "bbox": {
+              "title": "Bounding Box"
+            },
+            "scaleAuto": {
+              "title": "Scale Auto"
+            },
+            "bboxAuto": {
+              "title": "Bounding Box Auto"
+            }
+          }
+        }
+      }
+    },
+    "selectBGFromMap": {
+      "title": "Select Background From Map",
+      "children": {
+        "style": {
+          "title": "Style"
+        },
+        "bbox": {
+          "title": "Bounding Box"
+        },
+        "scale": {
+          "title": "Scale (1:X)"
+        },
+        "scaleAuto": {
+          "title": "Scale Auto"
+        },
+        "srid": {
+          "title": "Coordinate System"
+        },
+        "bboxAuto": {
+          "title": "Bounding Box Auto"
+        }
+      }
+    },
+    "saveAs": {
+      "title": "Save As",
+      "children": {
+        "title": {
+          "title": "Title"
+        },
+        "type": {
+          "title": "Type"
+        }
+      }
+    },
+    "export": {
+      "title": "Export",
+      "children": {
+        "setting": {
+          "title": "Setting",
+          "children": {
+            "general": {
+              "title": "General",
+              "children": {
+                "title": {
+                  "title": "Title"
+                },
+                "format": {
+                  "title": "Format"
+                }
+              }
+            },
+            "paper": {
+              "title": "Paper",
+              "children": {
+                "size": {
+                  "title": "Size"
+                },
+                "orientation": {
+                  "title": "Orientation"
+                },
+                "width": {
+                  "title": "Width (px)"
+                },
+                "height": {
+                  "title": "Height (px)"
+                }
+              }
+            },
+            "alignContent": {
+              "title": "Align Content",
+              "children": {
+                "horizontal": {
+                  "title": "Horizontal"
+                },
+                "vertical": {
+                  "title": "Vertical"
+                },
+                "fit": {
+                  "title": "Fit"
+                },
+                "row": {
+                  "title": "Number Of Row"
+                },
+                "column": {
+                  "title": "Number Of Column"
+                },
+                "marginX": {
+                  "title": "Horizontal Margin (px)"
+                },
+                "marginY": {
+                  "title": "Vertical Margin (px)"
+                },
+                "gapX": {
+                  "title": "Horizontal Gap (px)"
+                },
+                "gapY": {
+                  "title": "Vertical Gap (px)"
+                }
+              }
+            },
+            "pagination": {
+              "title": "Pagination",
+              "children": {
+                "enabled": {
+                  "title": "Enabled"
+                },
+                "horizontal": {
+                  "title": "Horizontal"
+                },
+                "vertical": {
+                  "title": "Vertical"
+                }
+              }
+            },
+            "video": {
+              "title": "Video",
+              "children": {
+                "fps": {
+                  "title": "Frame Rate (FPS)"
+                },
+                "duration": {
+                  "title": "Total Duration (Seconds)"
+                },
+                "bitrate": {
+                  "title": "Bitrate (Mbps)"
+                }
+              }
+            },
+            "advanced": {
+              "title": "Advanced",
+              "children": {
+                "crop": {
+                  "title": "Cut Off Excess"
+                },
+                "keepRatio": {
+                  "title": "Keep Ratio"
+                },
+                "colorEffect": {
+                  "title": "Color Effect"
+                }
+              }
+            }
+          }
+        },
+        "preview": {
+          "title": "Preview"
+        }
+      }
+    },
+    "import": {
+      "title": "Import",
+      "children": {
+        "title": {
+          "title": "Title"
+        }
+      }
+    },
+    "newPlan": {
+      "title": "New Plan",
+      "children": {
+        "create": {
+          "title": "Create",
+          "children": {
+            "title": {
+              "title": "Title"
+            },
+            "type": {
+              "title": "Type"
+            },
+            "fromBackgroundImage": {
+              "title": "From Background Image"
+            },
+            "fromBackgroundMap": {
+              "title": "From Background Map"
+            }
+          }
+        },
+        "open": {
+          "title": "Open",
+          "children": {
+            "fromDevice": {
+              "title": "From Device"
+            },
+            "fromCloud": {
+              "title": "From Cloud"
+            }
+          }
+        }
+      }
+    },
+    "newTab": {
+      "title": "New Page"
+    },
+    "setting": {
+      "title": "Setting",
+      "children": {
+        "theme": {
+          "title": "Theme",
+          "children": {
+            "mode": {
+              "title": "Mode"
+            }
+          }
+        },
+        "language": {
+          "title": "Language",
+          "children": {
+            "language": {
+              "title": "Language"
+            }
+          }
+        },
+        "history": {
+          "title": "History",
+          "children": {
+            "max": {
+              "title": "Max (steps)"
+            }
+          }
+        },
+        "defaults": {
+          "title": "Creation Defaults",
+          "children": {
+            "size": {
+              "title": "Size",
+              "children": {
+                "width": {
+                  "title": "Width (px)"
+                },
+                "height": {
+                  "title": "Height (px)"
+                },
+                "radius": {
+                  "title": "Radius (px)"
+                },
+                "radiusX": {
+                  "title": "Horizontal radius (px)"
+                },
+                "radiusY": {
+                  "title": "Vertical radius (px)"
+                },
+                "innerRadius": {
+                  "title": "Inner radius (px)"
+                },
+                "outerRadius": {
+                  "title": "Outer radius (px)"
+                }
+              }
+            },
+            "colors": {
+              "title": "Colors",
+              "children": {
+                "strokeColor": {
+                  "title": "Stroke color"
+                },
+                "strokeWidth": {
+                  "title": "Stroke width (px)"
+                },
+                "strokeOpacity": {
+                  "title": "Stroke opacity (%)"
+                },
+                "fillColor": {
+                  "title": "Fill color"
+                },
+                "fillOpacity": {
+                  "title": "Fill opacity (%)"
+                }
+              }
+            },
+            "text": {
+              "title": "Text",
+              "children": {
+                "textStrokeColor": {
+                  "title": "Text stroke color"
+                },
+                "textStrokeWidth": {
+                  "title": "Text stroke width (px)"
+                },
+                "textStrokeOpacity": {
+                  "title": "Text stroke opacity"
+                },
+                "textFillColor": {
+                  "title": "Text fill color"
+                },
+                "textFillOpacity": {
+                  "title": "Text fill opacity"
+                }
+              }
+            },
+            "background": {
+              "title": "Background",
+              "children": {
+                "backgroundStrokeColor": {
+                  "title": "Background stroke color"
+                },
+                "backgroundStrokeWidth": {
+                  "title": "Background stroke width (px)"
+                },
+                "backgroundStrokeOpacity": {
+                  "title": "Background stroke opacity"
+                },
+                "backgroundFillColor": {
+                  "title": "Background fill color"
+                },
+                "backgroundFillOpacity": {
+                  "title": "Background fill opacity"
+                }
+              }
+            },
+            "shadow": {
+              "title": "Shadow",
+              "children": {
+                "shadowColor": {
+                  "title": "Shadow color"
+                },
+                "shadowOpacity": {
+                  "title": "Shadow opacity"
+                }
+              }
+            }
+          }
+        },
+        "guideLines": {
+          "title": "Guide Lines",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "dash": {
+              "title": "Dash"
+            },
+            "style": {
+              "title": "Style"
+            },
+            "threshold": {
+              "title": "Threshold (px)"
+            },
+            "guideLinesStick": {
+              "title": "Auto Stick"
+            }
+          }
+        },
+        "stage": {
+          "title": "Stage",
+          "children": {
+            "sizeType": {
+              "title": "Size Type"
+            },
+            "expand": {
+              "title": "Expand"
+            },
+            "move": {
+              "title": "Move"
+            }
+          }
+        }
+      }
+    },
+    "guide": {
+      "title": "Guide",
+      "children": {
+        "manipulation": {
+          "title": "Manipulating Objects",
+          "children": {
+            "add": {
+              "title": "Add"
+            },
+            "edit": {
+              "title": "Edit"
+            },
+            "group": {
+              "title": "Group"
+            }
+          }
+        },
+        "save": {
+          "title": "Save and Open"
+        },
+        "template": {
+          "title": "Template"
+        },
+        "shotcut": {
+          "title": "Shortcut",
+          "children": {
+            "general": {
+              "title": "General"
+            },
+            "history": {
+              "title": "History"
+            },
+            "text": {
+              "title": "Text"
+            }
+          }
+        }
+      }
+    },
+    "about": {
+      "title": "About",
+      "children": {
+        "introdution": {
+          "title": "Introduction"
+        },
+        "version": {
+          "title": "Version"
+        },
+        "feature": {
+          "title": "Features",
+          "children": {
+            "object": {
+              "title": "Supported Objects",
+              "children": {
+                "basic": {
+                  "title": "Basic Shapes"
+                },
+                "text": {
+                  "title": "Text"
+                },
+                "image": {
+                  "title": "Image"
+                },
+                "icon": {
+                  "title": "Icons"
+                },
+                "video": {
+                  "title": "Video"
+                },
+                "multiLine": {
+                  "title": "Multi Line"
+                },
+                "freeDrawing": {
+                  "title": "Free Drawing"
+                }
+              }
+            },
+            "manipulation": {
+              "title": "Manipulation With Objects",
+              "children": {
+                "add": {
+                  "title": "Add"
+                },
+                "edit": {
+                  "title": "Edit"
+                },
+                "group": {
+                  "title": "Group"
+                }
+              }
+            },
+            "template": {
+              "title": "Save And Reuse"
+            },
+            "io": {
+              "title": "Import/Export"
+            },
+            "shotcut": {
+              "title": "Shortcuts"
+            },
+            "history": {
+              "title": "History"
+            },
+            "other": {
+              "title": "Other Features"
+            }
+          }
+        },
+        "comingSoonFeature": {
+          "title": "Coming Soon Features",
+          "children": {
+            "improve": {
+              "title": "Performance"
+            }
+          }
+        },
+        "license": {
+          "title": "License"
+        }
+      }
+    },
+    "edit": {
+      "title": "Edit",
+      "children": {
+        "title": {
+          "title": "Title"
+        },
+        "note": {
+          "title": "Note"
+        }
+      }
+    },
+    "close": {
+      "title": "Close",
+      "common": {
+        "notification": {
+          "title": "Notification"
+        }
+      }
+    },
+    "targetTrajectory": {
+      "title": "Target trajectory history",
+      "total": "Total targets: {{count}}",
+      "children": {
+        "from": {
+          "title": "From"
+        },
+        "to": {
+          "title": "To"
+        },
+        "search": {
+          "title": "Search"
+        },
+        "targetId": {
+          "title": "Target ID"
+        },
+        "targetIdFilter": {
+          "title": "Keyword",
+          "placeholder": "ID, name, Mode 3A, country, identity, source..."
+        },
+        "targetType": {
+          "title": "Target type"
+        },
+        "trackType": {
+          "title": "Aircraft/vessel type"
+        },
+        "friendFoeState": {
+          "title": "Friend or foe state"
+        },
+        "ewType": {
+          "title": "EW type"
+        },
+        "all": {
+          "title": "All"
+        },
+        "action": {
+          "title": "Action"
+        }
+      },
+      "enums": {
+        "targetType": {
+          "All": "All",
+          "Unknown": "Unknown",
+          "Aircraft": "Aircraft",
+          "Vessel": "Vessel",
+          "Event": "Event",
+          "EW2": "Electronic warfare 2",
+          "EW": "Electronic warfare"
+        },
+        "aircraftType": {
+          "UNKNOWN": "Unknown",
+          "BOMBER": "Bomber",
+          "HELICOPTER": "Helicopter",
+          "TRANSPORT": "Transport aircraft",
+          "REFUEL": "Refueling aircraft",
+          "RECONNAISSANCE": "Reconnaissance aircraft",
+          "ECM": "Electronic countermeasures aircraft",
+          "AWACS": "Airborne warning and control aircraft",
+          "TRAINING": "Training aircraft",
+          "STRATEGIC_BOMBER": "Strategic bomber",
+          "CRUISE_MISSILE": "Cruise missile",
+          "BALLISTIC_MISSILE": "Ballistic missile",
+          "TYPE_UAV": "Unmanned aerial vehicle",
+          "TYPE_AEROSTAT": "Aerostat",
+          "CIVIL": "Civil aircraft",
+          "FIGHTER": "Fighter aircraft"
+        },
+        "vesselType": {
+          "VESSEL_TYPE_UNKNOWN": "Unknown",
+          "VESSEL_TYPE_CARGO": "Cargo vessel",
+          "VESSEL_TYPE_DANGEROUS_CARGO": "Dangerous cargo vessel",
+          "VESSEL_TYPE_TANKER": "Tanker",
+          "VESSEL_TYPE_TUG_BOAT": "Tugboat",
+          "VESSEL_TYPE_WORK_BOAT": "Work boat",
+          "VESSEL_TYPE_BARGE": "Barge",
+          "VESSEL_TYPE_PATROL_CRAFT": "Patrol craft",
+          "VESSEL_TYPE_NAVAL_VESSEL": "Naval vessel",
+          "VESSEL_TYPE_PLEASURE_CRAFT": "Pleasure craft",
+          "VESSEL_TYPE_PASSENGER": "Passenger vessel",
+          "VESSEL_TYPE_FISHING_VESSEL": "Fishing vessel",
+          "VESSEL_TYPE_ROWING_BOAT": "Rowing boat",
+          "VESSEL_TYPE_SPEED_BOAT": "Speedboat",
+          "VESSEL_TYPE_PILOT_BOAT": "Pilot boat",
+          "VESSEL_TYPE_SEARCH_AND_RESCUE_VESSEL": "Search and rescue vessel",
+          "VESSEL_TYPE_CANOE": "Canoe",
+          "VESSEL_TYPE_MILITARY_CANOE": "Military canoe",
+          "VESSEL_TYPE_MILITARY_TANKER": "Military tanker",
+          "VESSEL_TYPE_ANTI_SUBMARINE": "Anti-submarine vessel",
+          "VESSEL_TYPE_AMPHIBIOUS": "Amphibious vessel",
+          "VESSEL_TYPE_HYDROGRAPHIC_SURVEY": "Hydrographic survey vessel",
+          "VESSEL_TYPE_CRUISER": "Cruiser",
+          "VESSEL_TYPE_MILITARY_CARGO": "Military cargo vessel",
+          "VESSEL_TYPE_HOSPITAL": "Hospital ship",
+          "VESSEL_TYPE_MILITARY_TUG": "Military tug",
+          "VESSEL_TYPE_AIRCRAFT_CARRIER": "Aircraft carrier",
+          "VESSEL_TYPE_MISSILE_FRIGATE": "Missile frigate",
+          "VESSEL_TYPE_FIXED_PLATFORM": "Fixed platform",
+          "VESSEL_TYPE_MOBILE_PLATFORM": "Mobile platform",
+          "VESSEL_TYPE_FRIGATE": "Frigate",
+          "VESSEL_TYPE_DESTROYER": "Destroyer",
+          "VESSEL_TYPE_TARGET": "Target vessel",
+          "VESSEL_TYPE_SUBMARINE": "Submarine",
+          "VESSEL_TYPE_GUNBOAT": "Gunboat",
+          "VESSEL_TYPE_TORPEDO_BOAT": "Torpedo boat",
+          "VESSEL_TYPE_MINESWEEPER": "Minesweeper",
+          "VESSEL_TYPE_AIRPORT": "Airport",
+          "VESSEL_TYPE_MERCHANT": "Merchant vessel",
+          "VESSEL_TYPE_MISSILE_BOAT": "Missile boat",
+          "VESSEL_TYPE_PLATFORM_EXPLORER": "Exploration platform",
+          "VESSEL_TYPE_SAILING": "Sailing vessel",
+          "VESSEL_TYPE_MUD_DREDGER": "Dredger",
+          "VESSEL_TYPE_OCEAN_RESEARCH": "Ocean research vessel",
+          "VESSEL_TYPE_STATE_OWNED_CARGO": "State-owned cargo vessel",
+          "VESSEL_TYPE_WATER_CARGO": "Inland cargo vessel",
+          "VESSEL_TYPE_ARMED_FISHING_VESSEL": "Armed fishing vessel"
+        },
+        "ewType": {
+          "Unknown": "Unknown",
+          "ElintRadar": "ELINT radar",
+          "ElintTarget": "ELINT target",
+          "ComintTarget": "COMINT target",
+          "IndirectComintTarget": "Indirect COMINT target"
+        },
+        "friendFoeState": {
+          "Unknown": "Unknown",
+          "Enemy": "Enemy",
+          "Military": "Military",
+          "Transit": "Transit",
+          "International": "International",
+          "Inland": "Inland",
+          "Ally": "Ally",
+          "Neutral": "Neutral",
+          "Threat": "Threat",
+          "OwnForce": "Own force",
+          "ParaMilitary": "Paramilitary",
+          "Police": "Police",
+          "Civil": "Civil",
+          "All": "All",
+          "Politics": "Politics",
+          "Society": "Society",
+          "Foreign": "Foreign",
+          "MilitaryAndParaMilitary": "Military and paramilitary",
+          "AllyOwnForce": "Ally and own force",
+          "White": "White target"
+        },
+        "trackingMode": {
+          "AUTOMATIC": "Automatic",
+          "SEMI_AUTO": "Semi-automatic",
+          "MANUAL": "Manual"
+        },
+        "trackImage": {
+          "AircraftTrack": "Aircraft track",
+          "AircraftTrackRectangle": "Aircraft track rectangle",
+          "ElintRadar": "ELINT radar",
+          "HighComint": "High-frequency COMINT",
+          "LowComint": "Low-frequency COMINT",
+          "VesselTrack": "Vessel track",
+          "UnknownTrack": "Unknown track",
+          "GroundTrack": "Ground track",
+          "SubMarineTrack": "Submarine track",
+          "UnconfirmTrack": "Unconfirmed track",
+          "AircraftTrackEnemy": "Enemy aircraft track",
+          "FormerTrack": "Former track",
+          "TEST": "Test"
+        },
+        "trackKinecticInfo": {
+          "EQUAL": "Equal",
+          "NOT_EQUAL": "Not equal",
+          "LOWER_THAN_EQUAL": "Less than or equal",
+          "GREATER_THEN_EQUAL": "Greater than or equal",
+          "LOWER_THAN": "Less than",
+          "GREATER_THAN": "Greater than"
+        },
+        "regionTrackTab": {
+          "RESPONSIBLE": "Responsible area",
+          "BATTLEFIELDS": "Battlefields",
+          "HAND_DRAW": "Hand-drawn",
+          "MY_AREA": "My area"
+        }
+      },
+      "messages": {
+        "invalidAccessToken": "The access token was not found or has expired.",
+        "timeout": "The request timed out. Please select a shorter time range.",
+        "loadError": "Unable to load target trajectories.",
+        "requiredRange": "Please enter both the start and end times.",
+        "invalidRange": "The start time cannot be later than the end time.",
+        "empty": "No trajectory data found.",
+        "selectRange": "Select a time range and click Search to load trajectories.",
+        "noMatchingTargetId": "No targets match the selected filters.",
+        "historyLoadError": "Unable to load the target position history.",
+        "insufficientHistory": "There are not enough history points to draw the trajectory.",
+        "mapUnavailable": "The current canvas has no map for coordinate conversion."
+      }
+    }
+  },
+  "presentation": {
+    "overlay": {
+      "previous": "Previous",
+      "next": "Next",
+      "exit": "Exit",
+      "playAnimations": "Play animations",
+      "pauseAnimations": "Pause animations",
+      "restartAnimations": "Restart animations",
+      "nextAnimation": "Next animation",
+      "presenterView": "Presenter View",
+      "pointerDefault": "Pointer",
+      "laserPointer": "Laser pointer",
+      "penPointer": "Pen",
+      "highlighterPointer": "Highlighter",
+      "eraserPointer": "Eraser",
+      "clearInk": "Clear ink"
+    },
+    "presenterView": {
+      "currentSlide": "CURRENT SLIDE",
+      "nextSlide": "NEXT SLIDE",
+      "notes": "NOTES",
+      "noPreview": "No preview",
+      "lastSlide": "End of presentation",
+      "noNotes": "No notes for this slide",
+      "slideOf": "Slide {{current}} of {{total}}"
+    }
+  },
+  "contextMenu": {
+    "group": {
+      "title": "Group (Ctrl + G)",
+      "common": {
+        "snackBarAlert": {
+          "group": "Grouped!"
+        }
+      }
+    },
+    "unGroup": {
+      "title": "Ungroup (Ctrl + Shift + G)",
+      "common": {
+        "snackBarAlert": {
+          "unGroup": "Ungrouped!"
+        }
+      }
+    },
+    "delete": {
+      "title": "Delete (Del)",
+      "common": {
+        "snackBarAlert": {
+          "delete": "Deleted!"
+        }
+      }
+    },
+    "cut": {
+      "title": "Cut (Ctrl + X)",
+      "common": {
+        "snackBarAlert": {
+          "cut": "Cutted!"
+        }
+      }
+    },
+    "duplicate": {
+      "title": "Duplicate (Ctrl + D)",
+      "common": {
+        "snackBarAlert": {
+          "duplicate": "Duplicated!"
+        }
+      }
+    },
+    "copy": {
+      "title": "Copy (Ctrl + C)",
+      "common": {
+        "snackBarAlert": {
+          "copy": "Copied!"
+        }
+      }
+    },
+    "paste": {
+      "title": "Paste (Ctrl + V)",
+      "common": {
+        "snackBarAlert": {
+          "paste": "Pasted!"
+        }
+      }
+    },
+    "mergeCell": {
+      "title": "Merge cells"
+    },
+    "splitCell": {
+      "title": "Unmerge cells"
+    },
+    "insertRowAbove": {
+      "title": "Insert row above"
+    },
+    "insertRowBelow": {
+      "title": "Insert row below"
+    },
+    "deleteRow": {
+      "title": "Delete row"
+    },
+    "insertColumnLeft": {
+      "title": "Insert column left"
+    },
+    "insertColumnRight": {
+      "title": "Insert column right"
+    },
+    "deleteColumn": {
+      "title": "Delete column"
+    }
+  },
+  "plan": {},
+  "topBar": {
+    "menu": {
+      "title": "Menu"
+    },
+    "presentation": {
+      "start": "Start presentation",
+      "stop": "Stop presentation"
+    },
+    "threeD": {
+      "title": "3D mode",
+      "children": {
+        "start": {
+          "title": "3D"
+        },
+        "stop": {
+          "title": "2D"
+        }
+      }
+    },
+    "save": {
+      "title": "Save",
+      "children": {
+        "save": {
+          "title": "Save (Ctrl + S)"
+        },
+        "saveAs": {
+          "title": "Save As... (Ctrl + Shift + S)"
+        }
+      }
+    },
+    "export": {
+      "title": "Export"
+    },
+    "import": {
+      "title": "Import",
+      "children": {
+        "fromDevice": {
+          "title": "From Device"
+        },
+        "fromCloud": {
+          "title": "From Cloud"
+        }
+      }
+    },
+    "undo": {
+      "title": "Undo (Ctrl + Z)",
+      "common": {
+        "snackBarAlert": {
+          "undo": "Undone!"
+        }
+      }
+    },
+    "redo": {
+      "title": "Redo (Ctrl + Y)",
+      "common": {
+        "snackBarAlert": {
+          "redo": "Redone!"
+        }
+      }
+    },
+    "selectAll": {
+      "title": "Select All (Ctrl + A)"
+    },
+    "uploadImage": {
+      "title": "Upload Image"
+    },
+    "uploadVideo": {
+      "title": "Upload Video"
+    },
+    "addImage": {
+      "title": "Add Image"
+    },
+    "addComponent": {
+      "title": "Add Component"
+    },
+    "addTemplate": {
+      "title": "Add Template"
+    },
+    "zoom": {
+      "title": "Zoom",
+      "children": {
+        "in": {
+          "title": "Zoom In (Ctrl + +)"
+        },
+        "out": {
+          "title": "Zoom Out (Ctrl + -)"
+        }
+      },
+      "common": {
+        "snackBarAlert": {
+          "current": "Curent zoom"
+        }
+      }
+    },
+    "fitScreen": {
+      "title": "Fit Screen (Ctrl + 0)"
+    },
+    "background": {
+      "title": "Background",
+      "children": {
+        "color": {
+          "title": "Color",
+          "children": {
+            "color": {
+              "title": "Color"
+            },
+            "opacity": {
+              "title": "Opacity (%)"
+            }
+          }
+        },
+        "layer": {
+          "title": "Map Layers",
+          "children": {
+            "terrain": {
+              "title": "Terrain"
+            },
+            "hillshade": {
+              "title": "Hillshade"
+            },
+            "contour": {
+              "title": "Contour"
+            },
+            "elevationPoint": {
+              "title": "Elevation Point"
+            }
+          }
+        },
+        "advanced": {
+          "title": "Advanced"
+        }
+      }
+    },
+    "grid": {
+      "title": "Grid",
+      "children": {
+        "enabled": {
+          "title": "Enabled"
+        },
+        "general": {
+          "title": "General",
+          "children": {
+            "longitudeOrigin": {
+              "title": "Longitude Origin"
+            },
+            "latitudeOrigin": {
+              "title": "Latitude Origin"
+            },
+            "xOriginPixel": {
+              "title": "X Origin (px)"
+            },
+            "yOriginPixel": {
+              "title": "Y Origin (px)"
+            }
+          }
+        },
+        "grid": {
+          "title": "Grid",
+          "children": {
+            "type": {
+              "title": "Grid Type"
+            },
+            "longitudeInterval": {
+              "title": "Longitude Interval (arcmin)"
+            },
+            "latitudeInterval": {
+              "title": "Latitude Interval (arcmin)"
+            },
+            "xIntervalPixel": {
+              "title": "X Interval (px)"
+            },
+            "yIntervalPixel": {
+              "title": "Y Interval (px)"
+            },
+            "longitudeWidth": {
+              "title": "Longitude Width (px)"
+            },
+            "longitudeDash": {
+              "title": "Longitude Dash"
+            },
+            "longitudeColor": {
+              "title": "Longitude Color"
+            },
+            "longitudeOpacity": {
+              "title": "Longitude Opacity"
+            },
+            "latitudeWidth": {
+              "title": "Latitude Width (px)"
+            },
+            "latitudeDash": {
+              "title": "Latitude Dash"
+            },
+            "latitudeColor": {
+              "title": "Latitude Color"
+            },
+            "latitudeOpacity": {
+              "title": "Latitude Opacity"
+            }
+          }
+        }
+      }
+    },
+    "frame": {
+      "title": "Coordinate Frame",
+      "children": {
+        "enabled": {
+          "title": "Enabled"
+        },
+        "general": {
+          "title": "General",
+          "children": {
+            "format": {
+              "title": "Coordinate format"
+            },
+            "topSide": {
+              "title": "Top side"
+            },
+            "rightSide": {
+              "title": "Right side"
+            },
+            "bottomSide": {
+              "title": "Bottom side"
+            },
+            "leftSide": {
+              "title": "Left side"
+            }
+          }
+        },
+        "frame": {
+          "title": "Frame",
+          "children": {
+            "space": {
+              "title": "Spacing (px)"
+            },
+            "backgroundColor": {
+              "title": "Background color"
+            },
+            "backgroundOpacity": {
+              "title": "Frame background opacity"
+            },
+            "style": {
+              "title": "Frame style"
+            },
+            "innerWidth": {
+              "title": "Inner neatline width (px)"
+            },
+            "innerColor": {
+              "title": "Inner neatline color"
+            },
+            "innerOpacity": {
+              "title": "Inner neatline opacity"
+            },
+            "outerWidth": {
+              "title": "Outer neatline width (px)"
+            },
+            "outerColor": {
+              "title": "Outer neatline color"
+            },
+            "outerOpacity": {
+              "title": "Outer neatline opacity"
+            },
+            "innerDash": {
+              "title": "Inner neatline dash"
+            },
+            "outerDash": {
+              "title": "Outer neatline dash"
+            },
+            "fancySize": {
+              "title": "Fancy segment thickness (px)"
+            },
+            "fancyColor": {
+              "title": "Fancy primary color"
+            },
+            "fancyOpacity": {
+              "title": "Fancy primary opacity"
+            },
+            "fancyAlternateColor": {
+              "title": "Fancy alternate color"
+            },
+            "fancyAlternateOpacity": {
+              "title": "Fancy alternate opacity"
+            },
+            "fancyStepX": {
+              "title": "Fancy longitude interval (arcmin)"
+            },
+            "fancyStepY": {
+              "title": "Fancy latitude interval (arcmin)"
+            },
+            "fancyStepXPixel": {
+              "title": "Fancy X interval (px)"
+            },
+            "fancyStepYPixel": {
+              "title": "Fancy Y interval (px)"
+            }
+          }
+        },
+        "tickMarks": {
+          "title": "Tick marks",
+          "children": {
+            "direction": {
+              "title": "Tick direction"
+            },
+            "type": {
+              "title": "Tick type"
+            },
+            "longitudeStep": {
+              "title": "Major longitude interval (arcmin)"
+            },
+            "latitudeStep": {
+              "title": "Major latitude interval (arcmin)"
+            },
+            "longitudeTickInterval": {
+              "title": "Minor longitude tick interval (arcmin)"
+            },
+            "latitudeTickInterval": {
+              "title": "Minor latitude tick interval (arcmin)"
+            },
+            "xStepPixel": {
+              "title": "Major X interval (px)"
+            },
+            "yStepPixel": {
+              "title": "Major Y interval (px)"
+            },
+            "xTickIntervalPixel": {
+              "title": "Minor X tick interval (px)"
+            },
+            "yTickIntervalPixel": {
+              "title": "Minor Y tick interval (px)"
+            },
+            "tickWidth": {
+              "title": "Width (px)"
+            },
+            "tickSize": {
+              "title": "Length (px)"
+            },
+            "tickDash": {
+              "title": "Dash"
+            },
+            "tickColor": {
+              "title": "Color"
+            },
+            "tickOpacity": {
+              "title": "Opacity"
+            },
+            "tickLabelSize": {
+              "title": "Annotation size (px)"
+            },
+            "tickLabelFont": {
+              "title": "Annotation font"
+            },
+            "tickLabelColor": {
+              "title": "Annotation color"
+            },
+            "tickLabelOpacity": {
+              "title": "Annotation opacity"
+            },
+            "tickLabelAlign": {
+              "title": "Annotation align"
+            },
+            "tickLabelBaseline": {
+              "title": "Annotation baseline"
+            },
+            "xTickLabelOffset": {
+              "title": "Longitude annotation offset (px)"
+            },
+            "yTickLabelOffset": {
+              "title": "Latitude annotation offset (px)"
+            },
+            "tickLabelOffset": {
+              "title": "Annotation spacing (px)"
+            },
+            "topLeftLabelOffset": {
+              "title": "Top-left annotation spacing (px)"
+            },
+            "topRightLabelOffset": {
+              "title": "Top-right annotation spacing (px)"
+            },
+            "bottomRightLabelOffset": {
+              "title": "Bottom-right annotation spacing (px)"
+            },
+            "bottomLeftLabelOffset": {
+              "title": "Bottom-left annotation spacing (px)"
+            },
+            "xTickEnd": {
+              "title": "Longitude endpoint annotations"
+            },
+            "yTickEnd": {
+              "title": "Latitude endpoint annotations"
+            },
+            "tickLabelRotation": {
+              "title": "Annotation rotation (°)"
+            },
+            "titleOffset": {
+              "title": "Title offset (px)"
+            },
+            "axisLabelOffset": {
+              "title": "Axis-label offset (px)"
+            }
+          }
+        },
+        "mapLabels": {
+          "title": "Labels",
+          "children": {
+            "title": {
+              "title": "Map title"
+            },
+            "xAxisLabel": {
+              "title": "Longitude axis label"
+            },
+            "yAxisLabel": {
+              "title": "Latitude axis label"
+            },
+            "titleSize": {
+              "title": "Title size (px)"
+            },
+            "titleFont": {
+              "title": "Title font"
+            },
+            "titleColor": {
+              "title": "Title color"
+            },
+            "titleOpacity": {
+              "title": "Title opacity"
+            },
+            "titleAlign": {
+              "title": "Title align"
+            },
+            "titleBaseline": {
+              "title": "Title baseline"
+            },
+            "axisLabelFont": {
+              "title": "Axis-label font"
+            },
+            "axisLabelSize": {
+              "title": "Axis-label size (px)"
+            },
+            "axisLabelAlign": {
+              "title": "Axis-label align"
+            },
+            "axisLabelBaseline": {
+              "title": "Axis-label baseline"
+            },
+            "axisLabelColor": {
+              "title": "Axis-label color"
+            },
+            "axisLabelOpacity": {
+              "title": "Axis-label opacity"
+            }
+          }
+        }
+      }
+    },
+    "setting": {
+      "title": "Setting"
+    },
+    "help": {
+      "title": "Help",
+      "children": {
+        "guide": {
+          "title": "Guide"
+        },
+        "about": {
+          "title": "About"
+        }
+      }
+    },
+    "close": {
+      "title": "Close (Ctrl + W)"
+    },
+    "profile": {
+      "title": "Profile",
+      "children": {
+        "profile": {
+          "title": "Profile"
+        },
+        "logout": {
+          "title": "Logout"
+        }
+      },
+      "common": {
+        "notification": {
+          "title": "Notification"
+        }
+      }
+    },
+    "targetTrajectory": {
+      "title": "Target Trajectory",
+      "children": {
+        "source": {
+          "title": "Source"
+        }
+      }
+    }
+  },
+  "leftBar": {
+    "info": {
+      "title": "Info",
+      "children": {
+        "type": {
+          "title": "Type"
+        },
+        "title": {
+          "title": "Title"
+        },
+        "bbox": {
+          "title": "Bounding Box"
+        },
+        "ratio": {
+          "title": "Scale"
+        },
+        "srid": {
+          "title": "Coordinate System"
+        },
+        "size": {
+          "title": "Size"
+        }
+      }
+    },
+    "addLine": {
+      "title": "Add Line",
+      "children": {
+        "drawing": {
+          "title": "Drawing"
+        },
+        "complex-line": {
+          "title": "Complex Line",
+          "children": {
+            "straight": {
+              "title": "Straight"
+            },
+            "curve": {
+              "title": "Curve"
+            },
+            "bezier": {
+              "title": "Bezier"
+            },
+            "horizontal": {
+              "title": "Horizontal"
+            },
+            "vertical": {
+              "title": "Vertical"
+            },
+            "halfCircleUpper": {
+              "title": "Half Circle Upper"
+            },
+            "halfCircleLower": {
+              "title": "Half Circle Lower"
+            },
+            "halfEllipseUpper": {
+              "title": "Half Ellipse Upper"
+            },
+            "halfEllipseLower": {
+              "title": "Half Ellipse Lower"
+            }
+          }
+        },
+        "complex-path": {
+          "title": "Complex Path",
+          "children": {
+            "straight": {
+              "title": "Straight"
+            },
+            "curve": {
+              "title": "Curve"
+            },
+            "bezier": {
+              "title": "Bezier"
+            },
+            "horizontal": {
+              "title": "Horizontal"
+            },
+            "vertical": {
+              "title": "Vertical"
+            },
+            "halfCircleUpper": {
+              "title": "Half Circle Upper"
+            },
+            "halfCircleLower": {
+              "title": "Half Circle Lower"
+            },
+            "halfEllipseUpper": {
+              "title": "Half Ellipse Upper"
+            },
+            "halfEllipseLower": {
+              "title": "Half Ellipse Lower"
+            }
+          }
+        }
+      }
+    },
+    "addArrow": {
+      "title": "Add Arrow",
+      "children": {
+        "basicArrow": {
+          "title": "Basic Arrow"
+        },
+        "arrowFlatBottom": {
+          "title": "Arrow Flat Bottom"
+        },
+        "arrowConcaveBottom": {
+          "title": "Arrow Concave Bottom"
+        },
+        "arrowConvexBottom": {
+          "title": "Arrow Convex Bottom"
+        },
+        "bidirectionalArrow": {
+          "title": "Bidirectional Arrow"
+        },
+        "twoDirectionalArrow": {
+          "title": "Two Directional Arrow"
+        },
+        "threeDirectionalArrow": {
+          "title": "Three Directional Arrow"
+        },
+        "multiDirectionalArrow": {
+          "title": "Multi Directional Arrow"
+        }
+      }
+    },
+    "addShape": {
+      "title": "Add Shape",
+      "children": {
+        "circle": {
+          "title": "Circle"
+        },
+        "ellipse": {
+          "title": "Ellipse"
+        },
+        "rectangle": {
+          "title": "Rectangle"
+        },
+        "convexPolygon": {
+          "title": "Convex Polygon"
+        },
+        "concavePolygon": {
+          "title": "Concave Polygon"
+        },
+        "ring": {
+          "title": "Ring"
+        },
+        "wedge": {
+          "title": "Wedge"
+        }
+      }
+    },
+    "addTable": {
+      "title": "Add Text/Table",
+      "children": {
+        "text": {
+          "title": "Text"
+        },
+        "table": {
+          "title": "Table"
+        }
+      }
+    },
+    "addSymbol": {
+      "title": "Symbols",
+      "children": {
+        "basic": {
+          "title": "Basic",
+          "children": {
+            "favorite": {
+              "title": "Favorite"
+            }
+          }
+        },
+        "mlitary": {
+          "title": "Military",
+          "children": {
+            "favorite": {
+              "title": "Favorite"
+            }
+          }
+        }
+      }
+    }
+  },
+  "rightBar": {
+    "threeD": {
+      "title": "3D",
+      "children": {
+        "description": {
+          "title": "These properties only affect the 3D view and are persisted with the shape data."
+        },
+        "geometry": {
+          "title": "Geometry",
+          "children": {
+            "modelURL": {
+              "title": "GLTF/GLB model URL"
+            },
+            "modelAutoFit": {
+              "title": "Fit model to shape size"
+            },
+            "depth": {
+              "title": "3D depth (0 = automatic)"
+            },
+            "elevation": {
+              "title": "3D elevation"
+            },
+            "renderMode": {
+              "title": "Geometry mode",
+              "children": {
+                "auto": {
+                  "title": "Automatic"
+                },
+                "solid": {
+                  "title": "Solid"
+                },
+                "cutout": {
+                  "title": "Visible silhouette"
+                }
+              }
+            },
+            "cutoutSlices": {
+              "title": "Cutout layers (0 = automatic)"
+            },
+            "alphaTest": {
+              "title": "Alpha threshold"
+            },
+            "bevelEnabled": {
+              "title": "Bevel solid edges"
+            },
+            "bevelSize": {
+              "title": "Bevel size (0 = automatic)"
+            },
+            "bevelThickness": {
+              "title": "Bevel thickness (0 = automatic)"
+            },
+            "bevelSegments": {
+              "title": "Bevel segments"
+            }
+          }
+        },
+        "transform": {
+          "title": "Transform",
+          "children": {
+            "offsetX": {
+              "title": "X offset"
+            },
+            "offsetY": {
+              "title": "Y offset"
+            },
+            "rotationX": {
+              "title": "X rotation (°)"
+            },
+            "rotationY": {
+              "title": "Y rotation (°)"
+            },
+            "rotation": {
+              "title": "Z rotation (°)"
+            },
+            "scaleX": {
+              "title": "X scale"
+            },
+            "scaleY": {
+              "title": "Y scale"
+            },
+            "scaleZ": {
+              "title": "Z scale"
+            }
+          }
+        },
+        "material": {
+          "title": "Material",
+          "children": {
+            "color": {
+              "title": "Solid side colour"
+            },
+            "roughness": {
+              "title": "Roughness"
+            },
+            "metalness": {
+              "title": "Metalness"
+            },
+            "opacity": {
+              "title": "Opacity"
+            },
+            "emissiveColor": {
+              "title": "Emissive colour"
+            },
+            "emissiveIntensity": {
+              "title": "Emissive intensity"
+            },
+            "side": {
+              "title": "Render side",
+              "children": {
+                "front": {
+                  "title": "Front"
+                },
+                "back": {
+                  "title": "Back"
+                },
+                "double": {
+                  "title": "Double-sided"
+                }
+              }
+            },
+            "transparent": {
+              "title": "Blend transparency"
+            },
+            "depthTest": {
+              "title": "Depth test"
+            },
+            "depthWrite": {
+              "title": "Write depth"
+            },
+            "polygonOffset": {
+              "title": "Polygon offset"
+            },
+            "polygonOffsetFactor": {
+              "title": "Polygon offset factor"
+            },
+            "polygonOffsetUnits": {
+              "title": "Polygon offset units"
+            }
+          }
+        },
+        "behavior": {
+          "title": "Rendering",
+          "children": {
+            "visible": {
+              "title": "Visible in 3D"
+            },
+            "castShadow": {
+              "title": "Cast shadow"
+            },
+            "receiveShadow": {
+              "title": "Receive shadow"
+            },
+            "followTerrain": {
+              "title": "Follow terrain elevation"
+            },
+            "wireframe": {
+              "title": "Render wireframe"
+            },
+            "flatShading": {
+              "title": "Use flat shading"
+            }
+          }
+        }
+      }
+    },
+    "control": {
+      "title": "Control",
+      "children": {
+        "video": {
+          "title": "Video",
+          "children": {
+            "relay": {
+              "title": "Relay"
+            },
+            "play": {
+              "title": "Play"
+            },
+            "pause": {
+              "title": "Pause"
+            },
+            "forward": {
+              "title": "Forward"
+            },
+            "loop": {
+              "title": "Loop"
+            },
+            "inverse": {
+              "title": "Inverse"
+            },
+            "speed": {
+              "title": "Speed"
+            },
+            "volume": {
+              "title": "Volume"
+            }
+          }
+        },
+        "move": {
+          "title": "Move",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            }
+          }
+        }
+      }
+    },
+    "style": {
+      "title": "Style",
+      "children": {
+        "general": {
+          "title": "General",
+          "children": {
+            "opacity": {
+              "title": "Opacity (%)"
+            }
+          }
+        },
+        "shape": {
+          "title": "Shape",
+          "children": {
+            "sides": {
+              "title": "Sides"
+            },
+            "numPoints": {
+              "title": "Points"
+            },
+            "radius": {
+              "title": "Radius (px)"
+            },
+            "angle": {
+              "title": "Angle (°)"
+            },
+            "clockwise": {
+              "title": "Clockwise"
+            },
+            "innerRadius": {
+              "title": "Inner Radius (px)"
+            },
+            "outerRadius": {
+              "title": "Outer Radius (px)"
+            },
+            "radiusX": {
+              "title": "Radius X (px)"
+            },
+            "radiusY": {
+              "title": "Radius Y (px)"
+            },
+            "width": {
+              "title": "Width (px)"
+            },
+            "height": {
+              "title": "Height (px)"
+            },
+            "closed": {
+              "title": "Closed"
+            },
+            "cornerRadius": {
+              "title": "Corner Radius (px)"
+            }
+          }
+        },
+        "transform": {
+          "title": "Transform",
+          "children": {
+            "rotation": {
+              "title": "Rotation (°)"
+            },
+            "scaleX": {
+              "title": "Horizontal Scale"
+            },
+            "scaleY": {
+              "title": "Vertical Scale"
+            },
+            "skewX": {
+              "title": "Horizontal Skew"
+            },
+            "skewY": {
+              "title": "Vertical Skew"
+            }
+          }
+        },
+        "table": {
+          "title": "Table",
+          "children": {
+            "rows": {
+              "title": "Rows"
+            },
+            "cols": {
+              "title": "Columns"
+            },
+            "colWidth": {
+              "title": "Column Width (px)"
+            },
+            "rowHeight": {
+              "title": "Row Height (px)"
+            },
+            "padding": {
+              "title": "Cell Padding (px)"
+            },
+            "fillColor": {
+              "title": "Background Color"
+            },
+            "fillOpacity": {
+              "title": "Background Opacity (%)"
+            }
+          }
+        },
+        "fill": {
+          "title": "Fill",
+          "children": {
+            "type": {
+              "title": "Fill Type"
+            },
+            "rule": {
+              "title": "Rule"
+            },
+            "color": {
+              "title": "Color"
+            },
+            "opacity": {
+              "title": "Opacity (%)"
+            },
+            "linear": {
+              "title": "Linear Gradient"
+            },
+            "radial": {
+              "title": "Radial Gradient"
+            },
+            "startX": {
+              "title": "Start X (px)"
+            },
+            "startY": {
+              "title": "Start Y (px)"
+            },
+            "endX": {
+              "title": "End X (px)"
+            },
+            "endY": {
+              "title": "End Y (px)"
+            },
+            "startRadius": {
+              "title": "Start Radius (px)"
+            },
+            "endRadius": {
+              "title": "End Radius (px)"
+            },
+            "colorStops": {
+              "title": "Color Stops",
+              "position": {
+                "title": "Position"
+              },
+              "color": {
+                "title": "Color"
+              },
+              "opacity": {
+                "title": "Opacity (%)"
+              },
+              "add": {
+                "title": "Add Color Stop"
+              },
+              "remove": {
+                "title": "Remove Color Stop"
+              }
+            }
+          }
+        },
+        "stroke": {
+          "title": "Stroke",
+          "children": {
+            "type": {
+              "title": "Stroke Type"
+            },
+            "width": {
+              "title": "Width (px)"
+            },
+            "color": {
+              "title": "Color"
+            },
+            "opacity": {
+              "title": "Opacity (%)"
+            },
+            "linear": {
+              "title": "Linear Gradient"
+            },
+            "startX": {
+              "title": "Start X (px)"
+            },
+            "startY": {
+              "title": "Start Y (px)"
+            },
+            "endX": {
+              "title": "End X (px)"
+            },
+            "endY": {
+              "title": "End Y (px)"
+            },
+            "colorStops": {
+              "title": "Color Stops",
+              "color": {
+                "title": "Color"
+              },
+              "opacity": {
+                "title": "Opacity (%)"
+              },
+              "add": {
+                "title": "Add Color Stop"
+              },
+              "remove": {
+                "title": "Remove Color Stop"
+              }
+            },
+            "dash": {
+              "title": "Dash"
+            },
+            "style": {
+              "title": "Style"
+            },
+            "offset": {
+              "title": "Dash Offset"
+            },
+            "lineCap": {
+              "title": "Cap"
+            },
+            "lineJoin": {
+              "title": "Join"
+            },
+            "miterLimit": {
+              "title": "Miter Limit"
+            }
+          }
+        },
+        "textFill": {
+          "title": "Text Fill",
+          "children": {
+            "color": {
+              "title": "Color"
+            },
+            "opacity": {
+              "title": "Opacity (%)"
+            },
+            "rule": {
+              "title": "Rule"
+            },
+            "type": {
+              "title": "Fill Type"
+            },
+            "linear": {
+              "title": "Linear Gradient"
+            },
+            "radial": {
+              "title": "Radial Gradient"
+            },
+            "startX": {
+              "title": "Start X (px)"
+            },
+            "startY": {
+              "title": "Start Y (px)"
+            },
+            "endX": {
+              "title": "End X (px)"
+            },
+            "endY": {
+              "title": "End Y (px)"
+            },
+            "startRadius": {
+              "title": "Start Radius (px)"
+            },
+            "endRadius": {
+              "title": "End Radius (px)"
+            },
+            "colorStops": {
+              "title": "Color Stops",
+              "position": {
+                "title": "Position"
+              },
+              "color": {
+                "title": "Color"
+              },
+              "opacity": {
+                "title": "Opacity (%)"
+              },
+              "add": {
+                "title": "Add Color Stop"
+              },
+              "remove": {
+                "title": "Remove Color Stop"
+              }
+            }
+          }
+        },
+        "textStroke": {
+          "title": "Text Stroke",
+          "children": {
+            "type": {
+              "title": "Stroke Type"
+            },
+            "width": {
+              "title": "Width (px)"
+            },
+            "color": {
+              "title": "Color"
+            },
+            "opacity": {
+              "title": "Opacity (%)"
+            },
+            "linear": {
+              "title": "Linear Gradient"
+            },
+            "startX": {
+              "title": "Start X (px)"
+            },
+            "startY": {
+              "title": "Start Y (px)"
+            },
+            "endX": {
+              "title": "End X (px)"
+            },
+            "endY": {
+              "title": "End Y (px)"
+            },
+            "colorStops": {
+              "title": "Color Stops",
+              "color": {
+                "title": "Color"
+              },
+              "opacity": {
+                "title": "Opacity (%)"
+              },
+              "add": {
+                "title": "Add Color Stop"
+              },
+              "remove": {
+                "title": "Remove Color Stop"
+              }
+            },
+            "dash": {
+              "title": "Dash"
+            },
+            "style": {
+              "title": "Style"
+            },
+            "offset": {
+              "title": "Dash Offset"
+            },
+            "lineCap": {
+              "title": "Cap"
+            },
+            "lineJoin": {
+              "title": "Join"
+            },
+            "miterLimit": {
+              "title": "Miter Limit"
+            }
+          }
+        },
+        "backgroundFill": {
+          "title": "Background Fill",
+          "children": {
+            "color": {
+              "title": "Color"
+            },
+            "opacity": {
+              "title": "Opacity (%)"
+            },
+            "rule": {
+              "title": "Rule"
+            },
+            "type": {
+              "title": "Fill Type"
+            },
+            "linear": {
+              "title": "Linear Gradient"
+            },
+            "radial": {
+              "title": "Radial Gradient"
+            },
+            "startX": {
+              "title": "Start X (px)"
+            },
+            "startY": {
+              "title": "Start Y (px)"
+            },
+            "endX": {
+              "title": "End X (px)"
+            },
+            "endY": {
+              "title": "End Y (px)"
+            },
+            "startRadius": {
+              "title": "Start Radius (px)"
+            },
+            "endRadius": {
+              "title": "End Radius (px)"
+            },
+            "colorStops": {
+              "title": "Color Stops",
+              "position": {
+                "title": "Position"
+              },
+              "color": {
+                "title": "Color"
+              },
+              "opacity": {
+                "title": "Opacity (%)"
+              },
+              "add": {
+                "title": "Add Color Stop"
+              },
+              "remove": {
+                "title": "Remove Color Stop"
+              }
+            }
+          }
+        },
+        "backgroundStroke": {
+          "title": "Background Stroke",
+          "children": {
+            "type": {
+              "title": "Stroke Type"
+            },
+            "width": {
+              "title": "Width (px)"
+            },
+            "color": {
+              "title": "Color"
+            },
+            "opacity": {
+              "title": "Opacity (%)"
+            },
+            "linear": {
+              "title": "Linear Gradient"
+            },
+            "startX": {
+              "title": "Start X (px)"
+            },
+            "startY": {
+              "title": "Start Y (px)"
+            },
+            "endX": {
+              "title": "End X (px)"
+            },
+            "endY": {
+              "title": "End Y (px)"
+            },
+            "colorStops": {
+              "title": "Color Stops",
+              "color": {
+                "title": "Color"
+              },
+              "opacity": {
+                "title": "Opacity (%)"
+              },
+              "add": {
+                "title": "Add Color Stop"
+              },
+              "remove": {
+                "title": "Remove Color Stop"
+              }
+            },
+            "dash": {
+              "title": "Dash"
+            },
+            "style": {
+              "title": "Style"
+            },
+            "offset": {
+              "title": "Dash Offset"
+            },
+            "lineCap": {
+              "title": "Cap"
+            },
+            "lineJoin": {
+              "title": "Join"
+            },
+            "miterLimit": {
+              "title": "Miter Limit"
+            }
+          }
+        },
+        "colorList": {
+          "title": "Color List",
+          "children": {
+            "color": {
+              "title": "Color"
+            }
+          }
+        },
+        "pointer": {
+          "title": "Pointer",
+          "children": {
+            "bidirectional": {
+              "title": "Bidirectional"
+            },
+            "direction": {
+              "title": "Direction"
+            },
+            "width": {
+              "title": "Width (px)"
+            },
+            "length": {
+              "title": "Length (px)"
+            }
+          }
+        },
+        "shadow": {
+          "title": "Shadow",
+          "children": {
+            "horizontal": {
+              "title": "Horizontal (px)"
+            },
+            "vertical": {
+              "title": "Vertical (px)"
+            },
+            "color": {
+              "title": "Color"
+            },
+            "opacity": {
+              "title": "Opacity (%)"
+            },
+            "blur": {
+              "title": "Blur (px)"
+            }
+          }
+        },
+        "eraser": {
+          "title": "Eraser",
+          "children": {
+            "eraser": {
+              "title": "Eraser"
+            },
+            "restore": {
+              "title": "Restore"
+            }
+          }
+        },
+        "crop": {
+          "title": "Crop",
+          "children": {
+            "crop": {
+              "title": "Crop"
+            },
+            "restore": {
+              "title": "Restore"
+            }
+          }
+        },
+        "padding": {
+          "title": "Padding",
+          "children": {
+            "padding": {
+              "title": "Padding (px)"
+            }
+          }
+        },
+        "path": {
+          "title": "Path",
+          "children": {
+            "data": {
+              "title": "Path"
+            }
+          }
+        },
+        "svg": {
+          "title": "SVG",
+          "children": {
+            "svgString": {
+              "title": "Source"
+            }
+          }
+        }
+      }
+    },
+    "text": {
+      "title": "Text",
+      "children": {
+        "content": {
+          "title": "Content",
+          "children": {
+            "text": {
+              "title": "Text"
+            }
+          }
+        },
+        "font": {
+          "title": "Font",
+          "children": {
+            "font": {
+              "title": "Font"
+            },
+            "size": {
+              "title": "Size (px)"
+            },
+            "letterSpacing": {
+              "title": "Letter Spacing (px)"
+            },
+            "textBaseline": {
+              "title": "Text Baseline"
+            },
+            "direction": {
+              "title": "Direction"
+            },
+            "wrap": {
+              "title": "Wrap"
+            },
+            "variant": {
+              "title": "Variant"
+            }
+          }
+        },
+        "format": {
+          "title": "Format",
+          "children": {
+            "bold": {
+              "title": "Bold (Ctrl + B)"
+            },
+            "italic": {
+              "title": "Italic (Ctrl + I)"
+            },
+            "underline": {
+              "title": "Underline (Ctrl + U)"
+            },
+            "strikethrough": {
+              "title": "Strikethrough (Ctrl + T)"
+            }
+          }
+        },
+        "align": {
+          "title": "Align",
+          "children": {
+            "left": {
+              "title": "Left (Ctrl + L)"
+            },
+            "center": {
+              "title": "Center (Ctrl + E)"
+            },
+            "right": {
+              "title": "Right (Ctrl + R)"
+            },
+            "top": {
+              "title": "Top (Ctrl + Shift + L)"
+            },
+            "middle": {
+              "title": "Middle (Ctrl + Shift + E)"
+            },
+            "bottom": {
+              "title": "Bottom (Ctrl + Shift + R)"
+            }
+          }
+        }
+      }
+    },
+    "arrange": {
+      "title": "Arrange",
+      "children": {
+        "layer": {
+          "title": "Layer",
+          "children": {
+            "toFront": {
+              "title": "To Front"
+            },
+            "toBack": {
+              "title": "To Back"
+            },
+            "bringForward": {
+              "title": "Bring Forward"
+            },
+            "sendBackward": {
+              "title": "Send Backward"
+            }
+          }
+        },
+        "align": {
+          "title": "Align",
+          "children": {
+            "topLeft": {
+              "title": "Top Left"
+            },
+            "top": {
+              "title": "Top"
+            },
+            "topRight": {
+              "title": "Top Right"
+            },
+            "left": {
+              "title": "Left"
+            },
+            "center": {
+              "title": "Center"
+            },
+            "right": {
+              "title": "Right"
+            },
+            "bottomLeft": {
+              "title": "Bottom Left"
+            },
+            "bottom": {
+              "title": "Bottom"
+            },
+            "bottomRight": {
+              "title": "Bottom Right"
+            }
+          }
+        },
+        "flip": {
+          "title": "Flip",
+          "children": {
+            "horizontal": {
+              "title": "Horizontal"
+            },
+            "vertical": {
+              "title": "Vertical"
+            }
+          }
+        }
+      }
+    },
+    "filter": {
+      "title": "Filter",
+      "children": {
+        "blur": {
+          "title": "Blur",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "radius": {
+              "title": "Radius (px)"
+            }
+          }
+        },
+        "brightness": {
+          "title": "Brightness",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "brightness": {
+              "title": "Brightness"
+            }
+          }
+        },
+        "contrast": {
+          "title": "Contrast",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "contrast": {
+              "title": "Contrast"
+            }
+          }
+        },
+        "emboss": {
+          "title": "Emboss",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "strength": {
+              "title": "Strength"
+            },
+            "whiteLevel": {
+              "title": "White Level"
+            },
+            "direction": {
+              "title": "Direction"
+            },
+            "blend": {
+              "title": "Blend"
+            }
+          }
+        },
+        "enhance": {
+          "title": "Enhance",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "enhance": {
+              "title": "Enhance"
+            }
+          }
+        },
+        "kaleidoscope": {
+          "title": "Kaleidoscope",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "power": {
+              "title": "Power"
+            },
+            "angle": {
+              "title": "Angle (°)"
+            }
+          }
+        },
+        "noise": {
+          "title": "Noise",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "noise": {
+              "title": "Noise"
+            }
+          }
+        },
+        "pixelate": {
+          "title": "Pixelate",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "pixelSize": {
+              "title": "Pixel Size (px)"
+            }
+          }
+        },
+        "posterize": {
+          "title": "Posterize",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "levels": {
+              "title": "Levels"
+            }
+          }
+        },
+        "rgba": {
+          "title": "RGBA",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "color": {
+              "title": "Color"
+            },
+            "opacity": {
+              "title": "Opacity (%)"
+            }
+          }
+        },
+        "threshold": {
+          "title": "Threshold",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "threshold": {
+              "title": "Threshold (%)"
+            }
+          }
+        },
+        "mask": {
+          "title": "Mask",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "threshold": {
+              "title": "Threshold (%)"
+            }
+          }
+        },
+        "grayscale": {
+          "title": "Grayscale",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            }
+          }
+        },
+        "sepia": {
+          "title": "Sepia",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            }
+          }
+        },
+        "invert": {
+          "title": "Invert",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            }
+          }
+        },
+        "solarize": {
+          "title": "Solarize",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            }
+          }
+        }
+      }
+    },
+    "motion": {
+      "title": "Motion",
+      "children": {
+        "editor": {
+          "title": "Presentation effects",
+          "children": {
+            "selectShapeHint": {
+              "title": "Select one or more shapes on canvas to configure effects."
+            },
+            "multiSelectionHint": {
+              "title": "{{count}} shapes selected. Added effects and property changes apply to every selected shape."
+            },
+            "effectCount": {
+              "title": "{{count}} effects"
+            },
+            "addEffects": {
+              "title": "Add effects"
+            },
+            "type": {},
+            "clearAll": {
+              "title": "Clear all"
+            },
+            "empty": {
+              "title": "No effects yet."
+            },
+            "emptyHint": {
+              "title": "Click the buttons above to add effects for the selected shape."
+            },
+            "order": {
+              "title": "Order: {{current}}/{{total}}"
+            },
+            "previewItem": {
+              "title": "Preview"
+            },
+            "moveUp": {
+              "title": "Move up"
+            },
+            "moveDown": {
+              "title": "Move down"
+            },
+            "removeItem": {
+              "title": "Remove effect"
+            },
+            "detail": {
+              "title": "Effect details"
+            }
+          }
+        },
+        "preview": {
+          "title": "Preview",
+          "children": {
+            "play": {
+              "title": "Play preview"
+            },
+            "stop": {
+              "title": "Stop preview"
+            }
+          }
+        },
+        "effect": {
+          "title": "Effect",
+          "children": {
+            "enabled": {
+              "title": "Enabled"
+            },
+            "type": {
+              "title": "Type"
+            },
+            "order": {
+              "title": "Order"
+            },
+            "moveMode": {
+              "title": "Move mode"
+            },
+            "axis": {
+              "x": {
+                "title": "X (px)"
+              },
+              "y": {
+                "title": "Y (px)"
+              },
+              "deltaX": {
+                "title": "ΔX (px)"
+              },
+              "deltaY": {
+                "title": "ΔY (px)"
+              }
+            },
+            "path": {
+              "title": "Path"
+            },
+            "pathPointsCount": {
+              "title": "{{count}} points"
+            },
+            "setPointToCurrent": {
+              "title": "Use current position"
+            },
+            "addPathPoint": {
+              "title": "Add point after"
+            },
+            "removePathPoint": {
+              "title": "Remove point"
+            },
+            "pathHint": {
+              "title": "Blue = start, Gray = middle, Red = end. Drag shape on canvas then click location button to capture coordinates quickly."
+            },
+            "destination": {
+              "title": "Destination"
+            },
+            "destinationHint": {
+              "title": "Shape moves to exact (X, Y) position on canvas."
+            },
+            "offset": {
+              "title": "Offset"
+            },
+            "offsetHint": {
+              "title": "Shape moves by (ΔX, ΔY) pixels from current position."
+            },
+            "presets": {
+              "right100": {
+                "title": "→ 100px"
+              },
+              "left100": {
+                "title": "← 100px"
+              },
+              "down100": {
+                "title": "↓ 100px"
+              },
+              "up100": {
+                "title": "↑ 100px"
+              }
+            },
+            "rotate": {
+              "title": "Rotate",
+              "children": {
+                "mode": {},
+                "by": {
+                  "title": "Rotation angle (°)"
+                },
+                "to": {
+                  "title": "Target angle (°)"
+                },
+                "byHint": {
+                  "title": "Positive = clockwise. Negative = counterclockwise. 360° = 1 turn, 720° = 2 turns."
+                },
+                "toHint": {
+                  "title": "Shape rotates to exact target angle from 0° base."
+                }
+              }
+            },
+            "zoom": {
+              "title": "Zoom",
+              "children": {
+                "uniform": {
+                  "title": "Uniform"
+                },
+                "nonUniform": {
+                  "title": "Separate X/Y"
+                },
+                "toScale": {
+                  "title": "Target scale"
+                },
+                "scaleX": {
+                  "title": "Scale X"
+                },
+                "scaleY": {
+                  "title": "Scale Y"
+                },
+                "nonUniformHint": {
+                  "title": "Scale X and Y independently. Example: X=2, Y=0.5 stretches horizontally and compresses vertically."
+                },
+                "scaleHint": {
+                  "title": "x1 = original size. <1 = shrink. >1 = enlarge."
+                }
+              }
+            },
+            "explode": {
+              "title": "Explode",
+              "children": {
+                "scale": {
+                  "title": "Scale"
+                },
+                "scaleTo": {
+                  "title": "Expand scale"
+                },
+                "opacityTo": {
+                  "title": "Target opacity"
+                },
+                "marks": {
+                  "hidden": {
+                    "title": "Hidden"
+                  },
+                  "visible": {
+                    "title": "Visible"
+                  }
+                },
+                "hideAtEndEnabled": {
+                  "title": "Hide shape after explosion"
+                },
+                "hideAtEndDisabled": {
+                  "title": "Keep shape visible after explosion"
+                },
+                "quickPreset": {
+                  "title": "Quick presets"
+                },
+                "presets": {
+                  "soft": {
+                    "title": "Soft explode"
+                  },
+                  "strong": {
+                    "title": "Strong explode"
+                  },
+                  "shrinkDisappear": {
+                    "title": "Shrink & disappear"
+                  },
+                  "blink": {
+                    "title": "Blink"
+                  }
+                },
+                "hint": {
+                  "title": "Shape scales to x{{scale}} then fades to {{opacity}}%."
+                },
+                "hideAtEndHint": {
+                  "title": " Then it becomes fully hidden."
+                }
+              }
+            },
+            "direction": {
+              "title": "Direction"
+            },
+            "distance": {
+              "title": "Distance (px)"
+            },
+            "fromX": {
+              "title": "From X (px)"
+            },
+            "fromY": {
+              "title": "From Y (px)"
+            },
+            "toX": {
+              "title": "To X (px)"
+            },
+            "toY": {
+              "title": "To Y (px)"
+            },
+            "setFromCurrent": {
+              "title": "Set start = current"
+            },
+            "setToCurrent": {
+              "title": "Set end = current"
+            },
+            "pathPoints": {
+              "title": "Path points"
+            },
+            "addPathPointFromCurrent": {
+              "title": "Add point from current position"
+            },
+            "fadeFromOpacity": {
+              "title": "From opacity (%)"
+            },
+            "fadeToOpacity": {
+              "title": "To opacity (%)"
+            },
+            "zoomFromScale": {
+              "title": "From scale"
+            },
+            "zoomToScale": {
+              "title": "To scale"
+            },
+            "powerPoint": {
+              "children": {
+                "fade": {
+                  "title": "Fade",
+                  "hint": "Use fade in or fade out for entrance and exit effects."
+                },
+                "pulse": {
+                  "title": "Pulse",
+                  "hint": "Shape grows briefly, then returns to its original state."
+                },
+                "fly": {
+                  "title": "Fly",
+                  "hint": "Shape flies in from or out toward the selected direction."
+                },
+                "bounce": {
+                  "title": "Bounce",
+                  "hint": "Shape moves briefly and returns, useful for emphasis."
+                },
+                "fromOpacity": {
+                  "title": "Start opacity (%)"
+                },
+                "toOpacity": {
+                  "title": "End opacity (%)"
+                },
+                "scaleTo": {
+                  "title": "Pulse scale"
+                },
+                "direction": {
+                  "title": "Direction"
+                },
+                "flyMode": {
+                  "title": "Mode"
+                },
+                "distance": {
+                  "title": "Distance (px)"
+                },
+                "presets": {
+                  "title": "Presets",
+                  "fadeIn": {
+                    "title": "Fade in"
+                  },
+                  "fadeOut": {
+                    "title": "Fade out"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "timing": {
+          "title": "Timing",
+          "children": {
+            "triggerStart": {
+              "title": "Start"
+            },
+            "duration": {
+              "title": "Duration (ms)"
+            },
+            "delay": {
+              "title": "Delay (ms)"
+            },
+            "triggerShapeId": {
+              "title": "Trigger shape id"
+            },
+            "easing": {
+              "title": "Easing"
+            },
+            "repeat": {
+              "title": "Repeat"
+            },
+            "autoReverse": {
+              "title": "Auto reverse"
+            }
+          }
+        },
+        "timeline": {
+          "title": "Play order",
+          "children": {
+            "empty": {
+              "title": "No effects yet. Select a shape and add effects from the \"Motion\" tab."
+            },
+            "click": {
+              "title": "Click {{index}}"
+            },
+            "clickCount": {
+              "title": "{{count}} clicks"
+            },
+            "effectCount": {
+              "title": "{{count}} effects"
+            },
+            "trigger": {
+              "title": "Trigger {{id}}"
+            },
+            "stepCount": {
+              "title": "{{count}} steps"
+            },
+            "defaultShape": {
+              "title": "Shape"
+            },
+            "previewEffect": {
+              "title": "Preview effect"
+            },
+            "deleteEffect": {
+              "title": "Delete effect"
+            },
+            "moveUp": {
+              "title": "Move up"
+            },
+            "moveDown": {
+              "title": "Move down"
+            },
+            "segment": {
+              "title": "Step {{index}}"
+            },
+            "shapeCount": {
+              "title": "{{count}} shapes"
+            }
+          }
+        },
+        "transition": {
+          "title": "Slide transition",
+          "children": {
+            "type": {
+              "title": "Type"
+            },
+            "duration": {
+              "title": "Duration (ms)"
+            },
+            "preview": {
+              "title": "Preview slide transition"
+            },
+            "direction": {
+              "title": "Direction"
+            },
+            "easing": {
+              "title": "Easing"
+            },
+            "hint": {}
+          }
+        }
+      },
+      "common": {
+        "effect": {
+          "none": "None",
+          "move": "Move",
+          "fade": "Fade",
+          "zoom": "Zoom",
+          "flip": "Flip"
+        },
+        "moveMode": {
+          "direction": "Direction + distance",
+          "points": "From point → to point"
+        },
+        "direction": {
+          "left": "Left",
+          "right": "Right",
+          "up": "Up",
+          "down": "Down"
+        },
+        "easing": {
+          "linear": "Linear",
+          "easeIn": "Ease In",
+          "easeOut": "Ease Out",
+          "easeInOut": "Ease In Out"
+        }
+      }
+    },
+    "layer": {
+      "title": "Layer"
+    },
+    "animation": {
+      "title": "Animation"
+    }
+  },
+  "bottomBar": {
+    "edit": {
+      "title": "Edit"
+    },
+    "duplicate": {
+      "title": "Duplicate"
+    },
+    "delete": {
+      "title": "Delete"
+    },
+    "add": {
+      "title": "Add"
+    }
+  },
+  "common": {
+    "button": {
+      "save": "Save",
+      "close": "Close",
+      "ok": "Ok",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "back": "Back",
+      "next": "Next",
+      "pause": "Pause",
+      "resume": "Resume",
+      "autoGenerate": "Auto Generate",
+      "show": "Show",
+      "hide": "Hide",
+      "focus": "Focus",
+      "reset": "Reset",
+      "toggle": "Toggle",
+      "add": "Add",
+      "delete": "Delete",
+      "group": "Group"
+    },
+    "snackBarAlert": {
+      "saving": "Saving...",
+      "loading": "Loading...",
+      "searching": "Searching...",
+      "processing": "Processing...",
+      "error": "Error!",
+      "done": "Done!",
+      "saved": "Saved!"
+    },
+    "placeholder": {
+      "search": "Search..."
+    },
+    "source": {
+      "fromDevice": "From Device",
+      "fromLink": "From Link",
+      "fromMap": "From Map"
+    },
+    "srid": {
+      "EPSG:4326": "EPSG:4326 - WGS 84",
+      "EPSG:3857": "EPSG:3857 - Web Mercator",
+      "EPSG:4756": "EPSG:4756 - VN-2000",
+      "EPSG:3405": "EPSG:3405 - VN-2000 / UTM zone 48N",
+      "EPSG:3406": "EPSG:3406 - VN-2000 / UTM zone 49N"
+    },
+    "planType": {
+      "report": "Report",
+      "template": "Template",
+      "component": "Component"
+    },
+    "lineStyle": {
+      "none": "None",
+      "solid": "Solid",
+      "dashed": "Dashed",
+      "longDashed": "Long Dashed",
+      "dotted": "Dotted",
+      "dashedDot": "Dashed Dotted"
+    },
+    "shapeType": {
+      "group": "Group",
+      "persistent-group": "Persistant Group",
+      "image": "Image",
+      "video": "Video",
+      "ellipse": "Ellipse",
+      "circle": "Circle",
+      "rectangle": "Rectangle",
+      "convex-polygon": "Convex Polygon",
+      "concave-polygon": "Concave Polygon",
+      "text": "Text",
+      "label": "Label",
+      "text-path": "Text Path",
+      "path": "Path",
+      "table": "Table",
+      "free-drawing": "Free Drawing",
+      "arrow-flat-bottom": "Arrow Flat Bottom",
+      "arrow-convex-bottom": "Arrow Convex Bottom",
+      "arrow-concave-bottom": "Arrow Concave Bottom",
+      "basic-arrow": "Basic Arrow",
+      "two-directional-arrow": "Two Directional Arrow",
+      "three-directional-arrow": "Three Directional Arrow",
+      "bidirectional-arrow": "Bidirectional Arrow",
+      "multi-directional-arrow": "Multi Directional Arrow",
+      "complex-line": "Complex Line",
+      "complex-path": "Complex Path",
+      "svg": "SVG",
+      "symbol": "Symbol",
+      "ring": "Ring",
+      "wedge": "Wedge"
+    },
+    "lineCap": {
+      "butt": "Butt",
+      "round": "Round",
+      "square": "Square"
+    },
+    "lineJoin": {
+      "round": "Round",
+      "bevel": "Bevel",
+      "miter": "Miter"
+    },
+    "textAlign": {
+      "start": "Start",
+      "end": "End",
+      "left": "Left",
+      "right": "Right",
+      "center": "Center"
+    },
+    "textBaseline": {
+      "top": "Top",
+      "hanging": "Hanging",
+      "middle": "Middle",
+      "alphabetic": "Alphabetic",
+      "ideographic": "Ideographic",
+      "bottom": "Bottom"
+    },
+    "gridOrder": {
+      "major": "Major",
+      "minor": "Minor"
+    },
+    "tickOrder": {
+      "major": "Major",
+      "minor": "Minor"
+    },
+    "horizontalAlign": {
+      "left": "Left",
+      "center": "Center",
+      "right": "Right"
+    },
+    "verticalAlign": {
+      "top": "Top",
+      "middle": "Middle",
+      "bottom": "Bottom"
+    },
+    "format": {
+      "json": "JSON",
+      "png": "PNG",
+      "svg": "SVG",
+      "pdf": "PDF",
+      "webm": "WebM",
+      "mp4": "MP4"
+    },
+    "colorEffect": {
+      "origin": "Origin",
+      "grayscale": "Grayscale",
+      "invert": "Invert",
+      "sepia": "Sepia",
+      "solarize": "Solarize"
+    },
+    "frameStyle": {
+      "standard": "Standard",
+      "fancy": "Fancy"
+    },
+    "coordinateFormat": {
+      "DD": "Decimal Degrees",
+      "DDM": "Degrees Decimal Minutes",
+      "DMS": "Degrees Minutes Seconds",
+      "DMSH": "DMS With Hemisphere"
+    },
+    "fit": {
+      "contain": "Contain",
+      "cover": "Cover",
+      "fill": "Fill"
+    },
+    "paperSize": {
+      "a0": "A0",
+      "a1": "A1",
+      "a2": "A2",
+      "a3": "A3",
+      "a4": "A4",
+      "a5": "A5",
+      "a6": "A6",
+      "b0": "B0",
+      "b1": "B1",
+      "b2": "B2",
+      "b3": "B3",
+      "b4": "B4",
+      "b5": "B5",
+      "b6": "B6",
+      "c0": "C0",
+      "c1": "C1",
+      "c2": "C2",
+      "c3": "C3",
+      "c4": "C4",
+      "c5": "C5",
+      "c6": "C6",
+      "custom": "Custom"
+    },
+    "orientation": {
+      "portrait": "Portrait",
+      "landscape": "Landscape"
+    },
+    "language": {
+      "vietnamese": "Vietnamese",
+      "english": "English"
+    },
+    "fillRule": {
+      "nonzero": "Non Zero",
+      "evenodd": "Even Odd"
+    },
+    "colorType": {
+      "color": "Color",
+      "linear-gradient": "Linear Gradient",
+      "radial-gradient": "Radial Gradient"
+    },
+    "frameDirection": {
+      "out": "Outward",
+      "in": "Inward",
+      "both": "Both"
+    },
+    "frameSide": {
+      "annotated": "Annotated",
+      "ticks": "Ticks only",
+      "line": "Line only",
+      "none": "Hidden"
+    },
+    "pointerDirection": {
+      "up": "Up",
+      "right": "Right",
+      "down": "Down",
+      "left": "Left",
+      "none": "None"
+    },
+    "easing": {
+      "Linear": "Linear",
+      "EaseIn": "Ease In",
+      "EaseOut": "Ease Out",
+      "EaseInOut": "Ease In Out",
+      "BackEaseIn": "Back Ease In",
+      "BackEaseOut": "Back Ease Out",
+      "BounceEaseIn": "Bounce Ease In",
+      "BounceEaseOut": "Bounce Ease Out",
+      "ElasticEaseIn": "Elastic Ease In",
+      "ElasticEaseOut": "Elastic Ease Out",
+      "StrongEaseIn": "Strong Ease In",
+      "StrongEaseOut": "Strong Ease Out"
+    },
+    "triggerStart": {
+      "on-click": "On click",
+      "with-previous": "With previous",
+      "after-previous": "After previous"
+    },
+    "themeMode": {
+      "system": "System",
+      "black": "Black",
+      "blue": "Blue",
+      "grey": "Grey",
+      "white": "White"
+    },
+    "stageSizeType": {
+      "followImage": "Follow Image",
+      "followMap": "Follow Map"
+    },
+    "textDirection": {
+      "ltr": "Left to Right",
+      "rtl": "Right to Left"
+    },
+    "textWrap": {
+      "word": "Word",
+      "char": "Character",
+      "none": "None"
+    },
+    "fontVariant": {
+      "normal": "Normal",
+      "small-caps": "Small Caps"
+    },
+    "embossDirection": {
+      "top-left": "Top Left",
+      "top": "Top",
+      "top-right": "Top Right",
+      "left": "Left",
+      "right": "Right",
+      "bottom-left": "Bottom Left",
+      "bottom": "Bottom",
+      "bottom-right": "Bottom Right"
+    },
+    "motionEffectType": {
+      "move": "Move",
+      "zoom": "Zoom",
+      "rotate": "Rotate",
+      "explode": "Explode",
+      "fade": "Fade",
+      "pulse": "Pulse",
+      "fly": "Fly",
+      "bounce": "Bounce"
+    },
+    "motionMoveMode": {
+      "to": "To (Absolute)",
+      "by": "By (Relative)",
+      "path": "Along path"
+    },
+    "motionRotateMode": {
+      "by": "Rotate by (Relative)",
+      "to": "Rotate to (Absolute)"
+    },
+    "powerPointDirection": {
+      "left": "Left",
+      "right": "Right",
+      "up": "Up",
+      "down": "Down"
+    },
+    "powerPointFlyMode": {
+      "in": "Fly in",
+      "out": "Fly out"
+    },
+    "slideTransitionType": {
+      "none": "None",
+      "fade": "Fade",
+      "wipe": "Wipe",
+      "push": "Push",
+      "zoom": "Zoom"
+    },
+    "slideTransitionDirection": {
+      "left": "Left",
+      "right": "Right",
+      "up": "Up",
+      "down": "Down"
+    },
+    "slideTransitionEasing": {
+      "ease": "Ease",
+      "ease-in": "Ease in",
+      "ease-out": "Ease out",
+      "ease-in-out": "Ease in/out",
+      "linear": "Linear"
+    },
+    "guideShortcutGeneral": [
+      "Ctrl + Click/Cmd + Click: Select multiple objects.",
+      "Ctrl + A/Cmd + A: Select all objects.",
+      "Del/Delete: Delete object.",
+      "Ctrl + X/Cmd + X: Cut object.",
+      "Ctrl + C/Cmd + C: Copy object.",
+      "Ctrl + V/Cmd + V: Paste object.",
+      "Ctrl + D/Cmd + D: Duplicate object.",
+      "Ctrl + S/Cmd + S: Save.",
+      "Ctrl + Shift + S/Cmd + Shift + S: Save to cloud.",
+      "Ctrl + Plus/Cmd + Plus: Zoom in.",
+      "Ctrl + Minus/Cmd + Minus: Zoom out.",
+      "Ctrl + 0/Cmd + 0: Fit to screen.",
+      "Esc/Escape: End free drawing/Deselect object.",
+      "Ctrl + W/Cmd + W: Close page."
+    ],
+    "guideShortcutHistory": [
+      "Ctrl + Z/Cmd + Z: Undo.",
+      "Ctrl + Y/Cmd + Y: Redo."
+    ],
+    "guideShortcutText": [
+      "Ctrl + B/Cmd + B: Bold.",
+      "Ctrl + I/Cmd + I: Italic.",
+      "Ctrl + U/Cmd + U: Underline.",
+      "Ctrl + T/Cmd + T: Strikethrough.",
+      "Ctrl + L/Cmd + L: Align left.",
+      "Ctrl + E/Cmd + E: Align center.",
+      "Ctrl + R/Cmd + R: Align right.",
+      "Ctrl + Shift + L/Cmd + Shift + L: Align top.",
+      "Ctrl + Shift + E/Cmd + Shift + E: Align middle.",
+      "Ctrl + Shift + R/Cmd + Shift + R: Align bottom."
+    ],
+    "slideTransitionHint": {
+      "fade": "Fade overlays the new slide for a soft page change.",
+      "wipe": "Wipe clears the slide from the selected direction.",
+      "push": "Push moves a curtain across the slide.",
+      "zoom": "Zoom gives the slide a quick focus transition."
+    },
+    "guideManipulationAdd": "Select a shape type (ex: circle, arrow, rectangle) from the top toolbar, then click or drag on the screen to create an object. With the free drawing tool, you can draw directly by clicking and moving the mouse.",
+    "guideManipulationEdit": "Click on an object to select it for editing. You can drag, resize with the mouse, or change its properties displayed in the right-hand toolbar.",
+    "guideManipulationGroup": "Hold down the Ctrl key and click to select multiple objects you want to group. Then click the group button on the toolbar.",
+    "guideSave": "Use the Import/Export function to save drawings in various formats or reopen saved drawings from your device or the cloud.",
+    "guideTemplate": "You can save one or multiple objects as a template/component for reuse in other drawings.",
+    "aboutIntroduction": "This is an intuitive tool that helps users create, edit, and manage content quickly and efficiently. With a user-friendly interface, the tool allows direct interaction on the screen, making it easy to draw basic shapes, perform freehand drawing, insert images, add text, use icons, or insert videos.",
+    "aboutVersion": "Current version: 1.0.0.",
+    "aboutFeatureObjectBasic": "Line, arrow, circle, rectangle, convex polygon, concave polygon, ring, sector, quadratic and bezier curve.",
+    "aboutFeatureObjectText": "Add text blocks for descriptions, annotations, or titles within the drawing.",
+    "aboutFeatureObjectImage": "Insert images from your device or via links to illustrate or enhance visual content.",
+    "aboutFeatureObjectIcon": "A library with over 3000 diverse icons that can be used to highlight or complement your drawings.",
+    "aboutFeatureObjectVideo": "Insert videos from your device or via links to enhance visualization and interactivity.",
+    "aboutFeatureObjectMultiLine": "Allows drawing multi lines on the screen.",
+    "aboutFeatureObjectFreeDrawing": "Allows drawing freely on the screen, suitable for sketching or quick creative work.",
+    "aboutFeatureManipulationAdd": "Add new objects by clicking or dragging and dropping them directly into the workspace.",
+    "aboutFeatureManipulationEdit": "Supports editing actions: dragging, resizing one or multiple objects at once, and modifying object details.",
+    "aboutFeatureManipulationGroup": "Supports grouping objects.",
+    "aboutFeatureTemplate": "Allows saving objects or drawings as templates/components for reuse.",
+    "aboutFeatureIO": "Supports importing/exporting data from/to devices and cloud in multiple formats for sharing or storage.",
+    "aboutFeatureShortcut": "A system of shortcuts that enables faster operations, saving time for professional users.",
+    "aboutFeatureHistory": "Automatically saves operation history, allowing you to undo or redo when necessary.",
+    "aboutFeatureOther": "Changing background color, displaying alignment guides, toggling grid, and many other useful features.",
+    "aboutComingSoonImprove": "Improving for better performance.",
+    "aboutLicense": "This product is developed and copyrighted by Viettel HighTech.",
+    "confirmClose": "Confirm close?",
+    "confirmLogout": "Confirm logout?"
+  }
+}

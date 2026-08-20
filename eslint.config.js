@@ -20,6 +20,34 @@ export default [
     rules: {
       "no-undef": "off",
       "react-hooks/exhaustive-deps": "off",
+      "arrow-body-style": ["error", "always"],
+      "object-curly-newline": [
+        "error",
+        {
+          ObjectExpression: {
+            multiline: true,
+            minProperties: 1,
+          },
+        },
+      ],
+      curly: ["error", "all"],
+    },
+  },
+  {
+    files: ["src/stores/*Store.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["./*Store", "./*Store.*", "../stores", "../stores/*"],
+              message:
+                "Stores must stay independent; coordinate multiple stores in a component hook.",
+            },
+          ],
+        },
+      ],
     },
   },
 ];

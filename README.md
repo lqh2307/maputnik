@@ -1,610 +1,267 @@
-<img width="200" alt="Maputnik logo" src="https://cdn.jsdelivr.net/gh/maputnik/design/logos/logo-color.png" />
+# FE Report
 
-# Maputnik
+FE Report là editor report/canvas chạy trên trình duyệt. Người dùng tạo nhiều tab canvas, thêm và chỉnh sửa shape Konva, dùng nền ảnh hoặc nền MapLibre, rồi export/import hoặc trình chiếu các tab như slide. Ứng dụng được xây trên React, TypeScript, MUI, Zustand, Konva và MapLibre.
 
-[![GitHub CI status](https://github.com/maplibre/maputnik/workflows/ci/badge.svg)][github-action-ci]
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)][license]
-
-[github-action-ci]: https://github.com/maplibre/maputnik/actions?query=workflow%3Aci
-[license]: https://tldrlegal.com/license/mit-license
-
-A free and open visual editor for the [MapLibre GL styles](https://maplibre.org/maplibre-style-spec/)
-targeted at developers and map designers.
-
-## Usage
-
-- :link: Design your maps online at **<https://www.maplibre.org/maputnik/>** (all in local storage)
-- :link: Use the [Maputnik CLI](https://github.com/maplibre/maputnik/wiki/Maputnik-CLI) for local style development
-- In a Docker, run this command and browse to http://localhost:8888, Ctrl+C to stop the server.
+## Chạy dự án
 
 ```bash
-docker run -it --rm -p 8888:8000 ghcr.io/maplibre/maputnik:main
-```
-
-To see the CLI options (for example file watching or style serving) run:
-
-```bash
-docker run -it --rm -p 8888:8000 ghcr.io/maplibre/maputnik:main --help
-```
-
-You might need to mount a volume (`-v`) to be able to use these options.
-
-## Documentation
-
-The documentation can be found in the [Wiki](https://github.com/maplibre/maputnik/wiki). You are welcome to collaborate!
-
-- :link: **Study the [Maputnik Wiki](https://github.com/maplibre/maputnik/wiki)**
-- :video_camera: Design a map from Scratch https://youtu.be/XoDh0gEnBQo
-
-[![Design Map from Scratch](https://j.gifs.com/g5XMgl.gif)](https://youtu.be/XoDh0gEnBQo)
-
-## Kiến trúc và luồng hoạt động
-
-Phần này mô tả cách phiên bản ứng dụng trong repository này được khởi tạo,
-tổ chức và đồng bộ dữ liệu. Maputnik là một single-page application chạy hoàn
-toàn trong trình duyệt. Ứng dụng không cần backend riêng để chỉnh sửa style:
-style đang làm việc nằm trong React state, được tự động lưu vào `localStorage`
-và có thể được nhập/xuất dưới dạng JSON. TileJSON, vector/raster tile, glyph,
-sprite và dịch vụ tìm kiếm địa điểm vẫn được tải trực tiếp từ các URL bên ngoài
-được cấu hình trong style.
-
-### Bức tranh tổng thể
-
-```text
-+----------------------------- TRINH DUYET ------------------------------+
-|                                                                        |
-|  public/index.html                                                     |
-|       |                                                                |
-|       +--> public/config.js --> window.MAPUTNIK_CONFIG (API tokens)     |
-|       |                                                                |
-|       `--> src/index.jsx --> i18n + SCSS --> <App/>                     |
-|                                           |                            |
-|                    +----------------------+----------------------+     |
-|                    |       App: state va orchestration           |     |
-|                    |  mapStyle, selection, errors, mapView,      |     |
-|                    |  renderer, modals, debug options            |     |
-|                    +----+----------------+-------------------+----+     |
-|                         |                |                   |          |
-|                  AppLayout        Dich vu noi bo         Style spec     |
-|                         |                |                   |          |
-|       +-----------------+------+   +-----+---------+   validate/format  |
-|       |        |        |      |   |     |         |                   |
-|    Toolbar  LayerList  Editor  Map  Style Revision Layer               |
-|                       / Code        Store  Store    Watcher              |
-|       |        |        |      |     |      |        |                  |
-|       `--------+--------+------+-----+------+--------'                  |
-|                         |              |                                |
-|                  onStyleChanged()   localStorage                        |
-|                         |                                               |
-|                         `--> render lai UI va map                       |
-|                                                                        |
-+------------------------------+-----------------------------------------+
-                               |
-             +-----------------+----------------------------+
-             |                 |             |              |
-         TileJSON/tiles     glyph/sprite   PMTiles       Nominatim
-                  (cac dich vu du lieu ben ngoai, CORS)
-```
-
-Ba nguyên tắc chính của kiến trúc:
-
-1. `App` là nguồn dữ liệu trung tâm. Project không dùng Redux; các component
-   nhận dữ liệu và callback qua props.
-2. Mọi thao tác làm thay đổi style cuối cùng đều đi qua
-   `App.onStyleChanged()`. Đây là điểm chung để validate, tạo revision, lưu
-   cục bộ, cập nhật URL và render lại bản đồ.
-3. UI chỉnh style theo MapLibre Style Specification v8. Phần lớn form paint và
-   layout không được viết cứng từng kiểu input mà được sinh từ style spec.
-
-### Cây component và bố cục màn hình
-
-```text
-App
-`-- AppLayout
-    |-- AppToolbar
-    |   |-- Open / Save / Code Editor / Data Sources / Style Settings
-    |   |-- Global State
-    |   `-- View (Map | Inspect) / Language / Help
-    |
-    |-- Main
-    |   |-- LayerList
-    |   |   |-- LayerListGroup
-    |   |   |-- LayerListItem (chon, an/hien, copy, xoa, drag/drop)
-    |   |   `-- ModalAdd
-    |   |
-    |   |-- LayerEditor                 [che do form]
-    |   |   |-- Layer (id, type, source, source-layer, zoom, comment)
-    |   |   |-- FilterEditor
-    |   |   |-- PropertyGroup[] (paint/layout sinh tu style spec)
-    |   |   `-- FieldJson (JSON cua mot layer)
-    |   |
-    |   |-- CodeEditor                  [thay cho LayerList + LayerEditor]
-    |   |   `-- InputJson (JSON cua toan bo style)
-    |   |
-    |   `-- Map renderer
-    |       |-- MapMaplibreGl           [mac dinh]
-    |       `-- MapOpenLayers           [thu nghiem]
-    |
-    |-- AppMessagePanel (loi validation va thong bao undo/redo)
-    |
-    `-- Modals
-        |-- ModalOpen / ModalExport / ModalSources / ModalSettings
-        |-- ModalGlobalState / ModalDebug / ModalShortcuts
-        `-- ModalLoading
-```
-
-`AppLayout` chỉ quyết định bố cục. Khi Code Editor mở, cột danh sách layer và
-Layer Editor được thay bằng trình sửa JSON toàn bộ style; bản đồ vẫn được giữ ở
-bên cạnh. Các modal được render cùng cây component nhưng trạng thái mở/đóng do
-`App.state.isOpen` quản lý.
-
-### State trung tâm
-
-| Nhóm state | Vai trò |
-| --- | --- |
-| `mapStyle` | Bản style chuẩn mà người dùng đang chỉnh; luôn có `id` nội bộ. |
-| `dirtyMapStyle` | Bản sao chỉ dùng để render khi style có lỗi; các đường dẫn thuộc tính gây lỗi bị loại khỏi bản sao để renderer vẫn hoạt động. |
-| `selectedLayerIndex`, `selectedLayerOriginalId` | Xác định layer đang chọn; `selectedLayerOriginalId` còn được dùng làm React `key` để reset state nội bộ của editor khi đổi layer. |
-| `sources` | Source trong style cộng thêm danh sách `vector_layers` lấy từ TileJSON/PMTiles. |
-| `vectorLayers` | Tên field và các giá trị đã quan sát được từ feature trong vector tile, dùng để hỗ trợ sửa filter/data-driven property. |
-| `spec` | MapLibre style spec mới nhất, được bổ sung danh sách font và sprite tải được. |
-| `mapView` | `zoom`, `center` và cờ `_from` để phân biệt thay đổi đến từ map hay từ app, tránh cập nhật vòng lặp. |
-| `mapState` | Chế độ `map` hoặc `inspect`. Inspect chỉ dùng với MapLibre GL. |
-| `errors`, `infos` | Lỗi style đã ánh xạ đến layer/property và thông báo mô tả undo/redo. |
-| `isOpen` | Trạng thái các modal và Code Editor. |
-| `fileHandle` | File handle gần nhất khi trình duyệt hỗ trợ File System Access API, giúp thao tác Save ghi lại đúng file. |
-
-Các object/array style thường được cập nhật theo kiểu immutable: component tạo
-bản sao layer, `layers`, `sources` hoặc object cấp gốc rồi gửi lên callback.
-Nhờ vậy React nhận biết thay đổi và MapLibre có thể diff style cũ/mới.
-
-### Luồng khởi động
-
-```text
-Tai public/index.html
-        |
-        +--> nap public/config.js (token co the thay ma khong rebuild)
-        |
-        `--> src/index.jsx
-              |-- nap SCSS
-              |-- khoi tao i18next + browser language detector
-              `-- createRoot(#app).render(<App/>)
-                                |
-                                v
-                    App khoi tao emptyStyle
-                                |
-                     componentDidMount()
-                                |
-                    createStyleStore(callback)
-                                |
-          +---------------------+-----------------------+
-          |                                             |
- URL co ?style=<url> va user dong y?              Khong / tu choi
-          |                                             |
- fetch JSON qua CORS                         localStorage co style?
-          |                                      |             |
-          |                                     co            khong
-          |                                      |             |
-          +----------------------------> style gan nhat    style gallery[0]
-                                                 |         (fetch default)
-                                                 +-------------+
-                                                               |
-                                      ensureStyleValidity / fallback
-                                                               |
-                              onStyleChanged(initialLoad=true, save=false)
-                                                               |
-                              khoi phuc layer/modal/view tu URL
-                                                               |
-                                     validate + setState + render map
-```
-
-Chi tiết các bước:
-
-1. `public/config.js` chạy trước bundle và gán token runtime vào
-   `window.MAPUTNIK_CONFIG`. `src/config/runtime.ts` đọc object này khi module
-   được nạp.
-2. `src/index.jsx` nạp stylesheet, khởi tạo i18n, render `App` và ẩn loading
-   screen tĩnh.
-3. `App` bắt đầu bằng `emptyStyle`, tạo `RevisionStore`, `LayerWatcher` và đăng
-   ký phím tắt.
-4. `createStyleStore()` ưu tiên URL `?style=...` nếu người dùng xác nhận. Tham
-   số này được xóa khỏi address bar sau khi đọc. Nếu không, app lấy style sửa
-   gần nhất từ `localStorage`; khi chưa có dữ liệu, app tải style đầu tiên trong
-   `src/config/styles.json`.
-5. `ensureStyleValidity()` thêm `id` nếu thiếu, bỏ thuộc tính `interactive` cũ
-   và dereference các layer dùng `ref`.
-6. Lần gọi `onStyleChanged()` đầu tiên không ghi ngược style xuống
-   `localStorage`, nhưng tạo revision đầu tiên và khôi phục trạng thái giao diện
-   từ query string.
-
-### Pipeline thay đổi style
-
-Đây là luồng quan trọng nhất của ứng dụng. Thêm/xóa/sắp xếp layer, chỉnh form,
-sửa JSON, thay source, settings hay global state đều hội tụ vào cùng pipeline.
-
-```text
-Thao tac nguoi dung
-        |
-        v
-Component con tao layer/style moi
-        |
-        | onLayerChanged / onLayersChange / onStyleChanged
-        v
-+--------------------- App.onStyleChanged(newStyle, opts) ----------------+
-| 1. Tron opts mac dinh: save=true, addRevision=true                      |
-| 2. Dien API key vao glyph/sprite/source URL can dung de fetch           |
-| 3. Neu initial load: doc layer, modal, view tu URL                      |
-| 4. validateStyleMin(newStyle)                                           |
-| 5. Chuyen loi thanh {layer index, property, message} neu co the          |
-| 6. Neu co loi: clone style va bo property loi khoi ban render tam        |
-| 7. Neu glyph/sprite doi: tai metadata font/icon de bo sung cho form      |
-| 8. Them snapshot vao RevisionStore                                      |
-| 9. Luu style vao StyleStore/localStorage                                |
-| 10. setState(mapStyle, dirtyMapStyle, errors, mapView)                   |
-+-----------------------------------+--------------------------------------+
-                                    |
-                         callback sau setState
-                                    |
-                   +----------------+----------------+
-                   |                                 |
-             fetchSources()                   setStateInUrl()
-                   |                                 |
-       TileJSON/PMTiles.vector_layers       layer/modal/view params
-                   |
-                   v
-              React render lai
-                   |
-       +-----------+------------------+
-       |                              |
- MapLibre: setStyle(diff=true)   OpenLayers: clear + apply(style)
-```
-
-Điểm cần lưu ý là `mapStyle` vẫn giữ đúng nội dung người dùng vừa nhập, kể cả
-khi nội dung đó chưa hợp lệ. Lỗi được hiển thị ở `AppMessagePanel` và sát field
-tương ứng trong `LayerEditor`. Chỉ `dirtyMapStyle` dùng cho map renderer bị bỏ
-tạm các property lỗi. Khi người dùng sửa hợp lệ, `dirtyMapStyle` biến mất và
-renderer nhận lại toàn bộ `mapStyle`.
-
-#### Ví dụ luồng sửa một paint property
-
-```text
-InputColor / InputNumber / ...
-        -> FieldFunction
-        -> PropertyGroup.onPropertyChange("fill-color", value)
-        -> LayerEditor.changeProperty("paint", "fill-color", value)
-        -> libs/layer.changeProperty(...)
-        -> App.onLayerChanged(index, changedLayer)
-        -> App.onLayersChange(changedLayers)
-        -> App.onStyleChanged(changedStyle)
-        -> validate + revision + localStorage + map.setStyle(...)
-```
-
-`LayerEditor` đọc các nhóm `paint_<type>` và `layout_<type>` từ package
-`@maplibre/maplibre-gl-style-spec`. `PropertyGroup` tạo một `FieldFunction` cho
-mỗi property. `FieldFunction` nhận biết giá trị hiện tại là giá trị tĩnh,
-zoom/data function hay expression; `InputSpec` sau đó chọn input nguyên thủy
-phù hợp như number, color, boolean, enum, string, array, font hoặc autocomplete.
-Vì vậy khi mở rộng editor, nên đi theo chuỗi `style spec` -> `FieldFunction` ->
-`InputSpec` thay vì tạo form độc lập cho từng paint/layout property.
-
-### Layer, source và dữ liệu hỗ trợ editor
-
-```text
-Style.sources
-     |
-     +--> source co URL TileJSON --------> fetch JSON.vector_layers
-     |
-     +--> source pmtiles:// -------------> PMTiles.getTileJson()
-     |
-     `--> renderer tai tile
-               |
-               `-- event "data" (tile)
-                        |
-                        v
-                 LayerWatcher.analyzeMap()
-                        |
-             throttle toi da 1 lan / 5 giay
-                        |
-              querySourceFeatures(sourceId)
-                        |
-                        v
-          vectorLayers[layer][property][observedValue]
-                        |
-                        `--> goi y cho FilterEditor/data property
-```
-
-- `LayerList` hiển thị layer theo thứ tự trong `style.layers`, nhóm các layer
-  liền kề theo prefix của ID, hỗ trợ drag/drop, copy, xóa và visibility.
-- `ModalAdd` lọc source phù hợp theo loại layer. Ví dụ `raster` chỉ nhận raster
-  source, `hillshade`/`color-relief` nhận `raster-dem`, còn các layer vector
-  nhận vector hoặc GeoJSON source. Layer mới được nối vào cuối mảng.
-- `ModalSources` cho phép sửa source hiện tại, lấy source mẫu từ
-  `src/config/tilesets.json` hoặc tạo GeoJSON, vector, raster, raster-dem,
-  PMTiles, image và video source.
-- `App.fetchSources()` đọc danh sách layer từ TileJSON hoặc metadata PMTiles để
-  điền lựa chọn `source-layer` ngay cả trước khi tile được render.
-- `LayerWatcher` quan sát các tile MapLibre đã tải và lấy field/value thực tế từ
-  feature. Công việc này được throttle 5 giây vì `querySourceFeatures()` có thể
-  tốn chi phí trên bản đồ lớn.
-
-### Hai renderer
-
-Renderer được chọn bởi `mapStyle.metadata["maputnik:renderer"]`; mặc định là
-`mlgljs`.
-
-| Khả năng | `MapMaplibreGl` | `MapOpenLayers` |
-| --- | --- | --- |
-| Áp dụng style | `map.setStyle(style, {diff: true})` | Xóa layer rồi gọi `ol-mapbox-style.apply()` (throttle 200 ms) |
-| Inspect feature/layer | Có, dùng `@maplibre/maplibre-gl-inspect` | Không; lựa chọn Inspect bị disable |
-| PMTiles | Đăng ký protocol `pmtiles://` | Phụ thuộc khả năng của `ol-mapbox-style` |
-| Tiện ích map | Geocoder Nominatim, zoom và navigation control, popup chọn layer | Tọa độ/trạng thái map và debug toolbox |
-| Thu thập vector fields | Có qua `LayerWatcher` trên event tile data | Không gọi `LayerWatcher` theo luồng hiện tại |
-
-Trước khi truyền style cho renderer, `replaceAccessTokens()` thay placeholder
-`{key}` bằng token. Token trong metadata của style được ưu tiên; token runtime
-từ `public/config.js` là fallback. Khi MapLibre phát sinh drag/zoom, map gửi
-`mapView` lên `App` với `_from: "map"`. Chỉ view có `_from: "app"` mới được
-`jumpTo()` ngược xuống map, nhờ đó tránh vòng lặp đồng bộ.
-
-Ở chế độ Inspect, MapLibre tạo một inspect style riêng: bỏ raster source, thêm
-background tối và tô màu các vector layer. Click feature ở chế độ Map mở popup
-để chọn layer tương ứng trong `LayerList`; ở chế độ Inspect popup hiển thị các
-property của feature.
-
-### Lưu, undo/redo và trạng thái trên URL
-
-#### Lưu tự động
-
-`StyleStore` dùng các key sau:
-
-```text
-maputnik:style:<style-id>  -> JSON cua style
-maputnik:latest_style     -> id cua style duoc sua gan nhat
-```
-
-Mỗi lần pipeline chạy với `save=true`, style được chuẩn hóa rồi ghi đè theo
-`id`. Nếu quota của `localStorage` đầy, store xóa toàn bộ key có prefix
-`maputnik` và thử lưu lại. Đây là lưu trạng thái làm việc, không phải lịch sử
-phiên bản lâu dài.
-
-#### Undo/redo
-
-`RevisionStore` giữ mảng snapshot trong bộ nhớ và con trỏ `currentIdx`. Một thay
-đổi mới sau undo sẽ cắt bỏ nhánh redo. Undo/redo gọi lại `onStyleChanged()` với
-`addRevision=false`, nhưng style được chọn vẫn được lưu làm bản hiện hành trong
-`localStorage`. Phím tắt là `Ctrl+Z`/`Ctrl+Y` trên Windows/Linux và
-`Cmd+Z`/`Cmd+Shift+Z` trên macOS.
-
-#### Query string
-
-```text
-?style=<url>                chi dung luc khoi dong, sau do bi xoa
-?layer=<style-hash>~<index> khoi phuc layer dang chon neu hash con khop
-?modal=open,sources,...     khoi phuc cac modal dang mo
-?view=inspect               khoi phuc che do Inspect
-```
-
-`setStateInUrl()` dùng `history.replaceState()`, vì vậy các thay đổi UI không
-tạo thêm history entry của trình duyệt. MapLibre đồng thời dùng phần URL hash
-cho camera (`hash: true`).
-### Nhập và xuất style
-
-```text
-IMPORT
-  File System Access API ----+
-  input file / drag-and-drop -+--> JSON.parse --> ensureStyleValidity
-  URL / style gallery --------+       |
-                                      `--> App.openStyle()
-                                             `--> onStyleChanged()
-
-EXPORT
-  mapStyle
-     -> replaceAccessTokens()
-     -> strip token khoi metadata
-     -> style-spec format()
-     +--> Save/Save As JSON
-     `--> HTML doc doc lap nhung MapLibre GL tu CDN
-```
-
-- `ModalOpen` ưu tiên File System Access API khi trình duyệt hỗ trợ, nếu không
-  sẽ dùng file input/FileReader. Tải URL và gallery yêu cầu server cho phép
-  CORS.
-- Khi mở file bằng File System Access API, `fileHandle` được giữ trong `App` để
-  nút Save lần sau ghi đúng file; Save As luôn xin handle mới.
-- `ModalExport` đưa token cần thiết vào URL của bản xuất nhưng xóa các khóa
-  token riêng khỏi `metadata`. Tên file lấy từ slug của `style.name`, fallback
-  về `style.id`.
-
-### Tổ chức source code
-
-```text
-maputnik/
-|-- public/
-|   |-- index.html             HTML shell, loading screen, mount point #app
-|   |-- config.js              token runtime, co the thay sau khi build
-|   `-- assets/                logo, icon, font va static assets
-|
-|-- src/
-|   |-- index.jsx              entry point React
-|   |-- i18n.ts                khoi tao i18next, lazy-load translation
-|   |
-|   |-- components/
-|   |   |-- App.tsx            state trung tam va tat ca luong orchestration
-|   |   |-- AppLayout.tsx      bo cuc toolbar/list/editor/map/panel/modal
-|   |   |-- AppToolbar.tsx     cac action cap app va chon view/ngon ngu
-|   |   |-- LayerList*.tsx     danh sach, group, item va drag/drop layer
-|   |   |-- LayerEditor*.tsx   editor layer sinh theo MapLibre style spec
-|   |   |-- Field*.tsx         wrapper co label, doc, error, function mode
-|   |   |-- Input*.tsx         input co ban, khong biet state cap app
-|   |   |-- FilterEditor*.tsx  UI tao/sua filter
-|   |   |-- Map*.tsx           adapter cho MapLibre GL va OpenLayers
-|   |   |-- CodeEditor.tsx     editor JSON toan style
-|   |   `-- modals/            open/export/source/settings/debug/add/...
-|   |
-|   |-- libs/
-|   |   |-- store/             StyleStore va factory chon style khoi dong
-|   |   |-- style.ts           chuan hoa style va xu ly access token
-|   |   |-- layer.ts           ham bien doi layer/property
-|   |   |-- source.ts          ham them/sua/xoa source
-|   |   |-- revisions.ts       undo/redo trong bo nho
-|   |   |-- layerwatcher.ts    thu thap layer/field tu tile da tai
-|   |   |-- urlopen.ts         doc style URL va kiem tra URL/protocol
-|   |   `-- *.ts               format, filter, metadata, highlight, helper
-|   |
-|   |-- config/
-|   |   |-- styles.json        style gallery
-|   |   |-- tilesets.json      public source gallery
-|   |   |-- empty-style.json   style rong
-|   |   `-- runtime.ts         type va reader cho window.MAPUTNIK_CONFIG
-|   |
-|   |-- locales/               JSON dich theo ngon ngu
-|   `-- styles/                SCSS tach theo layout/component/chuc nang
-|
-|-- scripts/                   script tao metadata asset
-|-- docker/ + Dockerfile       build static bundle va serve bang nginx
-|-- deb_template/ + Makefile   dong goi/release Debian va Docker
-|-- craco.config.cjs           tuy bien webpack cua Create React App
-|-- tsconfig.json              cau hinh TypeScript
-`-- package.json               dependencies va npm scripts
-```
-
-Quy ước phân lớp có thể hiểu ngắn gọn như sau:
-
-```text
-Input*  -> dieu khien HTML/UI co ban
-Field*  -> them label, tai lieu spec, validation va che do function/expression
-Editor  -> ghep cac Field thanh nghiep vu layer/filter/style
-Modal   -> nghiep vu cap style/source/file
-App     -> state, side effect va dieu phoi toan ung dung
-libs    -> ham thuan/adapter/store co the tai su dung
-```
-
-### Điểm mở rộng thường gặp
-
-- Thêm một paint/layout property: trước hết kiểm tra property đã có trong
-  MapLibre style spec chưa. Nếu kiểu dữ liệu đã được `InputSpec` hỗ trợ, editor
-  thường tự sinh field; chỉ cần code riêng cho UI/behavior đặc biệt.
-- Thêm kiểu input: tạo `InputX`, wrapper `FieldX` nếu cần, rồi khai báo nhánh
-  chọn tương ứng trong `InputSpec`.
-- Thêm thao tác thay đổi style: tạo bản sao immutable và đưa về
-  `onStyleChanged()` để không bỏ qua validation, revision và autosave.
-- Thêm source mode: cập nhật `EditorMode`, `ModalSources.defaultSource()` và
-  `ModalSourcesTypeEditor` cùng nhau.
-- Thêm modal cấp ứng dụng: bổ sung key trong `AppState.isOpen`, render modal ở
-  `App.render()` và gọi `toggleModal()` từ toolbar/phím tắt. Key modal sẽ tự
-  được phản ánh vào query string.
-- Thêm chuỗi UI: dùng `t()`/`Trans`, sau đó cập nhật tài nguyên trong
-  `src/locales/`; xem hướng dẫn tại `src/locales/README.md`.
-
-### Phím tắt chính
-
-| Phím | Chức năng |
-| --- | --- |
-| `O` | Open style |
-| `E` | Save/Export |
-| `D` | Data Sources |
-| `S` | Style Settings |
-| `G` | Global State |
-| `I` | Chuyển Map/Inspect |
-| `M` | Focus vào canvas bản đồ |
-| `?` | Mở danh sách phím tắt |
-| `!` | Debug options |
-| `Esc` | Bỏ focus control hiện tại/đưa focus về body |
-| `Ctrl/Cmd + Z` | Undo |
-| `Ctrl + Y` hoặc `Cmd + Shift + Z` | Redo |
-
-## Develop
-
-Maputnik is written in typescript and is using [React](https://github.com/facebook/react) and [MapLibre GL JS](https://maplibre.org/projects/maplibre-gl-js/).
-
-We ensure building and developing Maputnik works with the [current active LTS Node.js version and above](https://github.com/nodejs/Release#release-schedule).
-
-Check out our [Internationalization guide](./src/locales/README.md) for UI text related changes.
-
-### Getting Involved
-
-Join the #maplibre or #maputnik slack channel at OSMUS: get an invite at https://slack.openstreetmap.us/ Read the the below guide in order to get familiar with how we do things around here.
-
-Install the deps, start the dev server and open the web browser on `http://localhost:8888/`.
-
-```bash
-# install dependencies
 npm install
-# start dev server
-npm run start
+npm run dev
 ```
 
-If you want Maputnik to be accessible externally, configure the development server host as described in the [Create React App documentation](https://create-react-app.dev/docs/advanced-configuration/):
+Các script chính:
 
-```bash
-# start externally accessible dev server
-npm run start -- --host 0.0.0.0
+- `npm run dev` hoặc `npm start`: chạy development server qua CRACO.
+- `npm run build`: tạo production build.
+- `npm run lint`: lint toàn bộ source.
+- `npm run socket-server:local`: chạy Yjs WebSocket server ở cổng `8386` cho demo collaboration.
+
+## Kiến trúc hệ thống
+
+```text
+Browser
+└─ src/index.tsx
+   └─ App
+      ├─ ?mode=presenter → PresenterViewWindow
+      └─ Editor
+         ├─ AppTheme + i18n + Toaster
+         ├─ TopBar / LeftBar / RightBar / BottomBar
+         ├─ Canvas
+         │  └─ KonvaStage
+         │     ├─ non-interact layer: Background → Grid → Frame
+         │     ├─ shape layer: tab.shapes
+         │     ├─ interact layer: Transformers
+         │     └─ overlay layer: selection rectangle, guide lines, eraser, mask
+         ├─ dialogs
+         └─ Slideshow / presenter popup
 ```
 
-The build process will watch for changes to the filesystem, rebuild and autoreload the editor.
+`Editor` là application shell. Nó dựng lưới MUI gồm top/left/right/bottom bar và vùng canvas; kích thước các vùng nằm trong `useGlobalStore`. Khi resize cửa sổ hoặc đổi kích thước thanh UI, editor gọi `fitStage` để đồng bộ viewport stage. Khi URL có `?id=…`, `Editor` tải report metadata, tải JSON shape gắn với report, rồi thay shapes của tab active.
 
+`App` chặn một số phím tắt của trình duyệt (`Ctrl`/`Cmd` + `s`, `i`, `u`, `w`, `-`, `+`) và browser zoom bằng wheel có modifier. Nếu query `mode=presenter`, app chỉ render `PresenterViewWindow`, không render editor đầy đủ.
+
+## Các lớp chính
+
+| Lớp                    | Thư mục                                                       | Vai trò                                                                                              |
+| ---------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Application shell      | `src/App.tsx`, `src/layouts`                                  | Bố cục editor, toolbar, panel, dialog, trình chiếu và presenter window.                              |
+| Canvas                 | `src/layouts/Canvas`                                          | Điều phối pointer/keyboard, drawing, selection, clipboard, drag/drop, layer Konva và motion runtime. |
+| Konva renderer         | `src/components/KonvaShape`                                   | Render stage, overlay và các loại shape; cung cấp imperative API cho store.                          |
+| State                  | `src/stores`                                                  | Zustand state cho document, selection, history, tool overlay, preview motion và presentation.        |
+| Domain utility         | `src/utils/Shapes`, `src/utils/Presentation`, `src/utils/Map` | Tạo/load/export shape, geometry, group/table/SVG, motion timeline và chuyển đổi map.                 |
+| Backend integration    | `src/apis`                                                    | HTTP client cho report, file, image, render, font, icon, style và target trajectory.                 |
+| Validation/type/config | `src/schemes`, `src/types`, `src/configs`                     | Schema AJV, type domain và configuration/runtime constants.                                          |
+| Reusable UI            | `src/components`                                              | Input, dialog, tooltip, drag/drop và component MUI dùng chung.                                       |
+
+## Ranh giới ownership và dependency
+
+Mã chia dữ liệu thành hai phía để cấu hình report có thể lưu được nhưng canvas vẫn thao tác trực tiếp với Konva:
+
+| Chủ sở hữu                           | Dữ liệu/đối tượng sở hữu                                                                         | Được phép đi qua export/import                                            | Cách phần khác sử dụng                                           |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `useGlobalStore`                     | Report, tabs, shape config, stage/background/grid/frame config, selection, clipboard và history  | Các object document được export qua helper của store                      | UI gọi action; `Canvas` đọc state và điều phối thay đổi.         |
+| Tool stores                          | Config/API của selection rectangle, guide line, eraser, mask và transformer                      | Config được export/import qua object riêng; API runtime không được export | Overlay/transformer đăng ký API khi mount.                       |
+| `KonvaShape` components              | `Konva.Node`, `Stage`, `Transformer`, ref và imperative API                                      | Không                                                                     | Gửi API/ref về callback để store/canvas gọi trên node đang sống. |
+| `Canvas`                             | Trạng thái interaction tạm thời: pointer, drawing đang diễn ra, context menu và cầu nối callback | Không                                                                     | Chuyển event browser/Konva thành action store hoặc API node.     |
+| `utils/Shapes`, `utils/Presentation` | Tạo, load, export, tính geometry/timeline và chạy motion                                         | Chỉ các plain object do helper trả về                                     | Store và layout dùng như lớp domain, không phải React component. |
+| `apis`                               | Request/response HTTP                                                                            | Không                                                                     | Dialog/layout gọi khi cần tải hoặc lưu tài nguyên.               |
+
+Quan hệ phụ thuộc chủ đạo là một chiều: layout dùng store và utility; `Canvas` dùng renderer Konva; renderer chỉ trả imperative API ngược qua callback. Renderer không tự ghi document vào API backend, và API backend không biết Konva node. Ranh giới này là lý do một tab có thể được export khi các node Konva hiện tại đã unmount.
+
+## Khởi động và vòng đời editor
+
+1. `src/index.tsx` import bootstrap i18n, stylesheet, tạo React root và bọc `App` bằng `React.StrictMode`.
+2. `App` đọc `location.search`. Với `mode=presenter`, nó chỉ dựng `PresenterViewWindow`; các window khác dựng `Editor` trong container chiếm toàn viewport.
+3. Ở editor mode, `App` chặn các tổ hợp browser `Ctrl`/`Cmd` + `s`, `i`, `u`, `w`, `-`, `+` và wheel có `Ctrl`/`Cmd`, để các thao tác canvas không bị browser xử lý trước.
+4. `Editor` dựng theme, toaster, system bar và các vùng MUI. Kích thước bar trong global store được dùng để tính viewport; hiệu ứng resize/đổi bar gọi `fitStage`.
+5. Khi query có `id`, `Editor` lấy metadata report, lấy `json_file_id`, tải JSON file và dùng `addShapes(..., { overwrite: true, syncHistoryBatch: true })` để thay shape của tab active. Lỗi tải được báo bằng toast.
+6. `Canvas` mount `KonvaStage`, nhận `Stage` API qua callback, dựng bốn layer theo thứ tự cố định và đăng ký các API/ref runtime. Khi unmount, các callback cùng store xóa ref tương ứng.
+
+Việc tải report ở bước 5 chỉ nạp shape JSON theo flow hiện có của `Editor`; nó không phải một import đầy đủ các object tool như import file từ TopBar.
+
+## Canvas và Konva layer
+
+`Canvas` đặt `KonvaStage` làm root và tách nội dung thành bốn layer có trách nhiệm rõ ràng:
+
+| Layer          | Component           | Nội dung                                                                                                      | Tương tác                                                |
+| -------------- | ------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `non-interact` | `CanvasNonInteract` | `KonvaBackground`, `KonvaGrid`, `KonvaFrame`                                                                  | `listening={false}`                                      |
+| Shape          | `CanvasShapes`      | Shape của `tabs[activeIndex].shapes`                                                                          | Select, edit, crop, drag, transform, cell/symbol control |
+| `interact`     | `CanvasInteract`    | Sáu `KonvaTransformer`: cropper, selector, single-selector, cell-selector, element-selector, control-selector | Có tương tác                                             |
+| `overlay`      | `CanvasOverlay`     | Selection rectangle, guide lines, eraser, mask                                                                | `listening={false}`                                      |
+
+Các component Konva mount API/node runtime và callback của canvas đăng ký chúng vào store. Stage được giữ riêng bằng `setStageShapeRef`; các `Konva.Shape` còn lại được đăng ký theo id và API được đọc từ node bằng helper `get…API`. Node control/crop/cell/symbol element dùng cùng registry runtime. Khi unmount, callback xóa ref tương ứng. Runtime ref không nằm trong document export.
+
+### Trình tự mount trong canvas
+
+`Canvas` render các child của `KonvaStage` đúng thứ tự dưới đây. Thứ tự có ý nghĩa render: phần nền nằm dưới shapes, transformer nằm trên shapes và overlay nằm trên cùng.
+
+```text
+KonvaStage
+  1. CanvasNonInteract
+       Background, Grid, Frame → đăng ký API nền/lưới/frame
+  2. CanvasShapes
+       mỗi shape → đăng ký Shape API + ref control/crop/cell/SVG element
+  3. CanvasInteract
+       cropper, selector, single-selector, cell-selector,
+       element-selector, control-selector → đăng ký Transformer API
+  4. CanvasOverlay
+       selection rectangle, guide lines, eraser, mask → đăng ký overlay API
 ```
-npm run build
+
+Khi `activeIndex` thay đổi và không có shape nào được chọn, `Canvas` gọi `exportStageImages` cho chính tab active với `viewport: true` và timeout `RENDER_IMAGE_TIMEOUT`, sau đó ghi ảnh vào `tabs[activeIndex].preview`. Preview này là ảnh runtime tạo từ stage và được Slideshow/Presenter sử dụng làm metadata tab.
+
+`KonvaStage` có hai chế độ surface:
+
+- `followMap`: tạo và đồng bộ MapLibre phía sau Konva. Translate/scale stage được chuyển thành pan/zoom map; style, center và zoom map nằm trong `KonvaS`.
+- Các chế độ còn lại: `KonvaBackground` hiển thị nền màu hoặc ảnh tĩnh theo kích thước content stage.
+
+Tài liệu chi tiết về props, API và node runtime của toàn bộ renderer nằm trong [KonvaShape README](src/components/KonvaShape/README.md).
+
+## State và vòng đời dữ liệu
+
+`useGlobalStore` là nguồn state chính của editor. Nó giữ metadata report, list tab, tab active, `stage`, `background`, `grid`, `frame`, shapes, selection, dialog flags và shape history. Mỗi tab giữ `shapes`, stage/layer configuration, `transition`, `preview` và history riêng.
+
+Các store phụ tách state tool/runtime khỏi global document:
+
+- `useDrawingStore`: drawing mode hiện tại.
+- `useGlobalStore` cũng giữ config/API runtime của eraser, mask, guide lines, selection rectangle và transformer theo id.
+- `useMotionStore`: preview motion trong editor.
+- `usePresentationStore`: slide/step runtime khi trình chiếu.
+
+Một tab là đơn vị document độc lập: ngoài `shapes`, tab còn giữ configuration stage/layer, `transition`, `preview` và history shape của riêng nó. `activeIndex` quyết định tab mà action không truyền index sẽ thao tác. Vì vậy các action Canvas thường dùng index mặc định này, còn API export/preview có thể nhận mảng tab index để thao tác nhiều tab.
+
+Luồng thay đổi shape thông thường:
+
+```text
+UI / pointer event
+  → action trong useGlobalStore
+  → KonvaShapeAPI cập nhật node live
+  → shape live được đồng bộ về tabs[activeIndex].shapes
+  → lastShapesUpdate + selection/history được cập nhật
+  → React subscriber render lại panel/canvas cần thiết
 ```
 
-Lint the JavaScript code.
+History shape nằm riêng theo từng tab. `storeShapesHistory` clone toàn bộ danh sách shape live thành một snapshot khi option yêu cầu sync ngay hoặc batch debounce; capture sau undo cắt redo branch và trim các entry cũ theo `maxHistory`. Shape live có thể được mutate tại chỗ nhưng không dùng chung object với snapshot history, và batch đang chờ luôn được commit trước undo/redo. Stage/background/grid/frame không thuộc history shape này.
 
+`lastShapesUpdate` là tín hiệu để các consumer runtime biết config shape đã đổi; hook motion dùng nó để dựng lại timeline/runner. Selection và ref node là state phiên làm việc: chúng phục vụ transformer, marquee, crop hoặc panel hiện tại, nhưng không phải dữ liệu report được lưu.
+
+Tài liệu đầy đủ về store, selection, history, import/export và các điều kiện runtime API nằm trong [stores README](src/stores/README.md).
+
+## Document, runtime và serialization
+
+Document public được tạo từ `GlobalStore` và các object Konva plain như `KonvaShape`, `KonvaS`, `KonvaB`, `KonvaG`, `KonvaF`. `exportGlobalObject` export shape/stage/layer qua helper export rồi bỏ những runtime field được implementation liệt kê; `loadGlobalObject` tạo lại shape/layer và history từ object đã load.
+
+Không serialize các giá trị sau như document data:
+
+- Konva node/API, `Map`, `CanvasImageSource`, `Konva.Animation`, DOM element và callback.
+- `nodes` map nội bộ component, API registration map trong store.
+- State selection/edit/crop, timestamp update, dialog state và clipboard shape runtime, trừ khi action export hiện tại xử lý cụ thể khác đi.
+
+Các schema ở `src/schemes` mô tả/kiểm tra common data, shape, stage, tab, global object, import/export và tool option. Type domain nằm trong `src/types`; type renderer nằm trong `src/components/KonvaShape/Types.ts`.
+
+## Interaction, drawing và selection
+
+`Canvas` là nơi ghép interaction với store. Nó xử lý pointer trên stage, phím tắt, clipboard, drop file/text/image, drawing mode, marquee selection, group/table operations, crop và shape command. `CanvasShapes` đăng ký callback của từng renderer để:
+
+- Đồng bộ `KonvaShapeAPI` và ref node với `useGlobalStore`.
+- Cập nhật selection shape, single-shape, control, cell table và SVG element.
+- Đồng bộ drag/transform/edit về `tabs[activeIndex].shapes` và history.
+- Cập nhật guide-line snap, eraser/mask/crop overlay và transformer cần thiết.
+
+Shape configuration hỗ trợ basic geometry, media, SVG/symbol, table cell, free-drawing, complex path, custom arrow, fill/stroke/filter/shadow, group metadata và motion. Các shape renderer không tự giữ document; chúng nhận config từ store và công bố API live trở lại canvas/store.
+
+### Phím tắt và reset interaction
+
+Các hotkey được đăng ký trực tiếp trong `Canvas`:
+
+| Tổ hợp                       | Action                             |
+| ---------------------------- | ---------------------------------- |
+| `Ctrl`/`Cmd` + `G`           | Group selection                    |
+| `Ctrl`/`Cmd` + `Shift` + `G` | Ungroup selection                  |
+| `Delete`                     | Xóa selection                      |
+| `Ctrl`/`Cmd` + `X`, `C`, `V` | Cut, copy, paste                   |
+| `Ctrl`/`Cmd` + `D`           | Duplicate tại vị trí pointer stage |
+
+`RESET_INTERACTION_EVENT` có tên event `reset-interaction`. `TopBar/Close` dispatch event này, còn `Canvas` lắng nghe nó và gọi handler reset interaction. Context menu chỉ xuất hiện khi có shape/cell được chọn hoặc clipboard shape có dữ liệu; các nút group/ungroup và thao tác cell được quyết định từ `getSelectedInfo()`.
+
+Luồng reset ưu tiên dừng trạng thái đang thao tác trước khi trở về selection bình thường: drawing đang chạy, edit/crop, control selection, cell selection, SVG/symbol element selection và single selection đều được canvas/store xử lý như các state riêng. Do đó code mới không nên chỉ xóa `selectedIds` để kết thúc một tool mode.
+
+## Presentation và motion
+
+`usePresentationStore` theo dõi `isPresenting`, tab/slide index, `presentationStep`, tổng click step và presenter view. `Canvas` dùng `usePresentationMotions` để chạy effect theo motion definitions đã lưu trên shape.
+
+`Slideshow` ẩn UI chrome bằng cách lưu/đặt lại kích thước bar khi vào/ra trình chiếu. Nó điều khiển slide, click step, pointer modes (laser, pen, highlighter, eraser) và slide transition. Khi presenter view bật, slideshow mở popup với `?mode=presenter` và trao đổi command/sync data qua `BroadcastChannel`; `PresenterViewWindow` chỉ nhận metadata tab (`title`, `note`, `preview`) cùng slide/step hiện tại.
+
+`useMotionStore` là preview trong editor, độc lập với presentation runtime. Nó giữ start time, current time và tùy chọn target shape id.
+
+### Motion runner và protocol presenter
+
+`usePresentationMotions` lấy motion config từ shape đã lưu (`getShapes(undefined, true)`), dựng timeline bằng `buildTimeline`, rồi tạo runner. Runner lấy node thật từ `getShapeAPI(id)?.getNode()` chỉ tại thời điểm phát. Khi trình chiếu:
+
+1. `slideIndex` được chặn trong phạm vi tabs và đồng bộ về `activeIndex`.
+2. Khi slide thực sự đổi, hook gọi `doShapes(undefined)` để đưa node về base shape trước khi phát motion của slide mới.
+3. Hook tính tổng click step từ timeline và ghi vào presentation store.
+4. Khi `presentationStep` tăng, runner phát tuần tự tới step đích; khi step giảm, hook reset về base shape rồi `seekTo` step đích.
+5. Khi bật/tắt presentation hoặc timeline đổi, runner cũ bị `destroy()` và được dựng lại.
+
+Slideshow lắng nghe `presentation-click` do `Canvas` dispatch khi người dùng click stage trong presentation mode; event đó chuyển sang `nextPresentationStep`. Bàn phím slideshow: `Escape` thoát, `Space`/`Enter`/mũi tên phải/xuống đi tiếp, mũi tên trái/lên quay slide trước. Popup presenter giao tiếp qua `BroadcastChannel` tên `khqs-presenter`; command gồm `nextSlide`, `prevSlide`, `nextStep`, `setSlide`, `exit`, `requestSync`, và dữ liệu đồng bộ chứa danh sách metadata tab, `slideIndex`, `presentationStep`.
+
+## API và cấu hình runtime
+
+Các module `src/apis` chia theo resource:
+
+- `report`: create/search/get/update/delete report.
+- `file`: upload/update/delete/download file.
+- `image`: create/search/delete image.
+- `render`: PDF, SVG, style JSON và frame render.
+- `font`, `icon`, `style`, `targetTrajectory`: resource chuyên biệt.
+
+Mọi module gọi request bằng Axios thông qua `requestToURL`; response 2xx trừ `204` được xem là thành công. URL runtime được đọc từ `window` trong `src/configs/config.ts`, có fallback local:
+
+| Global browser value   | Fallback                                    | Dùng cho                           |
+| ---------------------- | ------------------------------------------- | ---------------------------------- |
+| `IMAGE_PROCESS_URL`    | `http://localhost:8080`                     | Render API và style JSON API.      |
+| `IMAGE_STORAGE_URL`    | `http://localhost:8001`                     | Report, file và image API.         |
+| `COLLAB_KONVA_WS`      | `ws://localhost:8386`                       | Yjs WebSocket demo collaboration.  |
+| `MAP_STYLE_DEFAULT`    | `https://demotiles.maplibre.org/style.json` | Default MapLibre style.            |
+| `RENDER_IMAGE_TIMEOUT` | `5000`                                      | Timeout liên quan image rendering. |
+
+Các global này phải được gán trước khi module config được import nếu deployment cần endpoint/style khác fallback.
+
+### Import, save và event nội bộ
+
+TopBar IO phân tách rõ ba entry point:
+
+- Export và cloud import chỉ bật các cờ `exportReport`/`importReport` trong global store để dialog tương ứng xử lý.
+- Import từ thiết bị nhận file app/json, đọc blob thành text, `JSON.parse`, validate bằng `importExportSchema`, rồi lần lượt load `global`, selection rectangle, guide lines, eraser, mask và transformers. Lỗi parse/validate/load được bắt và hiển thị toast.
+- Save không có `fileId` sẽ mở Save As. Có `fileId`, `TopBarIO` dispatch `SAVE_EVENT` (`save`); `SaveAsDialog` lắng nghe event và thực hiện save handler. Đây là contract event giữa toolbar và dialog, không phải HTTP call ngay trong `TopBarIO`.
+
+## Giao diện, i18n và theme
+
+`AppTheme` lấy `themeMode` từ global store và palette surface từ `src/configs`. i18next được khởi tạo trong `src/index.tsx`; bản dịch hiện nằm ở `src/locales/vietnamese/translation.json` và `src/locales/english/translation.json`. Dialog flags trong global store quyết định dialog được render/mở trong `layouts/Dialog`.
+
+## Cấu trúc thư mục
+
+```text
+src/
+├─ apis/          HTTP resource modules
+├─ components/    reusable UI và Konva renderer
+├─ configs/       runtime URL, events, theme/color constants
+├─ demos/         demo độc lập, không phải entry editor chính
+├─ hooks/         React hook dùng chung
+├─ layouts/       editor shell, canvas, bars, dialogs, slideshow
+├─ locales/       i18next bootstrap và translation files
+├─ schemes/       AJV validation schema
+├─ stores/        Zustand document/tool/presentation state
+├─ types/         domain type dùng chung
+└─ utils/         shape, map, image, request, presentation và helper khác
 ```
-# run linter
-npm run lint
-npm run lint-css
-npm run sort-styles
-```
 
-## Tests
+## Quy ước khi mở rộng
 
-### End-to-end tests
-
-For E2E testing we use [Playwright](https://playwright.dev/). The tests live in the [`e2e`](/e2e) directory and drive the app through the `MaputnikDriver` page object.
-
-The first time you run the tests, install the browser:
-
-```
-npx playwright install chromium
-```
-
-Playwright automatically starts the dev server (`npm run start`) for you, so you can just run:
-
-```
-npm run test
-```
-
-Some useful options:
-
-```
-# see the tests run in a headed browser
-npm run test -- --headed
-
-# run a single spec / filter by title
-npm run test -- e2e/map.spec.ts
-npm run test -- -g "zoom level"
-
-# open the interactive UI mode
-npx playwright test --ui
-```
-
-Running the E2E tests also produces a code-coverage report in `coverage/` (collected via istanbul instrumentation of the dev server).
-
-## Release process
-
-1. Review [`CHANGELOG.md`](/CHANGELOG.md)
-   - Double-check that all changes included in the release are appropriately documented.
-   - To-be-released changes should be under the "main" header.
-   - Commit any final changes to the changelog.
-2. Once merged, an automatic process will kick in and creates a GitHub release and uploads release assets.
-
-## Sponsors
-
-Thanks to the supporters of the **[Kickstarter campaign](https://www.kickstarter.com/projects/174808720/maputnik-visual-map-editor-for-mapbox-gl)**. This project would not be possible without these commercial and individual sponsors.
-You can see this file's history for previous sponsors of the original Maputnik repo.
-Read more about the MapLibre Sponsorship Program at https://maplibre.org/sponsors/.
-
-## License
-
-Maputnik is [licensed under MIT](LICENSE) and is Copyright (c) Lukas Martinelli and Maplibre contributors.
-As contributor please take extra care of not violating any Mapbox trademarks. Do not get inspired by other map studios and make your own decisions for a good style editor.
+- Thay đổi document shape/tab/stage qua store action để timestamp, selection, history và runtime API được đồng bộ.
+- Giữ configuration exportable là plain object; giữ Konva/DOM/Map instance trong ref/API runtime.
+- Khi thêm shape renderer, khai báo type/API, export từ `KonvaShape/index.ts`, gắn lifecycle callback và thêm renderer vào `CanvasShapes`.
+- Khi thêm overlay/layer, giữ đúng ranh giới layer `non-interact`, shape, `interact`, `overlay` và đăng ký API vào store tương ứng.
+- Khi thêm field document, cập nhật schema, loader/exporter trong `utils/Shapes`, store type/action và tài liệu liên quan.

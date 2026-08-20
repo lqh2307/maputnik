@@ -3,7 +3,7 @@
 ### -----------------------
 
 # Common infos
-MODULE_NAME := maputnik
+MODULE_NAME := ms-fe-report
 MODULE_VERSION := $(shell git describe --tags)
 
 # Debian infos

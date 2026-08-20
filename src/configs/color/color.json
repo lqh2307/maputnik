@@ -1,0 +1,1357 @@
+{
+  "Black": {
+    "text-primary": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Chữ chính — heading, tên đơn vị"
+    },
+    "text-secondary": {
+      "value": "#a3aebd",
+      "type": "color",
+      "description": "Chữ phụ — body text, mô tả"
+    },
+    "text-tertiary": {
+      "value": "#8392a5",
+      "type": "color",
+      "description": "Timestamp / meta / caption"
+    },
+    "text-placeholder": {
+      "value": "#718298",
+      "type": "color",
+      "description": "Placeholder trong input (exempt)"
+    },
+    "text-disabled": {
+      "value": "#718298",
+      "type": "color",
+      "description": "Chữ disabled (exempt)"
+    },
+    "text-link": {
+      "value": "#4c9aff",
+      "type": "color",
+      "description": "Hyperlink / clickable text"
+    },
+    "text-tab-active": {
+      "value": "#4c9aff",
+      "type": "color",
+      "description": "Label tab đang chọn"
+    },
+    "text-tab-inactive": {
+      "value": "#718298",
+      "type": "color",
+      "description": "Label tab không chọn"
+    },
+    "text-on-primary": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Chữ trên nút Primary — 4.9:1"
+    },
+    "text-on-danger": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Chữ trên nút Danger — 5.0:1"
+    },
+    "text-on-badge": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Chữ trên badge (dark text trên light badge)"
+    },
+    "bg-page": {
+      "value": "#101213",
+      "type": "color",
+      "description": "Nền app / trang chính"
+    },
+    "bg-modal": {
+      "value": "#17191c",
+      "type": "color",
+      "description": "Dialog / modal / panel"
+    },
+    "bg-sidebar": {
+      "value": "#17191c",
+      "type": "color",
+      "description": "Sidebar / drawer panel"
+    },
+    "bg-card": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Card / surface chính"
+    },
+    "bg-row-light": {
+      "value": "#2f353d",
+      "type": "color",
+      "description": "Row sáng — striped table"
+    },
+    "bg-row-dark": {
+      "value": "#262b31",
+      "type": "color",
+      "description": "Row tối — striped alt"
+    },
+    "bg-row-hover": {
+      "value": "#2a3040",
+      "type": "color",
+      "description": "Row hover state"
+    },
+    "bg-selected": {
+      "value": "#162849",
+      "type": "color",
+      "description": "Item được chọn (active)"
+    },
+    "bg-input": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Input field background"
+    },
+    "bg-tooltip": {
+      "value": "#3f4855",
+      "type": "color",
+      "description": "Tooltip container"
+    },
+    "bg-overlay": {
+      "value": "#1a1f2e",
+      "type": "color",
+      "description": "Modal backdrop overlay"
+    },
+    "bg-button-primary": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Nút Primary default"
+    },
+    "bg-button-primary-hover": {
+      "value": "#0052cc",
+      "type": "color",
+      "description": "Nút Primary hover"
+    },
+    "bg-button-secondary": {
+      "value": "#262b31",
+      "type": "color",
+      "description": "Nút Secondary default"
+    },
+    "bg-button-secondary-hover": {
+      "value": "#2f353d",
+      "type": "color",
+      "description": "Nút Secondary hover"
+    },
+    "bg-button-ghost-hover": {
+      "value": "#2f353d",
+      "type": "color",
+      "description": "Ghost button hover bg"
+    },
+    "bg-button-danger": {
+      "value": "#da1e28",
+      "type": "color",
+      "description": "Nút Danger default"
+    },
+    "bg-button-danger-hover": {
+      "value": "#b81922",
+      "type": "color",
+      "description": "Nút Danger hover"
+    },
+    "bg-button-icon": {
+      "value": "#101213",
+      "type": "color",
+      "description": "Icon-only button"
+    },
+    "bg-button-icon-hover": {
+      "value": "#17191c",
+      "type": "color",
+      "description": "Icon button hover"
+    },
+    "bg-badge-success": {
+      "value": "#36b37e",
+      "type": "color",
+      "description": "Badge Success bg"
+    },
+    "bg-badge-error": {
+      "value": "#fa4d56",
+      "type": "color",
+      "description": "Badge Error bg"
+    },
+    "bg-badge-warning": {
+      "value": "#ffab00",
+      "type": "color",
+      "description": "Badge Warning bg"
+    },
+    "bg-badge-info": {
+      "value": "#00b8d9",
+      "type": "color",
+      "description": "Badge Info bg"
+    },
+    "border-default": {
+      "value": "#515f70",
+      "type": "color",
+      "description": "Viền chung — card, input"
+    },
+    "border-subtle": {
+      "value": "#262b31",
+      "type": "color",
+      "description": "Divider nhẹ — row separator"
+    },
+    "border-strong": {
+      "value": "#718298",
+      "type": "color",
+      "description": "Viền nổi bật"
+    },
+    "border-card": {
+      "value": "#373f49",
+      "type": "color",
+      "description": "Viền card / panel"
+    },
+    "border-disabled": {
+      "value": "#373f49",
+      "type": "color",
+      "description": "Disabled border (exempt)"
+    },
+    "border-input": {
+      "value": "#515f70",
+      "type": "color",
+      "description": "Input field viền default"
+    },
+    "border-focus": {
+      "value": "#2684ff",
+      "type": "color",
+      "description": "Focus ring"
+    },
+    "border-selected": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Item đang được chọn"
+    },
+    "border-error": {
+      "value": "#fa4d56",
+      "type": "color",
+      "description": "Input / field lỗi"
+    },
+    "border-warning": {
+      "value": "#ffab00",
+      "type": "color",
+      "description": "Cảnh báo"
+    },
+    "border-success": {
+      "value": "#36b37e",
+      "type": "color",
+      "description": "Thành công"
+    },
+    "icon-primary": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Icon chính"
+    },
+    "icon-secondary": {
+      "value": "#a3aebd",
+      "type": "color",
+      "description": "Icon phụ / muted"
+    },
+    "icon-tertiary": {
+      "value": "#8392a5",
+      "type": "color",
+      "description": "Icon rất nhẹ / decorative"
+    },
+    "icon-disabled": {
+      "value": "#718298",
+      "type": "color",
+      "description": "Icon disabled (exempt)"
+    },
+    "icon-on-color": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Icon trên nút Primary / Danger"
+    },
+    "icon-accent": {
+      "value": "#4c9aff",
+      "type": "color",
+      "description": "Icon active / primary blue"
+    },
+    "icon-success": {
+      "value": "#57d9a3",
+      "type": "color",
+      "description": "Icon thành công"
+    },
+    "icon-warning": {
+      "value": "#ffab00",
+      "type": "color",
+      "description": "Icon cảnh báo"
+    },
+    "icon-danger": {
+      "value": "#fa4d56",
+      "type": "color",
+      "description": "Icon lỗi / danger"
+    },
+    "icon-info": {
+      "value": "#00b8d9",
+      "type": "color",
+      "description": "Icon thông tin"
+    }
+  },
+  "Blue": {
+    "text-primary": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Chữ chính — heading, tên đơn vị"
+    },
+    "text-secondary": {
+      "value": "#515f70",
+      "type": "color",
+      "description": "Chữ phụ — body text, mô tả"
+    },
+    "text-tertiary": {
+      "value": "#65758b",
+      "type": "color",
+      "description": "Timestamp / meta / caption"
+    },
+    "text-placeholder": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Placeholder trong input (exempt)"
+    },
+    "text-disabled": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Chữ disabled (exempt)"
+    },
+    "text-link": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Hyperlink / clickable text"
+    },
+    "text-tab-active": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Label tab đang chọn"
+    },
+    "text-tab-inactive": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Label tab không chọn"
+    },
+    "text-on-primary": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Chữ trên nút Primary — 4.9:1"
+    },
+    "text-on-danger": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Chữ trên nút Danger — 5.0:1"
+    },
+    "text-on-badge": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Chữ trên badge (dark text trên light badge)"
+    },
+    "bg-page": {
+      "value": "#dbeaff",
+      "type": "color",
+      "description": "Nền app / trang chính"
+    },
+    "bg-modal": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Modal / dialog — white nổi trên blue page"
+    },
+    "bg-sidebar": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Sidebar panel — white (giữ nguyên giá trị đúng)"
+    },
+    "bg-card": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Card / surface chính"
+    },
+    "bg-row-light": {
+      "value": "#f0f6ff",
+      "type": "color",
+      "description": "Row sáng trên white modal — blue tint rất nhạt"
+    },
+    "bg-row-dark": {
+      "value": "#e4eeff",
+      "type": "color",
+      "description": "Row alt trên white modal — blue tint nhẹ"
+    },
+    "bg-row-hover": {
+      "value": "#e0ecff",
+      "type": "color",
+      "description": "Row hover trên white"
+    },
+    "bg-selected": {
+      "value": "#d4e4ff",
+      "type": "color",
+      "description": "Item selected — blue tint medium"
+    },
+    "bg-input": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Input field — white (giữ nguyên)"
+    },
+    "bg-tooltip": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Tooltip — dark bg giữ nguyên"
+    },
+    "bg-overlay": {
+      "value": "#1a1f2e",
+      "type": "color",
+      "description": "Modal backdrop overlay"
+    },
+    "bg-button-primary": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Nút Primary default"
+    },
+    "bg-button-primary-hover": {
+      "value": "#0052cc",
+      "type": "color",
+      "description": "Nút Primary hover"
+    },
+    "bg-button-secondary": {
+      "value": "#e4eeff",
+      "type": "color",
+      "description": "Btn secondary trên white — blue tint nhẹ"
+    },
+    "bg-button-secondary-hover": {
+      "value": "#dbeaff",
+      "type": "color",
+      "description": "Btn secondary hover"
+    },
+    "bg-button-ghost-hover": {
+      "value": "#eef5ff",
+      "type": "color",
+      "description": "Ghost hover trên white"
+    },
+    "bg-button-danger": {
+      "value": "#da1e28",
+      "type": "color",
+      "description": "Nút Danger default"
+    },
+    "bg-button-danger-hover": {
+      "value": "#b81922",
+      "type": "color",
+      "description": "Nút Danger hover"
+    },
+    "bg-button-icon": {
+      "value": "#eef5ff",
+      "type": "color",
+      "description": "Icon btn trên white"
+    },
+    "bg-button-icon-hover": {
+      "value": "#e0ecff",
+      "type": "color",
+      "description": "Icon btn hover"
+    },
+    "bg-badge-success": {
+      "value": "#36b37e",
+      "type": "color",
+      "description": "Badge Success bg"
+    },
+    "bg-badge-error": {
+      "value": "#fa4d56",
+      "type": "color",
+      "description": "Badge Error bg"
+    },
+    "bg-badge-warning": {
+      "value": "#ffab00",
+      "type": "color",
+      "description": "Badge Warning bg"
+    },
+    "bg-badge-info": {
+      "value": "#00b8d9",
+      "type": "color",
+      "description": "Badge Info bg"
+    },
+    "border-default": {
+      "value": "#c4d8f0",
+      "type": "color",
+      "description": "Viền chung trên white — blue-grey"
+    },
+    "border-subtle": {
+      "value": "#ddeaf8",
+      "type": "color",
+      "description": "Divider nhẹ trên white"
+    },
+    "border-strong": {
+      "value": "#a8c0dc",
+      "type": "color",
+      "description": "Viền nổi bật"
+    },
+    "border-card": {
+      "value": "#c4d8f0",
+      "type": "color",
+      "description": "Viền card trên white"
+    },
+    "border-disabled": {
+      "value": "#c8daf0",
+      "type": "color",
+      "description": "Disabled border (exempt)"
+    },
+    "border-input": {
+      "value": "#c4d8f0",
+      "type": "color",
+      "description": "Input border trên white"
+    },
+    "border-focus": {
+      "value": "#0052cc",
+      "type": "color",
+      "description": "Focus ring"
+    },
+    "border-selected": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Item đang được chọn"
+    },
+    "border-error": {
+      "value": "#fa4d56",
+      "type": "color",
+      "description": "Input / field lỗi"
+    },
+    "border-warning": {
+      "value": "#ffab00",
+      "type": "color",
+      "description": "Cảnh báo"
+    },
+    "border-success": {
+      "value": "#36b37e",
+      "type": "color",
+      "description": "Thành công"
+    },
+    "icon-primary": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Icon chính"
+    },
+    "icon-secondary": {
+      "value": "#515f70",
+      "type": "color",
+      "description": "Icon phụ / muted"
+    },
+    "icon-tertiary": {
+      "value": "#65758b",
+      "type": "color",
+      "description": "Icon rất nhẹ / decorative"
+    },
+    "icon-disabled": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Icon disabled (exempt)"
+    },
+    "icon-on-color": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Icon trên nút Primary / Danger"
+    },
+    "icon-accent": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Icon active / primary blue"
+    },
+    "icon-success": {
+      "value": "#1d8a5e",
+      "type": "color",
+      "description": "Icon thành công"
+    },
+    "icon-warning": {
+      "value": "#946400",
+      "type": "color",
+      "description": "Icon cảnh báo"
+    },
+    "icon-danger": {
+      "value": "#c9242d",
+      "type": "color",
+      "description": "Icon lỗi / danger"
+    },
+    "icon-info": {
+      "value": "#007899",
+      "type": "color",
+      "description": "Icon thông tin"
+    }
+  },
+  "Grey": {
+    "text-primary": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Chữ chính — heading, tên đơn vị"
+    },
+    "text-secondary": {
+      "value": "#515f70",
+      "type": "color",
+      "description": "Chữ phụ — body text, mô tả"
+    },
+    "text-tertiary": {
+      "value": "#65758b",
+      "type": "color",
+      "description": "Timestamp / meta / caption"
+    },
+    "text-placeholder": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Placeholder trong input (exempt)"
+    },
+    "text-disabled": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Chữ disabled (exempt)"
+    },
+    "text-link": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Hyperlink / clickable text"
+    },
+    "text-tab-active": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Label tab đang chọn"
+    },
+    "text-tab-inactive": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Label tab không chọn"
+    },
+    "text-on-primary": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Chữ trên nút Primary — 4.9:1"
+    },
+    "text-on-danger": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Chữ trên nút Danger — 5.0:1"
+    },
+    "text-on-badge": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Chữ trên badge (dark text trên light badge)"
+    },
+    "bg-page": {
+      "value": "#eef1f5",
+      "type": "color",
+      "description": "Nền app / trang chính"
+    },
+    "bg-modal": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Dialog / modal / panel"
+    },
+    "bg-sidebar": {
+      "value": "#eef1f5",
+      "type": "color",
+      "description": "Sidebar / drawer panel"
+    },
+    "bg-card": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Card / surface chính"
+    },
+    "bg-row-light": {
+      "value": "#f7f9fb",
+      "type": "color",
+      "description": "Row sáng — striped table"
+    },
+    "bg-row-dark": {
+      "value": "#eef1f5",
+      "type": "color",
+      "description": "Row tối — striped alt"
+    },
+    "bg-row-hover": {
+      "value": "#eef3f8",
+      "type": "color",
+      "description": "Row hover state"
+    },
+    "bg-selected": {
+      "value": "#ddeeff",
+      "type": "color",
+      "description": "Item được chọn (active)"
+    },
+    "bg-input": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Input field background"
+    },
+    "bg-tooltip": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Tooltip container"
+    },
+    "bg-overlay": {
+      "value": "#1a1f2e",
+      "type": "color",
+      "description": "Modal backdrop overlay"
+    },
+    "bg-button-primary": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Nút Primary default"
+    },
+    "bg-button-primary-hover": {
+      "value": "#0052cc",
+      "type": "color",
+      "description": "Nút Primary hover"
+    },
+    "bg-button-secondary": {
+      "value": "#eef1f5",
+      "type": "color",
+      "description": "Nút Secondary default"
+    },
+    "bg-button-secondary-hover": {
+      "value": "#f7f9fb",
+      "type": "color",
+      "description": "Nút Secondary hover"
+    },
+    "bg-button-ghost-hover": {
+      "value": "#f7f9fb",
+      "type": "color",
+      "description": "Ghost button hover bg"
+    },
+    "bg-button-danger": {
+      "value": "#da1e28",
+      "type": "color",
+      "description": "Nút Danger default"
+    },
+    "bg-button-danger-hover": {
+      "value": "#b81922",
+      "type": "color",
+      "description": "Nút Danger hover"
+    },
+    "bg-button-icon": {
+      "value": "#eef1f5",
+      "type": "color",
+      "description": "Icon-only button"
+    },
+    "bg-button-icon-hover": {
+      "value": "#f7f9fb",
+      "type": "color",
+      "description": "Icon button hover"
+    },
+    "bg-badge-success": {
+      "value": "#36b37e",
+      "type": "color",
+      "description": "Badge Success bg"
+    },
+    "bg-badge-error": {
+      "value": "#fa4d56",
+      "type": "color",
+      "description": "Badge Error bg"
+    },
+    "bg-badge-warning": {
+      "value": "#ffab00",
+      "type": "color",
+      "description": "Badge Warning bg"
+    },
+    "bg-badge-info": {
+      "value": "#00b8d9",
+      "type": "color",
+      "description": "Badge Info bg"
+    },
+    "border-default": {
+      "value": "#d4dce8",
+      "type": "color",
+      "description": "Viền chung — card, input"
+    },
+    "border-subtle": {
+      "value": "#e3e8ef",
+      "type": "color",
+      "description": "Divider nhẹ — row separator"
+    },
+    "border-strong": {
+      "value": "#bcc8d8",
+      "type": "color",
+      "description": "Viền nổi bật"
+    },
+    "border-card": {
+      "value": "#d4dce8",
+      "type": "color",
+      "description": "Viền card / panel"
+    },
+    "border-disabled": {
+      "value": "#d4dce8",
+      "type": "color",
+      "description": "Disabled border (exempt)"
+    },
+    "border-input": {
+      "value": "#d4dce8",
+      "type": "color",
+      "description": "Input field viền default"
+    },
+    "border-focus": {
+      "value": "#0052cc",
+      "type": "color",
+      "description": "Focus ring"
+    },
+    "border-selected": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Item đang được chọn"
+    },
+    "border-error": {
+      "value": "#fa4d56",
+      "type": "color",
+      "description": "Input / field lỗi"
+    },
+    "border-warning": {
+      "value": "#ffab00",
+      "type": "color",
+      "description": "Cảnh báo"
+    },
+    "border-success": {
+      "value": "#36b37e",
+      "type": "color",
+      "description": "Thành công"
+    },
+    "icon-primary": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Icon chính"
+    },
+    "icon-secondary": {
+      "value": "#515f70",
+      "type": "color",
+      "description": "Icon phụ / muted"
+    },
+    "icon-tertiary": {
+      "value": "#65758b",
+      "type": "color",
+      "description": "Icon rất nhẹ / decorative"
+    },
+    "icon-disabled": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Icon disabled (exempt)"
+    },
+    "icon-on-color": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Icon trên nút Primary / Danger"
+    },
+    "icon-accent": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Icon active / primary blue"
+    },
+    "icon-success": {
+      "value": "#1d8a5e",
+      "type": "color",
+      "description": "Icon thành công"
+    },
+    "icon-warning": {
+      "value": "#946400",
+      "type": "color",
+      "description": "Icon cảnh báo"
+    },
+    "icon-danger": {
+      "value": "#c9242d",
+      "type": "color",
+      "description": "Icon lỗi / danger"
+    },
+    "icon-info": {
+      "value": "#007899",
+      "type": "color",
+      "description": "Icon thông tin"
+    }
+  },
+  "White": {
+    "text-primary": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Chữ chính — heading, tên đơn vị"
+    },
+    "text-secondary": {
+      "value": "#515f70",
+      "type": "color",
+      "description": "Chữ phụ — body text, mô tả"
+    },
+    "text-tertiary": {
+      "value": "#65758b",
+      "type": "color",
+      "description": "Timestamp / meta / caption"
+    },
+    "text-placeholder": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Placeholder trong input (exempt)"
+    },
+    "text-disabled": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Chữ disabled (exempt)"
+    },
+    "text-link": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Hyperlink / clickable text"
+    },
+    "text-tab-active": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Label tab đang chọn"
+    },
+    "text-tab-inactive": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Label tab không chọn"
+    },
+    "text-on-primary": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Chữ trên nút Primary — 4.9:1"
+    },
+    "text-on-danger": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Chữ trên nút Danger — 5.0:1"
+    },
+    "text-on-badge": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Chữ trên badge (dark text trên light badge)"
+    },
+    "bg-page": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Nền app / trang chính"
+    },
+    "bg-modal": {
+      "value": "#f4f5f7",
+      "type": "color",
+      "description": "Dialog / modal / panel"
+    },
+    "bg-sidebar": {
+      "value": "#f4f5f7",
+      "type": "color",
+      "description": "Sidebar / drawer panel"
+    },
+    "bg-card": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Card / surface chính"
+    },
+    "bg-row-light": {
+      "value": "#eef1f5",
+      "type": "color",
+      "description": "Row sáng — striped table"
+    },
+    "bg-row-dark": {
+      "value": "#e6e9ee",
+      "type": "color",
+      "description": "Row tối — striped alt"
+    },
+    "bg-row-hover": {
+      "value": "#edf0f4",
+      "type": "color",
+      "description": "Row hover state"
+    },
+    "bg-selected": {
+      "value": "#dce8f6",
+      "type": "color",
+      "description": "Item được chọn (active)"
+    },
+    "bg-input": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Input field background"
+    },
+    "bg-tooltip": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Tooltip container"
+    },
+    "bg-overlay": {
+      "value": "#1a1f2e",
+      "type": "color",
+      "description": "Modal backdrop overlay"
+    },
+    "bg-button-primary": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Nút Primary default"
+    },
+    "bg-button-primary-hover": {
+      "value": "#0052cc",
+      "type": "color",
+      "description": "Nút Primary hover"
+    },
+    "bg-button-secondary": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Nút Secondary default"
+    },
+    "bg-button-secondary-hover": {
+      "value": "#eaecef",
+      "type": "color",
+      "description": "Nút Secondary hover"
+    },
+    "bg-button-ghost-hover": {
+      "value": "#f0f2f5",
+      "type": "color",
+      "description": "Ghost button hover bg"
+    },
+    "bg-button-danger": {
+      "value": "#da1e28",
+      "type": "color",
+      "description": "Nút Danger default"
+    },
+    "bg-button-danger-hover": {
+      "value": "#b81922",
+      "type": "color",
+      "description": "Nút Danger hover"
+    },
+    "bg-button-icon": {
+      "value": "#f0f2f5",
+      "type": "color",
+      "description": "Icon-only button"
+    },
+    "bg-button-icon-hover": {
+      "value": "#e8eaee",
+      "type": "color",
+      "description": "Icon button hover"
+    },
+    "bg-badge-success": {
+      "value": "#36b37e",
+      "type": "color",
+      "description": "Badge Success bg"
+    },
+    "bg-badge-error": {
+      "value": "#fa4d56",
+      "type": "color",
+      "description": "Badge Error bg"
+    },
+    "bg-badge-warning": {
+      "value": "#ffab00",
+      "type": "color",
+      "description": "Badge Warning bg"
+    },
+    "bg-badge-info": {
+      "value": "#00b8d9",
+      "type": "color",
+      "description": "Badge Info bg"
+    },
+    "border-default": {
+      "value": "#dce3ea",
+      "type": "color",
+      "description": "Viền chung — card, input"
+    },
+    "border-subtle": {
+      "value": "#e6e9ee",
+      "type": "color",
+      "description": "Divider nhẹ — row separator"
+    },
+    "border-strong": {
+      "value": "#bcc8d8",
+      "type": "color",
+      "description": "Viền nổi bật"
+    },
+    "border-card": {
+      "value": "#dce3ea",
+      "type": "color",
+      "description": "Viền card / panel"
+    },
+    "border-disabled": {
+      "value": "#dce3ea",
+      "type": "color",
+      "description": "Disabled border (exempt)"
+    },
+    "border-input": {
+      "value": "#dce3ea",
+      "type": "color",
+      "description": "Input field viền default"
+    },
+    "border-focus": {
+      "value": "#0052cc",
+      "type": "color",
+      "description": "Focus ring"
+    },
+    "border-selected": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Item đang được chọn"
+    },
+    "border-error": {
+      "value": "#fa4d56",
+      "type": "color",
+      "description": "Input / field lỗi"
+    },
+    "border-warning": {
+      "value": "#ffab00",
+      "type": "color",
+      "description": "Cảnh báo"
+    },
+    "border-success": {
+      "value": "#36b37e",
+      "type": "color",
+      "description": "Thành công"
+    },
+    "icon-primary": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Icon chính"
+    },
+    "icon-secondary": {
+      "value": "#515f70",
+      "type": "color",
+      "description": "Icon phụ / muted"
+    },
+    "icon-tertiary": {
+      "value": "#65758b",
+      "type": "color",
+      "description": "Icon rất nhẹ / decorative"
+    },
+    "icon-disabled": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Icon disabled (exempt)"
+    },
+    "icon-on-color": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Icon trên nút Primary / Danger"
+    },
+    "icon-accent": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Icon active / primary blue"
+    },
+    "icon-success": {
+      "value": "#1d8a5e",
+      "type": "color",
+      "description": "Icon thành công"
+    },
+    "icon-warning": {
+      "value": "#946400",
+      "type": "color",
+      "description": "Icon cảnh báo"
+    },
+    "icon-danger": {
+      "value": "#c9242d",
+      "type": "color",
+      "description": "Icon lỗi / danger"
+    },
+    "icon-info": {
+      "value": "#007899",
+      "type": "color",
+      "description": "Icon thông tin"
+    }
+  },
+  "Primitives": {
+    "neutral-dark-0": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Dark scale step 0"
+    },
+    "neutral-dark-10": {
+      "value": "#d9dde3",
+      "type": "color",
+      "description": "Dark scale step 10"
+    },
+    "neutral-dark-20": {
+      "value": "#c7ced6",
+      "type": "color",
+      "description": "Dark scale step 20"
+    },
+    "neutral-dark-30": {
+      "value": "#b5bec9",
+      "type": "color",
+      "description": "Dark scale step 30"
+    },
+    "neutral-dark-40": {
+      "value": "#a3aebd",
+      "type": "color",
+      "description": "Dark scale step 40"
+    },
+    "neutral-dark-50": {
+      "value": "#929fb0",
+      "type": "color",
+      "description": "Dark scale step 50"
+    },
+    "neutral-dark-60": {
+      "value": "#8392a5",
+      "type": "color",
+      "description": "Dark scale step 60"
+    },
+    "neutral-dark-70": {
+      "value": "#718298",
+      "type": "color",
+      "description": "Dark scale step 70"
+    },
+    "neutral-dark-80": {
+      "value": "#65758b",
+      "type": "color",
+      "description": "Dark scale step 80"
+    },
+    "neutral-dark-90": {
+      "value": "#5a697c",
+      "type": "color",
+      "description": "Dark scale step 90"
+    },
+    "neutral-dark-100": {
+      "value": "#515f70",
+      "type": "color",
+      "description": "Dark scale step 100"
+    },
+    "neutral-dark-200": {
+      "value": "#475262",
+      "type": "color",
+      "description": "Dark scale step 200"
+    },
+    "neutral-dark-300": {
+      "value": "#3f4855",
+      "type": "color",
+      "description": "Dark scale step 300"
+    },
+    "neutral-dark-400": {
+      "value": "#373f49",
+      "type": "color",
+      "description": "Dark scale step 400"
+    },
+    "neutral-dark-500": {
+      "value": "#2f353d",
+      "type": "color",
+      "description": "Dark scale step 500"
+    },
+    "neutral-dark-600": {
+      "value": "#262b31",
+      "type": "color",
+      "description": "Dark scale step 600"
+    },
+    "neutral-dark-700": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Dark scale step 700"
+    },
+    "neutral-dark-800": {
+      "value": "#17191c",
+      "type": "color",
+      "description": "Dark scale step 800"
+    },
+    "neutral-dark-900": {
+      "value": "#101213",
+      "type": "color",
+      "description": "Dark scale step 900"
+    },
+    "neutral-light-0": {
+      "value": "#ffffff",
+      "type": "color",
+      "description": "Light scale step 0"
+    },
+    "neutral-light-50": {
+      "value": "#f7f9fb",
+      "type": "color",
+      "description": "Light scale step 50"
+    },
+    "neutral-light-100": {
+      "value": "#eef1f5",
+      "type": "color",
+      "description": "Light scale step 100"
+    },
+    "neutral-light-150": {
+      "value": "#e5e8ec",
+      "type": "color",
+      "description": "Light scale step 150"
+    },
+    "neutral-light-200": {
+      "value": "#e3e8ef",
+      "type": "color",
+      "description": "Light scale step 200"
+    },
+    "neutral-light-300": {
+      "value": "#d4dce8",
+      "type": "color",
+      "description": "Light scale step 300"
+    },
+    "neutral-light-400": {
+      "value": "#bcc8d8",
+      "type": "color",
+      "description": "Light scale step 400"
+    },
+    "neutral-light-500": {
+      "value": "#a0b0c4",
+      "type": "color",
+      "description": "Light scale step 500"
+    },
+    "neutral-light-600": {
+      "value": "#65758b",
+      "type": "color",
+      "description": "Light scale step 600"
+    },
+    "neutral-light-700": {
+      "value": "#515f70",
+      "type": "color",
+      "description": "Light scale step 700"
+    },
+    "neutral-light-800": {
+      "value": "#3f4855",
+      "type": "color",
+      "description": "Light scale step 800"
+    },
+    "neutral-light-900": {
+      "value": "#202328",
+      "type": "color",
+      "description": "Light scale step 900"
+    },
+    "color-blue-75": {
+      "value": "#b3d4ff",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-blue-100": {
+      "value": "#4c9aff",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-blue-200": {
+      "value": "#2684ff",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-blue-300": {
+      "value": "#0065ff",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-blue-400": {
+      "value": "#0052cc",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-green-200": {
+      "value": "#57d9a3",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-green-300": {
+      "value": "#36b37e",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-red-300": {
+      "value": "#fa4d56",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-red-400": {
+      "value": "#da1e28",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-red-500": {
+      "value": "#b81922",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-yellow-300": {
+      "value": "#ffab00",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-yellow-400": {
+      "value": "#ff991f",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-teal-200": {
+      "value": "#00c7e6",
+      "type": "color",
+      "description": "Accent / status primitive"
+    },
+    "color-teal-300": {
+      "value": "#00b8d9",
+      "type": "color",
+      "description": "Accent / status primitive"
+    }
+  }
+}

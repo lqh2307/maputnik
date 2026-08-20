@@ -1,0 +1,329 @@
+/*
+ * TĐHCH — Color Design Tokens
+ * Nguồn sự thật duy nhất · Cập nhật 28/04/2026
+ * 4 themes: Black (dark) · Blue (light-blue) · Grey (light-grey) · White (light-pure)
+ *
+ * Cách dùng:
+ *   <html data-theme="black">  |  <html data-theme="blue">
+ *   <html data-theme="grey">   |  <html data-theme="white">
+ *
+ * Mỗi token là 1 CSS custom property: --{token-name}
+ * Ví dụ: background: var(--bg-card);  color: var(--text-primary);
+ */
+
+/* ── BLACK THEME ───────────────────────────────────────────────── */
+[data-theme="black"] {
+  /* text */
+  --text-primary: #ffffff; /* Chữ chính — heading, tên đơn vị */
+  --text-secondary: #a3aebd; /* Chữ phụ — body text, mô tả */
+  --text-tertiary: #8392a5; /* Timestamp / meta / caption */
+  --text-placeholder: #718298; /* Placeholder trong input (exempt) */
+  --text-disabled: #718298; /* Chữ disabled (exempt) */
+  --text-link: #4c9aff; /* Hyperlink / clickable text */
+  --text-tab-active: #4c9aff; /* Label tab đang chọn */
+  --text-tab-inactive: #718298; /* Label tab không chọn */
+  --text-on-primary: #ffffff; /* Chữ trên nút Primary — 4.9:1 */
+  --text-on-danger: #ffffff; /* Chữ trên nút Danger — 5.0:1 */
+  --text-on-badge: #ffffff; /* Chữ trên badge (dark text trên light badge) */
+
+  /* bg */
+  --bg-page: #101213; /* Nền app / trang chính */
+  --bg-modal: #17191c; /* Dialog / modal / panel */
+  --bg-sidebar: #17191c; /* Sidebar / drawer panel */
+  --bg-card: #202328; /* Card / surface chính */
+  --bg-row-light: #2f353d; /* Row sáng — striped table */
+  --bg-row-dark: #262b31; /* Row tối — striped alt */
+  --bg-row-hover: #2a3040; /* Row hover state */
+  --bg-selected: #162849; /* Item được chọn (active) */
+  --bg-input: #202328; /* Input field background */
+  --bg-tooltip: #3f4855; /* Tooltip container */
+  --bg-overlay: #1a1f2e; /* Modal backdrop overlay */
+  --bg-button-primary: #0065ff; /* Nút Primary default */
+  --bg-button-primary-hover: #0052cc; /* Nút Primary hover */
+  --bg-button-secondary: #262b31; /* Nút Secondary default */
+  --bg-button-secondary-hover: #2f353d; /* Nút Secondary hover */
+  --bg-button-ghost-hover: #2f353d; /* Ghost button hover bg */
+  --bg-button-danger: #da1e28; /* Nút Danger default */
+  --bg-button-danger-hover: #b81922; /* Nút Danger hover */
+  --bg-button-icon: #101213; /* Icon-only button */
+  --bg-button-icon-hover: #17191c; /* Icon button hover */
+  --bg-badge-success: #36b37e; /* Badge Success bg */
+  --bg-badge-error: #fa4d56; /* Badge Error bg */
+  --bg-badge-warning: #ffab00; /* Badge Warning bg */
+  --bg-badge-info: #00b8d9; /* Badge Info bg */
+
+  /* border */
+  --border-default: #515f70; /* Viền chung — card, input */
+  --border-subtle: #262b31; /* Divider nhẹ — row separator */
+  --border-strong: #718298; /* Viền nổi bật */
+  --border-card: #373f49; /* Viền card / panel */
+  --border-disabled: #373f49; /* Disabled border (exempt) */
+  --border-input: #515f70; /* Input field viền default */
+  --border-focus: #2684ff; /* Focus ring */
+  --border-selected: #0065ff; /* Item đang được chọn */
+  --border-error: #fa4d56; /* Input / field lỗi */
+  --border-warning: #ffab00; /* Cảnh báo */
+  --border-success: #36b37e; /* Thành công */
+
+  /* icon */
+  --icon-primary: #ffffff; /* Icon chính */
+  --icon-secondary: #a3aebd; /* Icon phụ / muted */
+  --icon-tertiary: #8392a5; /* Icon rất nhẹ / decorative */
+  --icon-disabled: #718298; /* Icon disabled (exempt) */
+  --icon-on-color: #ffffff; /* Icon trên nút Primary / Danger */
+  --icon-accent: #4c9aff; /* Icon active / primary blue */
+  --icon-success: #57d9a3; /* Icon thành công */
+  --icon-warning: #ffab00; /* Icon cảnh báo */
+  --icon-danger: #fa4d56; /* Icon lỗi / danger */
+  --icon-info: #00b8d9; /* Icon thông tin */
+}
+
+/* ── BLUE THEME ────────────────────────────────────────────────── */
+[data-theme="blue"] {
+  /* text */
+  --text-primary: #202328; /* Chữ chính — heading, tên đơn vị */
+  --text-secondary: #515f70; /* Chữ phụ — body text, mô tả */
+  --text-tertiary: #65758b; /* Timestamp / meta / caption */
+  --text-placeholder: #a0b0c4; /* Placeholder trong input (exempt) */
+  --text-disabled: #a0b0c4; /* Chữ disabled (exempt) */
+  --text-link: #0065ff; /* Hyperlink / clickable text */
+  --text-tab-active: #0065ff; /* Label tab đang chọn */
+  --text-tab-inactive: #a0b0c4; /* Label tab không chọn */
+  --text-on-primary: #ffffff; /* Chữ trên nút Primary — 4.9:1 */
+  --text-on-danger: #ffffff; /* Chữ trên nút Danger — 5.0:1 */
+  --text-on-badge: #202328; /* Chữ trên badge (dark text trên light badge) */
+
+  /* bg */
+  --bg-page: #dbeaff; /* Nền app / trang chính */
+  --bg-modal: #ffffff; /* Modal / dialog — white nổi trên blue page */
+  --bg-sidebar: #ffffff; /* Sidebar panel — white (giữ nguyên giá trị đúng) */
+  --bg-card: #ffffff; /* Card / surface chính */
+  --bg-row-light: #f0f6ff; /* Row sáng trên white modal — blue tint rất nhạt */
+  --bg-row-dark: #e4eeff; /* Row alt trên white modal — blue tint nhẹ */
+  --bg-row-hover: #e0ecff; /* Row hover trên white */
+  --bg-selected: #d4e4ff; /* Item selected — blue tint medium */
+  --bg-input: #ffffff; /* Input field — white (giữ nguyên) */
+  --bg-tooltip: #202328; /* Tooltip — dark bg giữ nguyên */
+  --bg-overlay: #1a1f2e; /* Modal backdrop overlay */
+  --bg-button-primary: #0065ff; /* Nút Primary default */
+  --bg-button-primary-hover: #0052cc; /* Nút Primary hover */
+  --bg-button-secondary: #e4eeff; /* Btn secondary trên white — blue tint nhẹ */
+  --bg-button-secondary-hover: #dbeaff; /* Btn secondary hover */
+  --bg-button-ghost-hover: #eef5ff; /* Ghost hover trên white */
+  --bg-button-danger: #da1e28; /* Nút Danger default */
+  --bg-button-danger-hover: #b81922; /* Nút Danger hover */
+  --bg-button-icon: #eef5ff; /* Icon btn trên white */
+  --bg-button-icon-hover: #e0ecff; /* Icon btn hover */
+  --bg-badge-success: #36b37e; /* Badge Success bg */
+  --bg-badge-error: #fa4d56; /* Badge Error bg */
+  --bg-badge-warning: #ffab00; /* Badge Warning bg */
+  --bg-badge-info: #00b8d9; /* Badge Info bg */
+
+  /* border */
+  --border-default: #c4d8f0; /* Viền chung trên white — blue-grey */
+  --border-subtle: #ddeaf8; /* Divider nhẹ trên white */
+  --border-strong: #a8c0dc; /* Viền nổi bật */
+  --border-card: #c4d8f0; /* Viền card trên white */
+  --border-disabled: #c8daf0; /* Disabled border (exempt) */
+  --border-input: #c4d8f0; /* Input border trên white */
+  --border-focus: #0052cc; /* Focus ring */
+  --border-selected: #0065ff; /* Item đang được chọn */
+  --border-error: #fa4d56; /* Input / field lỗi */
+  --border-warning: #ffab00; /* Cảnh báo */
+  --border-success: #36b37e; /* Thành công */
+
+  /* icon */
+  --icon-primary: #202328; /* Icon chính */
+  --icon-secondary: #515f70; /* Icon phụ / muted */
+  --icon-tertiary: #65758b; /* Icon rất nhẹ / decorative */
+  --icon-disabled: #a0b0c4; /* Icon disabled (exempt) */
+  --icon-on-color: #ffffff; /* Icon trên nút Primary / Danger */
+  --icon-accent: #0065ff; /* Icon active / primary blue */
+  --icon-success: #1d8a5e; /* Icon thành công */
+  --icon-warning: #946400; /* Icon cảnh báo */
+  --icon-danger: #c9242d; /* Icon lỗi / danger */
+  --icon-info: #007899; /* Icon thông tin */
+}
+
+/* ── GREY THEME ────────────────────────────────────────────────── */
+[data-theme="grey"] {
+  /* text */
+  --text-primary: #202328; /* Chữ chính — heading, tên đơn vị */
+  --text-secondary: #515f70; /* Chữ phụ — body text, mô tả */
+  --text-tertiary: #65758b; /* Timestamp / meta / caption */
+  --text-placeholder: #a0b0c4; /* Placeholder trong input (exempt) */
+  --text-disabled: #a0b0c4; /* Chữ disabled (exempt) */
+  --text-link: #0065ff; /* Hyperlink / clickable text */
+  --text-tab-active: #0065ff; /* Label tab đang chọn */
+  --text-tab-inactive: #a0b0c4; /* Label tab không chọn */
+  --text-on-primary: #ffffff; /* Chữ trên nút Primary — 4.9:1 */
+  --text-on-danger: #ffffff; /* Chữ trên nút Danger — 5.0:1 */
+  --text-on-badge: #202328; /* Chữ trên badge (dark text trên light badge) */
+
+  /* bg */
+  --bg-page: #eef1f5; /* Nền app / trang chính */
+  --bg-modal: #ffffff; /* Dialog / modal / panel */
+  --bg-sidebar: #eef1f5; /* Sidebar / drawer panel */
+  --bg-card: #ffffff; /* Card / surface chính */
+  --bg-row-light: #f7f9fb; /* Row sáng — striped table */
+  --bg-row-dark: #eef1f5; /* Row tối — striped alt */
+  --bg-row-hover: #eef3f8; /* Row hover state */
+  --bg-selected: #ddeeff; /* Item được chọn (active) */
+  --bg-input: #ffffff; /* Input field background */
+  --bg-tooltip: #202328; /* Tooltip container */
+  --bg-overlay: #1a1f2e; /* Modal backdrop overlay */
+  --bg-button-primary: #0065ff; /* Nút Primary default */
+  --bg-button-primary-hover: #0052cc; /* Nút Primary hover */
+  --bg-button-secondary: #eef1f5; /* Nút Secondary default */
+  --bg-button-secondary-hover: #f7f9fb; /* Nút Secondary hover */
+  --bg-button-ghost-hover: #f7f9fb; /* Ghost button hover bg */
+  --bg-button-danger: #da1e28; /* Nút Danger default */
+  --bg-button-danger-hover: #b81922; /* Nút Danger hover */
+  --bg-button-icon: #eef1f5; /* Icon-only button */
+  --bg-button-icon-hover: #f7f9fb; /* Icon button hover */
+  --bg-badge-success: #36b37e; /* Badge Success bg */
+  --bg-badge-error: #fa4d56; /* Badge Error bg */
+  --bg-badge-warning: #ffab00; /* Badge Warning bg */
+  --bg-badge-info: #00b8d9; /* Badge Info bg */
+
+  /* border */
+  --border-default: #d4dce8; /* Viền chung — card, input */
+  --border-subtle: #e3e8ef; /* Divider nhẹ — row separator */
+  --border-strong: #bcc8d8; /* Viền nổi bật */
+  --border-card: #d4dce8; /* Viền card / panel */
+  --border-disabled: #d4dce8; /* Disabled border (exempt) */
+  --border-input: #d4dce8; /* Input field viền default */
+  --border-focus: #0052cc; /* Focus ring */
+  --border-selected: #0065ff; /* Item đang được chọn */
+  --border-error: #fa4d56; /* Input / field lỗi */
+  --border-warning: #ffab00; /* Cảnh báo */
+  --border-success: #36b37e; /* Thành công */
+
+  /* icon */
+  --icon-primary: #202328; /* Icon chính */
+  --icon-secondary: #515f70; /* Icon phụ / muted */
+  --icon-tertiary: #65758b; /* Icon rất nhẹ / decorative */
+  --icon-disabled: #a0b0c4; /* Icon disabled (exempt) */
+  --icon-on-color: #ffffff; /* Icon trên nút Primary / Danger */
+  --icon-accent: #0065ff; /* Icon active / primary blue */
+  --icon-success: #1d8a5e; /* Icon thành công */
+  --icon-warning: #946400; /* Icon cảnh báo */
+  --icon-danger: #c9242d; /* Icon lỗi / danger */
+  --icon-info: #007899; /* Icon thông tin */
+}
+
+/* ── WHITE THEME ───────────────────────────────────────────────── */
+[data-theme="white"] {
+  /* text */
+  --text-primary: #202328; /* Chữ chính — heading, tên đơn vị */
+  --text-secondary: #515f70; /* Chữ phụ — body text, mô tả */
+  --text-tertiary: #65758b; /* Timestamp / meta / caption */
+  --text-placeholder: #a0b0c4; /* Placeholder trong input (exempt) */
+  --text-disabled: #a0b0c4; /* Chữ disabled (exempt) */
+  --text-link: #0065ff; /* Hyperlink / clickable text */
+  --text-tab-active: #0065ff; /* Label tab đang chọn */
+  --text-tab-inactive: #a0b0c4; /* Label tab không chọn */
+  --text-on-primary: #ffffff; /* Chữ trên nút Primary — 4.9:1 */
+  --text-on-danger: #ffffff; /* Chữ trên nút Danger — 5.0:1 */
+  --text-on-badge: #202328; /* Chữ trên badge (dark text trên light badge) */
+
+  /* bg */
+  --bg-page: #ffffff; /* Nền app / trang chính */
+  --bg-modal: #f4f5f7; /* Dialog / modal / panel */
+  --bg-sidebar: #f4f5f7; /* Sidebar / drawer panel */
+  --bg-card: #ffffff; /* Card / surface chính */
+  --bg-row-light: #eef1f5; /* Row sáng — striped table */
+  --bg-row-dark: #e6e9ee; /* Row tối — striped alt */
+  --bg-row-hover: #edf0f4; /* Row hover state */
+  --bg-selected: #dce8f6; /* Item được chọn (active) */
+  --bg-input: #ffffff; /* Input field background */
+  --bg-tooltip: #202328; /* Tooltip container */
+  --bg-overlay: #1a1f2e; /* Modal backdrop overlay */
+  --bg-button-primary: #0065ff; /* Nút Primary default */
+  --bg-button-primary-hover: #0052cc; /* Nút Primary hover */
+  --bg-button-secondary: #ffffff; /* Nút Secondary default */
+  --bg-button-secondary-hover: #eaecef; /* Nút Secondary hover */
+  --bg-button-ghost-hover: #f0f2f5; /* Ghost button hover bg */
+  --bg-button-danger: #da1e28; /* Nút Danger default */
+  --bg-button-danger-hover: #b81922; /* Nút Danger hover */
+  --bg-button-icon: #f0f2f5; /* Icon-only button */
+  --bg-button-icon-hover: #e8eaee; /* Icon button hover */
+  --bg-badge-success: #36b37e; /* Badge Success bg */
+  --bg-badge-error: #fa4d56; /* Badge Error bg */
+  --bg-badge-warning: #ffab00; /* Badge Warning bg */
+  --bg-badge-info: #00b8d9; /* Badge Info bg */
+
+  /* border */
+  --border-default: #dce3ea; /* Viền chung — card, input */
+  --border-subtle: #e6e9ee; /* Divider nhẹ — row separator */
+  --border-strong: #bcc8d8; /* Viền nổi bật */
+  --border-card: #dce3ea; /* Viền card / panel */
+  --border-disabled: #dce3ea; /* Disabled border (exempt) */
+  --border-input: #dce3ea; /* Input field viền default */
+  --border-focus: #0052cc; /* Focus ring */
+  --border-selected: #0065ff; /* Item đang được chọn */
+  --border-error: #fa4d56; /* Input / field lỗi */
+  --border-warning: #ffab00; /* Cảnh báo */
+  --border-success: #36b37e; /* Thành công */
+
+  /* icon */
+  --icon-primary: #202328; /* Icon chính */
+  --icon-secondary: #515f70; /* Icon phụ / muted */
+  --icon-tertiary: #65758b; /* Icon rất nhẹ / decorative */
+  --icon-disabled: #a0b0c4; /* Icon disabled (exempt) */
+  --icon-on-color: #ffffff; /* Icon trên nút Primary / Danger */
+  --icon-accent: #0065ff; /* Icon active / primary blue */
+  --icon-success: #1d8a5e; /* Icon thành công */
+  --icon-warning: #946400; /* Icon cảnh báo */
+  --icon-danger: #c9242d; /* Icon lỗi / danger */
+  --icon-info: #007899; /* Icon thông tin */
+}
+
+/* ── PRIMITIVES (raw palette — do not use directly in components) ─ */
+:root {
+  --primitive-neutral-dark-0: #ffffff;
+  --primitive-neutral-dark-10: #d9dde3;
+  --primitive-neutral-dark-20: #c7ced6;
+  --primitive-neutral-dark-30: #b5bec9;
+  --primitive-neutral-dark-40: #a3aebd;
+  --primitive-neutral-dark-50: #929fb0;
+  --primitive-neutral-dark-60: #8392a5;
+  --primitive-neutral-dark-70: #718298;
+  --primitive-neutral-dark-80: #65758b;
+  --primitive-neutral-dark-90: #5a697c;
+  --primitive-neutral-dark-100: #515f70;
+  --primitive-neutral-dark-200: #475262;
+  --primitive-neutral-dark-300: #3f4855;
+  --primitive-neutral-dark-400: #373f49;
+  --primitive-neutral-dark-500: #2f353d;
+  --primitive-neutral-dark-600: #262b31;
+  --primitive-neutral-dark-700: #202328;
+  --primitive-neutral-dark-800: #17191c;
+  --primitive-neutral-dark-900: #101213;
+  --primitive-neutral-light-0: #ffffff;
+  --primitive-neutral-light-50: #f7f9fb;
+  --primitive-neutral-light-100: #eef1f5;
+  --primitive-neutral-light-150: #e5e8ec;
+  --primitive-neutral-light-200: #e3e8ef;
+  --primitive-neutral-light-300: #d4dce8;
+  --primitive-neutral-light-400: #bcc8d8;
+  --primitive-neutral-light-500: #a0b0c4;
+  --primitive-neutral-light-600: #65758b;
+  --primitive-neutral-light-700: #515f70;
+  --primitive-neutral-light-800: #3f4855;
+  --primitive-neutral-light-900: #202328;
+  --primitive-color-blue-75: #b3d4ff;
+  --primitive-color-blue-100: #4c9aff;
+  --primitive-color-blue-200: #2684ff;
+  --primitive-color-blue-300: #0065ff;
+  --primitive-color-blue-400: #0052cc;
+  --primitive-color-green-200: #57d9a3;
+  --primitive-color-green-300: #36b37e;
+  --primitive-color-red-300: #fa4d56;
+  --primitive-color-red-400: #da1e28;
+  --primitive-color-red-500: #b81922;
+  --primitive-color-yellow-300: #ffab00;
+  --primitive-color-yellow-400: #ff991f;
+  --primitive-color-teal-200: #00c7e6;
+  --primitive-color-teal-300: #00b8d9;
+}

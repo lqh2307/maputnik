@@ -1,12 +1,11 @@
-import { EditableLayer, LayerSection, MapMode } from "../layouts/Types";
 import { GlobalAction, GlobalStore, LayerPlacement } from "./Types";
+import { EditableLayer, LayerSection } from "../layouts/Types";
 import { DEFAULT_STYLE } from "../layouts/Constants";
 import {
   LayerSpecification,
   SourceSpecification,
   StyleSpecification,
 } from "maplibre-gl";
-import { ThemeMode } from "../components/AppTheme";
 import { ViewState } from "react-map-gl/maplibre";
 import { create } from "zustand";
 import {
@@ -32,21 +31,6 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
   // =========================
   // Start Methods
   // =========================
-
-  /** Switches the map interaction mode between navigation and feature inspection. */
-  function setMapMode(mapMode: MapMode): void {
-    set({
-      mapMode,
-      inspectorFeatures: [],
-    });
-  }
-
-  /** Updates the application theme preference. */
-  function setTheme(theme: ThemeMode): void {
-    set({
-      themeMode: theme,
-    });
-  }
 
   /** Stores the current layer search query. */
   function setSearch(search: string): void {
@@ -567,8 +551,6 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
 
     style: initialStyle,
     selectedLayerId: initialStyle.layers[0]?.id,
-    mapMode: "map",
-    themeMode: "system",
     search: "",
     layerTypeFilter: "all",
     collapsedGroups: new Set(),
@@ -591,8 +573,6 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
     // Methods
     // =========================
 
-    setMapMode,
-    setTheme,
     setSearch,
     setLayerTypeFilter,
     toggleGroup,

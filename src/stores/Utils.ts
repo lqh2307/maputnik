@@ -1,6 +1,6 @@
 import { LayerSpecification, StyleSpecification } from "maplibre-gl";
-import { GlobalStore, DialogStore } from "./Types";
 import { DEFAULT_STYLE } from "../layouts/Constants";
+import { GlobalStore, DialogStore } from "./Types";
 import { cloneStyle } from "../layouts/Utils";
 
 /** Browser persistence key for the active MapLibre style document. */
@@ -101,8 +101,6 @@ export function createInitGlobalStore(
   return {
     style: initialStyle,
     selectedLayerId: initialStyle.layers[0]?.id,
-    mapMode: "map",
-    themeMode: "system",
     search: "",
     layerTypeFilter: "all",
     collapsedGroups: new Set(),

@@ -9,7 +9,7 @@ import {
   TroubleshootRounded,
 } from "@mui/icons-material";
 import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { useDialogStore, useGlobalStore } from "../../stores";
+import { useDialogStore, useMapModeStore, useThemeStore } from "../../stores";
 import { ToolbarAction } from "./ToolbarAction";
 import { TopBarActionProp } from "./Types";
 import { useTranslation } from "react-i18next";
@@ -22,11 +22,11 @@ export const TopBarAction = React.memo(
   ({ compact = false }: TopBarActionProp): React.JSX.Element => {
     const { t } = useTranslation("editor");
 
-    const mapMode = useGlobalStore((state) => {
+    const mapMode = useMapModeStore((state) => {
       return state.mapMode;
     });
 
-    const theme = useGlobalStore((state) => {
+    const theme = useThemeStore((state) => {
       return state.themeMode;
     });
 
@@ -34,11 +34,11 @@ export const TopBarAction = React.memo(
       return state.code;
     });
 
-    const setMapMode = useGlobalStore((state) => {
+    const setMapMode = useMapModeStore((state) => {
       return state.setMapMode;
     });
 
-    const setTheme = useGlobalStore((state) => {
+    const setTheme = useThemeStore((state) => {
       return state.setTheme;
     });
 

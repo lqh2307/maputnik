@@ -17,7 +17,7 @@ import Map, {
   type MapLayerMouseEvent,
 } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { useGlobalStore } from "../../stores";
+import { useGlobalStore, useMapModeStore } from "../../stores";
 import { summarizeFeature, validateStyleDocument } from "../Utils";
 import { HoverInspector } from "./Types";
 import { useTranslation } from "react-i18next";
@@ -30,7 +30,7 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
     return state.style;
   });
 
-  const mapMode = useGlobalStore((state) => {
+  const mapMode = useMapModeStore((state) => {
     return state.mapMode;
   });
 
@@ -101,6 +101,7 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
   React.useEffect(() => {
     if (mapMode !== "inspect") {
       setHoverInspector(undefined);
+      setInspectorFeatures([]);
     }
   }, [mapMode]);
 

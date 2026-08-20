@@ -1,4 +1,3 @@
-import { useDialogStore, useGlobalStore } from "../../stores";
 import { AppTheme } from "../../components/AppTheme";
 import { CodeEditor } from "../CodeEditor";
 import { BottomBar } from "../BottomBar";
@@ -9,10 +8,16 @@ import { Box } from "@mui/material";
 import { Dialog } from "../Dialog";
 import { TopBar } from "../TopBar";
 import React from "react";
+import {
+  useMapModeStore,
+  useDialogStore,
+  useGlobalStore,
+  useThemeStore,
+} from "../../stores";
 
 /** Renders the complete Maputnik editing workspace layout. */
 export const Editor = React.memo((): React.JSX.Element => {
-  const themeMode = useGlobalStore((state) => {
+  const themeMode = useThemeStore((state) => {
     return state.themeMode;
   });
 
@@ -24,6 +29,7 @@ export const Editor = React.memo((): React.JSX.Element => {
     return {
       keyDown: (event: KeyboardEvent): void => {
         const state = useGlobalStore.getState();
+        const mapModeState = useMapModeStore.getState();
         const dialogState = useDialogStore.getState();
         const modifier = event.ctrlKey || event.metaKey;
         const target = event.target as HTMLElement;
@@ -91,7 +97,9 @@ export const Editor = React.memo((): React.JSX.Element => {
         ) {
           state.deleteLayer(state.selectedLayerId);
         } else if (workspaceActive && !isEditing && key === "i") {
-          state.setMapMode(state.mapMode === "inspect" ? "map" : "inspect");
+          mapModeState.setMapMode(
+            mapModeState.mapMode === "inspect" ? "map" : "inspect"
+          );
         } else if (!isEditing && event.key === "?") {
           dialogState.updateDialog({
             shortcuts: true,

@@ -1,13 +1,15 @@
 # Hệ thống store của Maputnik
 
-Thư mục [src/stores](./index.ts) chứa các Zustand store dùng để quản lý trạng thái của ứng dụng Maputnik Style Editor. Trạng thái tài liệu bản đồ và không gian làm việc được tập trung trong `useGlobalStore`, còn trạng thái hiển thị runtime của các dialog được quản lý độc lập trong `useDialogStore`.
+Thư mục [src/stores](./index.ts) chứa các Zustand store dùng để quản lý trạng thái của ứng dụng Maputnik Style Editor. Trạng thái tài liệu bản đồ và không gian làm việc được tập trung trong `useGlobalStore`, chế độ tương tác canvas nằm trong `useMapModeStore`, giao diện màu nằm trong `useThemeStore`, còn trạng thái hiển thị runtime của các dialog được quản lý độc lập trong `useDialogStore`.
 
 ## Các store hiện có
 
-| Store            | File                                 | Trách nhiệm                                                                                          |
-| ---------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| `useGlobalStore` | [GlobalStore.tsx](./GlobalStore.tsx) | Quản lý style hiện tại, layer, source, camera view, lịch sử undo/redo, dirty state và search/filter. |
-| `useDialogStore` | [DialogStore.tsx](./DialogStore.tsx) | Quản lý trạng thái mở/đóng dialog runtime của editor.                                                |
+| Store             | File                                   | Trách nhiệm                                                                                          |
+| ----------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `useGlobalStore`  | [GlobalStore.tsx](./GlobalStore.tsx)   | Quản lý style hiện tại, layer, source, camera view, lịch sử undo/redo, dirty state và search/filter. |
+| `useMapModeStore` | [MapModeStore.tsx](./MapModeStore.tsx) | Quản lý chế độ điều hướng/kiểm tra feature của map canvas.                                           |
+| `useThemeStore`   | [ThemeStore.tsx](./ThemeStore.tsx)     | Quản lý giao diện màu của application shell.                                                         |
+| `useDialogStore`  | [DialogStore.tsx](./DialogStore.tsx)   | Quản lý trạng thái mở/đóng dialog runtime của editor.                                                |
 
 Các type public được định nghĩa trong [Types.tsx](./Types.tsx). `index.ts` re-export các store và type để các UI component trong [src/layouts](../layouts/index.ts) có thể import đúng cách.
 
@@ -17,8 +19,6 @@ Các type public được định nghĩa trong [Types.tsx](./Types.tsx). `index.
 useGlobalStore
 ├── style: StyleSpecification
 ├── selectedLayerId?: string
-├── mapMode: "map" | "inspect"
-├── themeMode: ThemeMode ("system" | "black" | "blue" | "grey" | "white")
 ├── search: string
 ├── layerTypeFilter: string
 ├── collapsedGroups: Set<string>
@@ -31,13 +31,22 @@ useGlobalStore
     ├── Style lifecycle: loadStyle, replaceStyle, newStyle, updateRoot, markSaved
     ├── Layer lifecycle: addLayer, updateLayer, updateLayerProperty, deleteLayer, duplicateLayer, copyLayer, pasteLayer, toggleLayerVisibility, moveLayer, selectLayer
     ├── Source lifecycle: upsertSource, deleteSource
-    ├── View/UI: setMapMode, setTheme, setSearch, setLayerTypeFilter, toggleGroup, setInspectorFeatures, setViewState
+    ├── View/UI: setSearch, setLayerTypeFilter, toggleGroup, setInspectorFeatures, setViewState
     └── History: undo, redo
+
+useMapModeStore
+├── mapMode: "map" | "inspect"
+└── actions: setMapMode
+
+useThemeStore
+├── themeMode: ThemeMode ("system" | "black" | "blue" | "grey" | "white")
+└── actions: setTheme
 ```
 
 ## `useGlobalStore` chi tiết
 
 ### 1. Quản lý Style & Root
+
 - `loadStyle(style)`: Nạp một style mới từ tệp, URL hoặc thư viện mẫu. Khởi tạo camera view và làm mới lịch sử.
 - `newStyle()`: Đặt lại editor về template mặc định tích hợp sẵn.
 - `replaceStyle(style)`: Thay thế toàn bộ style đang chỉnh sửa và ghi một snapshot lịch sử.
@@ -45,6 +54,7 @@ useGlobalStore
 - `markSaved()`: Đánh dấu style đã được lưu, xóa cờ `dirty`.
 
 ### 2. Quản lý Layers
+
 - `addLayer(type, sourceId)`: Tạo một layer mới với ID duy nhất và đưa vào danh sách layers.
 - `updateLayer(layerId, patch)`: Cập nhật cấu hình của layer hoặc đổi type/source tương ứng.
 - `updateLayerProperty(layerId, section, property, value)`: Cập nhật một thuộc tính paint hoặc layout cụ thể.
@@ -56,17 +66,28 @@ useGlobalStore
 - `selectLayer(layerId)`: Chọn layer active để hiển thị trên property panel.
 
 ### 3. Quản lý Sources
+
 - `upsertSource(sourceId, source, previousId)`: Thêm hoặc cập nhật một source (vector, raster, geojson, raster-dem, image, video). Khi source đổi ID, các layer tham chiếu sẽ được tự động cập nhật.
 - `deleteSource(sourceId)`: Xóa source và xóa tất cả các layer đang tham chiếu tới source đó.
 
 ### 4. Lịch sử & Undo/Redo
+
 - `undo()`: Khôi phục lại trạng thái style liền trước trong ngăn xếp `history.past`.
 - `redo()`: Khôi phục lại trạng thái style trong ngăn xếp `history.future`.
 - `commitEditorStyle`: Tạo bản sao sâu của style hiện tại, áp dụng mutation draft, tự động lưu vào `localStorage` và ghi snapshot lịch sử (giới hạn tối đa 80 bước).
 
+## `useMapModeStore` chi tiết
+
+Map mode store quản lý riêng chế độ tương tác của canvas. `setMapMode("map" | "inspect")` chuyển giữa điều hướng bản đồ và kiểm tra feature.
+
+## `useThemeStore` chi tiết
+
+Theme store quản lý riêng giao diện màu của application shell. `setTheme(theme)` cập nhật theme hiện tại.
+
 ## `useDialogStore` chi tiết
 
 Dialog store lưu trạng thái mở/đóng độc lập của các modal dialog trong editor:
+
 - `code`: Modal trình chỉnh sửa mã JSON trực tiếp.
 - `open`: Modal mở style (từ gallery, URL hoặc tệp tải lên).
 - `export`: Modal xuất style (tải JSON, copy URL, cấu hình export).
@@ -75,12 +96,14 @@ Dialog store lưu trạng thái mở/đóng độc lập của các modal dialog
 - `shortcuts`: Modal danh sách phím tắt thao tác nhanh.
 
 Sử dụng:
+
 - `updateDialog({ open: true })`: Mở dialog cụ thể.
 - `closeDialogs()`: Đóng tất cả dialog cùng lúc.
 
 ## Helper trong Utils
 
 File [Utils.ts](./Utils.ts) cung cấp các hàm hỗ trợ:
+
 - `loadPersistedEditorStyle` / `persistEditorStyle`: Tương tác với `localStorage` (`maputnik-mui-style`).
 - `loadEditorLayerClipboard` / `persistEditorLayerClipboard`: Tương tác với clipboard layer (`maputnik-mui-layer-clipboard`).
 - `commitEditorStyle`: Bao đóng logic ghi nhận mutation style và cập nhật snapshot lịch sử.

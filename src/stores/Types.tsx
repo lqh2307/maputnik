@@ -34,10 +34,6 @@ export type GlobalStore = {
   style: StyleSpecification;
   /** Selected style layer identifier, if one is active. */
   selectedLayerId?: string;
-  /** Interaction mode of the map canvas: explore or feature inspection. */
-  mapMode: MapMode;
-  /** UI theme selection used by the application shell. */
-  themeMode: ThemeMode;
   /** Free-text search filter applied by the layer list. */
   search: string;
   /** Layer type filter used while browsing the layer panel. */
@@ -60,10 +56,6 @@ export type GlobalStore = {
  * Action methods exposed by `useGlobalStore` for style mutations and editor interactions.
  */
 export type GlobalAction = {
-  /** Switches the map interaction mode between navigation and feature inspection. */
-  setMapMode: (mode: MapMode) => void;
-  /** Updates the application theme preference. */
-  setTheme: (theme: ThemeMode) => void;
   /** Stores the current layer search query. */
   setSearch: (search: string) => void;
   /** Applies the layer-type filter in the left panel. */
@@ -127,8 +119,29 @@ export type GlobalAction = {
   markSaved: () => void;
 };
 
-/** Combined state and actions type for backwards compatibility. */
-export type EditorState = GlobalStore & GlobalAction;
+/** Interaction state of the map canvas. */
+export type MapModeStore = {
+  /** Current canvas mode: navigation or feature inspection. */
+  mapMode: MapMode;
+};
+
+/** Actions exposed by `useMapModeStore`. */
+export type MapModeAction = {
+  /** Switches the canvas between navigation and feature inspection. */
+  setMapMode: (mode: MapMode) => void;
+};
+
+/** Theme preference state of the application shell. */
+export type ThemeStore = {
+  /** Current application theme preference. */
+  themeMode: ThemeMode;
+};
+
+/** Actions exposed by `useThemeStore`. */
+export type ThemeAction = {
+  /** Updates the application theme preference. */
+  setTheme: (theme: ThemeMode) => void;
+};
 
 /** Runtime visibility state for editor dialogs. */
 export type DialogStore = {

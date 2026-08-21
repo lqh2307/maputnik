@@ -9,12 +9,16 @@ import {
   TroubleshootRounded,
 } from "@mui/icons-material";
 import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { useDialogStore, useMapModeStore, useThemeStore } from "../../stores";
+import {
+  useDialogStore,
+  useLanguageStore,
+  useMapModeStore,
+  useThemeStore,
+} from "../../stores";
 import { ToolbarAction } from "./ToolbarAction";
 import { TopBarActionProp } from "./Types";
 import { useTranslation } from "react-i18next";
 import { MapMode } from "../Types";
-import i18n from "../../locales/i18n";
 import React from "react";
 
 /** Renders global editor actions: Map/Inspect mode switcher, Theme toggle, Language toggle, Shortcuts. */
@@ -30,6 +34,10 @@ export const TopBarAction = React.memo(
       return state.themeMode;
     });
 
+    const language = useLanguageStore((state) => {
+      return state.language;
+    });
+
     const codeEditorOpen = useDialogStore((state) => {
       return state.code;
     });
@@ -40,6 +48,10 @@ export const TopBarAction = React.memo(
 
     const setTheme = useThemeStore((state) => {
       return state.setTheme;
+    });
+
+    const setLanguage = useLanguageStore((state) => {
+      return state.setLanguage;
     });
 
     const updateDialog = useDialogStore((state) => {
@@ -80,10 +92,7 @@ export const TopBarAction = React.memo(
           );
         },
         toggleLanguage: (): void => {
-          const language =
-            i18n.language === "english" ? "vietnamese" : "english";
-          localStorage.setItem("maputnik-language", language);
-          void i18n.changeLanguage(language);
+          setLanguage(language === "english" ? "vietnamese" : "english");
         },
         shortcuts: (): void => {
           updateDialog({
@@ -91,7 +100,15 @@ export const TopBarAction = React.memo(
           });
         },
       };
-    }, [codeEditorOpen, setMapMode, setTheme, theme, updateDialog]);
+    }, [
+      codeEditorOpen,
+      language,
+      setLanguage,
+      setMapMode,
+      setTheme,
+      theme,
+      updateDialog,
+    ]);
 
     const styles = React.useMemo(() => {
       return {

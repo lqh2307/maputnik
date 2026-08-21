@@ -1,3 +1,5 @@
+import { ThemeMode } from "../components/AppTheme";
+
 /** Configuration constant for image process url. */
 export const IMAGE_PROCESS_URL: string =
   (window as any).IMAGE_PROCESS_URL || "http://localhost:8080";
@@ -43,3 +45,9 @@ export const MAP_STYLES = (window as any).MAP_STYLES || [
 //   "https://release.c4i.vn/tiles4/styles/basic/style.json";
 /** Configuration constant for map style default. */
 export const MAP_STYLE_DEFAULT: string = MAP_STYLES[0].url;
+
+/** Configuration constant for default language. */
+export const DEFAULT_LANGUAGE: string = "vietnamese";
+
+/** Configuration constant for default theme mode. */
+export const DEFAULT_THEME_MODE: ThemeMode = "white";

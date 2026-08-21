@@ -1,5 +1,6 @@
 import { ThemeMode } from "../components/AppTheme";
 import { ThemeAction, ThemeStore } from "./Types";
+import { DEFAULT_THEME_MODE } from "../configs";
 import { create } from "zustand";
 
 /** Zustand hook for the application theme preference. */
@@ -24,7 +25,7 @@ export const useThemeStore = create<ThemeStore & ThemeAction>()((set) => {
     // Attributes
     // =========================
 
-    themeMode: "system",
+    themeMode: DEFAULT_THEME_MODE,
 
     // =========================
     // Methods

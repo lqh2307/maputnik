@@ -1,15 +1,16 @@
 # Hệ thống store của Maputnik
 
-Thư mục [src/stores](./index.ts) chứa các Zustand store dùng để quản lý trạng thái của ứng dụng Maputnik Style Editor. Trạng thái tài liệu bản đồ và không gian làm việc được tập trung trong `useGlobalStore`, chế độ tương tác canvas nằm trong `useMapModeStore`, giao diện màu nằm trong `useThemeStore`, còn trạng thái hiển thị runtime của các dialog được quản lý độc lập trong `useDialogStore`.
+Thư mục [src/stores](./index.ts) chứa các Zustand store dùng để quản lý trạng thái của ứng dụng Maputnik Style Editor. Trạng thái tài liệu bản đồ và không gian làm việc được tập trung trong `useGlobalStore`, chế độ tương tác canvas nằm trong `useMapModeStore`, giao diện màu nằm trong `useThemeStore`, ngôn ngữ giao diện nằm trong `useLanguageStore`, còn trạng thái hiển thị runtime của các dialog được quản lý độc lập trong `useDialogStore`.
 
 ## Các store hiện có
 
-| Store             | File                                   | Trách nhiệm                                                                                          |
-| ----------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `useGlobalStore`  | [GlobalStore.tsx](./GlobalStore.tsx)   | Quản lý style hiện tại, layer, source, camera view, lịch sử undo/redo, dirty state và search/filter. |
-| `useMapModeStore` | [MapModeStore.tsx](./MapModeStore.tsx) | Quản lý chế độ điều hướng/kiểm tra feature của map canvas.                                           |
-| `useThemeStore`   | [ThemeStore.tsx](./ThemeStore.tsx)     | Quản lý giao diện màu của application shell.                                                         |
-| `useDialogStore`  | [DialogStore.tsx](./DialogStore.tsx)   | Quản lý trạng thái mở/đóng dialog runtime của editor.                                                |
+| Store              | File                                    | Trách nhiệm                                                                                          |
+| ------------------ | --------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `useGlobalStore`   | [GlobalStore.tsx](./GlobalStore.tsx)    | Quản lý style hiện tại, layer, source, camera view, lịch sử undo/redo, dirty state và search/filter. |
+| `useMapModeStore`  | [MapModeStore.tsx](./MapModeStore.tsx)  | Quản lý chế độ điều hướng/kiểm tra feature của map canvas.                                           |
+| `useThemeStore`    | [ThemeStore.tsx](./ThemeStore.tsx)      | Quản lý giao diện màu của application shell.                                                         |
+| `useLanguageStore` | [LanguageStore.tsx](./LanguageStore.tsx)| Quản lý ngôn ngữ hiển thị của ứng dụng và đồng bộ với i18n/localStorage.                             |
+| `useDialogStore`   | [DialogStore.tsx](./DialogStore.tsx)    | Quản lý trạng thái mở/đóng dialog runtime của editor.                                                |
 
 Các type public được định nghĩa trong [Types.tsx](./Types.tsx). `index.ts` re-export các store và type để các UI component trong [src/layouts](../layouts/index.ts) có thể import đúng cách.
 
@@ -41,6 +42,10 @@ useMapModeStore
 useThemeStore
 ├── themeMode: ThemeMode ("system" | "black" | "blue" | "grey" | "white")
 └── actions: setTheme
+
+useLanguageStore
+├── language: string ("vietnamese" | "english")
+└── actions: setLanguage
 ```
 
 ## `useGlobalStore` chi tiết
@@ -81,9 +86,13 @@ useThemeStore
 Map mode store quản lý riêng chế độ tương tác của canvas. `setMapMode("map" | "inspect")` chuyển giữa điều hướng bản đồ và kiểm tra feature.
 
 ## `useThemeStore` chi tiết
-
+ 
 Theme store quản lý riêng giao diện màu của application shell. `setTheme(theme)` cập nhật theme hiện tại.
-
+ 
+## `useLanguageStore` chi tiết
+ 
+Language store quản lý ngôn ngữ hiển thị của ứng dụng. `setLanguage(language)` cập nhật ngôn ngữ hiện tại, lưu vào `localStorage` (`maputnik-language`) và kích hoạt chuyển đổi ngôn ngữ trong `i18n`.
+ 
 ## `useDialogStore` chi tiết
 
 Dialog store lưu trạng thái mở/đóng độc lập của các modal dialog trong editor:

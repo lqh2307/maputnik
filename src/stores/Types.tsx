@@ -119,6 +119,22 @@ export type GlobalAction = {
   markSaved: () => void;
 };
 
+/**
+ * Language preferences for the application
+ */
+export type LanguageStore = {
+  /** Current language of the application. */
+  language: string;
+};
+
+/**
+ * Action methods for language mutations.
+ */
+export type LanguageAction = {
+  /** Changes the language of the application. */
+  setLanguage: (language: string) => void;
+};
+
 /** Interaction state of the map canvas. */
 export type MapModeStore = {
   /** Current canvas mode: navigation or feature inspection. */

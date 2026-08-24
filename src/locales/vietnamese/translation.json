@@ -13,6 +13,8 @@
     "copyLayer": "Sao chép layer (Ctrl/Cmd+C)",
     "pasteLayer": "Dán layer (Ctrl/Cmd+V)",
     "editJson": "Chỉnh sửa JSON",
+    "fullscreen": "Toàn màn hình",
+    "exitFullscreen": "Thoát toàn màn hình",
     "sources": "Nguồn dữ liệu",
     "style": "Style",
     "settings": "Cài đặt style",

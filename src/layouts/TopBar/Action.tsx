@@ -1,6 +1,8 @@
 import {
   DarkModeRounded,
   DataObjectRounded,
+  FullscreenExitTwoTone,
+  FullscreenTwoTone,
   HelpOutlineRounded,
   LightModeRounded,
   MapRounded,
@@ -9,6 +11,7 @@ import {
   TroubleshootRounded,
 } from "@mui/icons-material";
 import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { setFullscreen } from "../../utils/Window";
 import {
   useDialogStore,
   useLanguageStore,
@@ -21,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { MapMode } from "../Types";
 import React from "react";
 
-/** Renders global editor actions: Map/Inspect mode switcher, Theme toggle, Language toggle, Shortcuts. */
+/** Renders global editor actions: Map/Inspect mode switcher, Fullscreen, Theme toggle, Language toggle, Shortcuts. */
 export const TopBarAction = React.memo(
   ({ compact = false }: TopBarActionProp): React.JSX.Element => {
     const { t } = useTranslation();
@@ -58,6 +61,25 @@ export const TopBarAction = React.memo(
       return state.updateDialog;
     });
 
+    const [isFullscreen, setIsFullscreen] = React.useState(() => {
+      return Boolean(document.fullscreenElement);
+    });
+
+    const handleFullscreenChange = React.useCallback(() => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    }, []);
+
+    React.useEffect(() => {
+      document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+      return () => {
+        document.removeEventListener(
+          "fullscreenchange",
+          handleFullscreenChange
+        );
+      };
+    }, []);
+
     const handler = React.useMemo(() => {
       return {
         mapMode: (
@@ -93,6 +115,9 @@ export const TopBarAction = React.memo(
         },
         toggleLanguage: (): void => {
           setLanguage(language === "english" ? "vietnamese" : "english");
+        },
+        toggleFullscreen: (): void => {
+          setFullscreen(!document.fullscreenElement);
         },
         shortcuts: (): void => {
           updateDialog({
@@ -161,6 +186,16 @@ export const TopBarAction = React.memo(
             onClick={handler.toggleJson}
           />
         )}
+
+        <ToolbarAction
+          title={t(
+            isFullscreen ? "actions.exitFullscreen" : "actions.fullscreen"
+          )}
+          icon={
+            isFullscreen ? <FullscreenExitTwoTone /> : <FullscreenTwoTone />
+          }
+          onClick={handler.toggleFullscreen}
+        />
 
         <ToolbarAction
           title={t("actions.settings")}

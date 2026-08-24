@@ -13,6 +13,8 @@
     "copyLayer": "Copy layer (Ctrl/Cmd+C)",
     "pasteLayer": "Paste layer (Ctrl/Cmd+V)",
     "editJson": "Edit JSON",
+    "fullscreen": "Enter fullscreen",
+    "exitFullscreen": "Exit fullscreen",
     "sources": "Sources",
     "style": "Style",
     "settings": "Style settings",

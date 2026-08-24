@@ -6,3 +6,4 @@ export * from "./Brand";
 export * from "./TopBar";
 export * from "./Types";
 export * from "./IO";
+export * from "./Geocoding";

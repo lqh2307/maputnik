@@ -83,8 +83,91 @@ export const AppTheme = React.memo(
         },
         components: {
           ...muiThemeOptions.components,
+          MuiButton: {
+            styleOverrides: {
+              root: {
+                borderRadius: 8,
+                minHeight: 32,
+                textTransform: "none",
+                fontWeight: 600,
+                transition:
+                  "background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease, color 140ms ease",
+              },
+              contained: ({ theme }) => {
+                return {
+                  boxShadow: "none",
+                  "&:hover": {
+                    boxShadow: `0 3px 10px ${theme.palette.primary.main}33`,
+                  },
+                };
+              },
+              outlined: ({ theme }) => {
+                return {
+                  borderColor: theme.palette.divider,
+                  color: theme.palette.text.primary,
+                  "&:hover": {
+                    borderColor: theme.palette.primary.main,
+                    backgroundColor: theme.palette.action.hover,
+                  },
+                };
+              },
+            },
+          },
+          MuiIconButton: {
+            styleOverrides: {
+              root: ({ theme }) => {
+                return {
+                  color: theme.palette.text.secondary,
+                  border: "1px solid transparent",
+                  borderRadius: 8,
+                  transition:
+                    "background-color 140ms ease, border-color 140ms ease, color 140ms ease",
+                  "&:hover": {
+                    color: theme.palette.primary.main,
+                    borderColor: theme.palette.divider,
+                    backgroundColor: theme.palette.action.hover,
+                  },
+                  "&.Mui-disabled": {
+                    color: theme.palette.text.disabled,
+                  },
+                };
+              },
+            },
+          },
+          MuiToggleButton: {
+            styleOverrides: {
+              root: ({ theme }) => {
+                return {
+                  borderColor: theme.palette.divider,
+                  color: theme.palette.text.secondary,
+                  textTransform: "none",
+                  transition:
+                    "background-color 140ms ease, border-color 140ms ease, color 140ms ease",
+                  "&:hover": {
+                    backgroundColor: theme.palette.action.hover,
+                    color: theme.palette.text.primary,
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: theme.palette.action.selected,
+                    borderColor: theme.palette.primary.main,
+                    color: theme.palette.primary.main,
+                    fontWeight: 700,
+                  },
+                  "&.Mui-selected:hover": {
+                    backgroundColor: theme.palette.action.selected,
+                  },
+                };
+              },
+            },
+          },
           MuiTabs: {
             styleOverrides: {
+              root: ({ theme }) => {
+                return {
+                  minHeight: 38,
+                  borderBottom: `1px solid ${theme.palette.divider}`,
+                };
+              },
               indicator: {
                 display: "none",
               },
@@ -92,10 +175,18 @@ export const AppTheme = React.memo(
           },
           MuiTab: {
             styleOverrides: {
-              root: {
-                "&.Mui-selected": {
-                  boxShadow: "inset 0 -2px currentColor",
-                },
+              root: ({ theme }) => {
+                return {
+                  minHeight: 38,
+                  padding: "7px 10px",
+                  color: theme.palette.text.secondary,
+                  textTransform: "none",
+                  fontWeight: 600,
+                  "&.Mui-selected": {
+                    color: theme.palette.primary.main,
+                    boxShadow: "inset 0 -2px currentColor",
+                  },
+                };
               },
             },
           },

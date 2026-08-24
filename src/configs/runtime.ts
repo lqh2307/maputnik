@@ -1,5 +1,8 @@
 export type RuntimeTokens = Partial<
-  Record<"openmaptiles" | "thunderforest" | "locationiq" | "stadia", string>
+  Record<
+    "maptiler" | "openmaptiles" | "thunderforest" | "locationiq" | "stadia",
+    string
+  >
 >;
 
 export type RuntimeConfig = {

@@ -1,7 +1,6 @@
 import { ContentCopyRounded, DownloadRounded } from "@mui/icons-material";
 import {
   Alert,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -10,6 +9,7 @@ import {
 import { useDialogStore, useGlobalStore } from "../../stores";
 import { downloadStyle, validateStyleDocument } from "../Utils";
 import { TextInput } from "../../components/TextInput";
+import { TooltipButton } from "../../components/TooltipButton";
 import { CODE_TEXTAREA } from "../../configs/styles";
 import { ExportDialogProp } from "./Types";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,7 @@ import React from "react";
 /** Renders style validation and formatted JSON export dialog. */
 export const ExportDialog = React.memo(
   ({ open = false }: ExportDialogProp): React.JSX.Element => {
-    const { t } = useTranslation("editor");
+    const { t } = useTranslation();
 
     const style = useGlobalStore((state) => {
       return state.style;
@@ -71,7 +71,7 @@ export const ExportDialog = React.memo(
 
         <DialogContent>
           {issues.length > 0 && (
-            <Alert severity="warning" sx={styles.warning}>
+            <Alert severity={"warning"} sx={styles.warning}>
               {t("dialog.exportWarning", {
                 count: issues.length,
               })}
@@ -93,19 +93,31 @@ export const ExportDialog = React.memo(
         </DialogContent>
 
         <DialogActions>
-          <Button startIcon={<ContentCopyRounded />} onClick={copy}>
+          <TooltipButton
+            title={copied ? t("actions.copied") : t("actions.copy")}
+            variant={"text"}
+            startIcon={<ContentCopyRounded />}
+            onClick={copy}
+          >
             {copied ? t("actions.copied") : t("actions.copy")}
-          </Button>
+          </TooltipButton>
 
-          <Button
-            variant="contained"
+          <TooltipButton
+            title={t("actions.download")}
+            variant={"contained"}
             startIcon={<DownloadRounded />}
             onClick={download}
           >
             {t("actions.download")}
-          </Button>
+          </TooltipButton>
 
-          <Button onClick={close}>{t("actions.close")}</Button>
+          <TooltipButton
+            title={t("actions.close")}
+            variant={"text"}
+            onClick={close}
+          >
+            {t("actions.close")}
+          </TooltipButton>
         </DialogActions>
       </Dialog>
     );

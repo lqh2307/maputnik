@@ -36,7 +36,21 @@
     "inspectMode": "Inspect mode",
     "loading": "Loading map…",
     "error": "Map rendering error",
-    "hoverInspect": "Hover to inspect · click to pin"
+    "hoverInspect": "Hover to inspect · click to pin",
+    "position": "Map position",
+    "coordinates": "Coordinates",
+    "feature": "Feature",
+    "noProperties": "Feature has no properties",
+    "closeInspector": "Close inspector",
+    "searchLocation": "Search a place",
+    "searching": "Searching…",
+    "noGeocodingResults": "No places found",
+    "geocodingKeyRequired": "Configure a MapTiler API key",
+    "geocodingError": "Unable to search places"
+  },
+  "leftBar": {
+    "layer": "Layer",
+    "source": "Source"
   },
   "layers": {
     "title": "Layers",
@@ -49,6 +63,14 @@
     "all": "All",
     "empty": "No matching layers",
     "manageSources": "Manage data sources"
+  },
+  "sources": {
+    "title": "Sources",
+    "add": "Add source",
+    "edit": "Edit source",
+    "delete": "Delete source",
+    "summary": "{{type}} · {{count}} layers",
+    "empty": "No sources. Add one before creating data-driven layers."
   },
   "properties": {
     "selectLayer": "Select a layer to edit its properties.",
@@ -66,11 +88,23 @@
     "paint": "Paint",
     "layout": "Layout",
     "search": "Search {{section}} properties",
+    "color": "Color",
+    "opacity": "Opacity",
     "noMatch": "No {{section}} properties match this search.",
     "invalidJson": "Invalid JSON",
     "applyHint": "Ctrl/Cmd+Enter to apply",
     "toggleExpression": "Toggle expression / JSON value",
-    "resetDefault": "Reset to style default"
+    "resetDefault": "Reset to style default",
+    "filterBuilder": "Filter builder",
+    "filterJsonMode": "Advanced JSON filter",
+    "filterJsonHint": "This filter contains an expression that is not available in the visual builder. Use the JSON editor to modify it.",
+    "filterProperty": "Feature property",
+    "filterNoConditions": "No conditions. Add a condition or a group.",
+    "filterAddRule": "Add condition",
+    "filterAddGroup": "Add group",
+    "filterRemove": "Remove condition or group",
+    "filterAddValue": "Add filter value",
+    "filterRemoveValue": "Remove filter value"
   },
   "status": {
     "layers": "{{count}} layers",

@@ -12,7 +12,7 @@ import React from "react";
 
 /** Renders history actions (Undo, Redo) and layer clipboard actions (Copy, Paste). */
 export const TopBarHistory = React.memo((): React.JSX.Element => {
-  const { t } = useTranslation("editor");
+  const { t } = useTranslation();
 
   const selectedLayerId = useGlobalStore((state) => {
     return state.selectedLayerId;
@@ -66,7 +66,7 @@ export const TopBarHistory = React.memo((): React.JSX.Element => {
   }, [copyLayer, pasteLayer, redo, selectedLayerId, undo]);
 
   return (
-    <ButtonGroup size={"small"} variant="text" color="inherit">
+    <ButtonGroup size={"small"} variant={"text"}>
       <ToolbarAction
         title={t("actions.undo")}
         icon={<UndoRounded />}

@@ -4,6 +4,7 @@ import { TopBarAction } from "./Action";
 import { TopBarTools } from "./Tools";
 import { TopBarBrand } from "./Brand";
 import { TopBarIO } from "./IO";
+import { TopBarGeocoding } from "./Geocoding";
 import React from "react";
 
 /** Renders the complete TopBar layout component. */
@@ -16,12 +17,15 @@ export const TopBar = React.memo((): React.JSX.Element => {
       root: {
         borderBottom: 1,
         borderColor: "divider",
+        bgcolor: "background.paper",
+        color: "text.primary",
         zIndex: 3,
       },
       toolbar: {
         minHeight: 52,
-        gap: 1,
-        px: 1.5,
+        gap: 0.75,
+        px: 1.25,
+        overflow: "hidden",
       },
       spacer: {
         flex: 1,
@@ -30,8 +34,8 @@ export const TopBar = React.memo((): React.JSX.Element => {
   }, []);
 
   return (
-    <AppBar position="static" color="inherit" elevation={0} sx={styles.root}>
-      <Toolbar variant="dense" sx={styles.toolbar}>
+    <AppBar position={"static"} elevation={0} sx={styles.root}>
+      <Toolbar variant={"dense"} sx={styles.toolbar}>
         <TopBarBrand />
 
         <TopBarIO />
@@ -39,6 +43,8 @@ export const TopBar = React.memo((): React.JSX.Element => {
         <TopBarHistory />
 
         <TopBarTools compact={compact} />
+
+        <TopBarGeocoding />
 
         <Box sx={styles.spacer} />
 

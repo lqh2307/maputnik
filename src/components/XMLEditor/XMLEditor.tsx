@@ -416,9 +416,9 @@ const XMLTreeRow = React.memo(
             sx={styles.caretButton}
           >
             {isExpanded ? (
-              <KeyboardArrowDown fontSize="small" />
+              <KeyboardArrowDown fontSize={"small"} />
             ) : (
-              <KeyboardArrowRight fontSize="small" />
+              <KeyboardArrowRight fontSize={"small"} />
             )}
           </IconButton>
 
@@ -503,7 +503,7 @@ const XMLTreeRow = React.memo(
               title="Xoa node"
               icon={<Delete sx={styles.actionIcon} />}
               disabled={node.id === rootId}
-              color="error"
+              color={"error"}
               onClick={handleDelete}
               sx={styles.iconButton}
             />
@@ -535,7 +535,7 @@ const XMLTreeRow = React.memo(
 
               <TooltipButton
                 size={"small"}
-                variant="contained"
+                variant={"contained"}
                 onClick={handleSaveEditXML}
                 sx={styles.textButton}
               >
@@ -573,7 +573,7 @@ const XMLTreeRow = React.memo(
                     icon={<Delete sx={styles.actionIcon} />}
                     className="xml-attribute-actions"
                     size={"small"}
-                    color="error"
+                    color={"error"}
                     onClick={attributeHandlers.delete(attribute.id)}
                     sx={styles.attributeDelete}
                   />
@@ -1045,7 +1045,7 @@ export const XMLEditor = React.memo(
 
             <TooltipButton
               title="New"
-              icon={<Add fontSize="small" />}
+              icon={<Add fontSize={"small"} />}
               onClick={handleCreateEmpty}
               sx={styles.headerIconButton}
             />
@@ -1058,7 +1058,7 @@ export const XMLEditor = React.memo(
 
             <SnackbarAlert
               open={!!parseError}
-              severity="error"
+              severity={"error"}
               message={parseError}
               sx={styles.error}
             />

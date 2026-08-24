@@ -1,12 +1,10 @@
 import {
   Box,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Stack,
-  Tab,
   Tabs,
 } from "@mui/material";
 import { StyleSpecification } from "maplibre-gl";
@@ -15,6 +13,8 @@ import { CoordinateInput } from "../../components/CoordinateInput";
 import { JSONEditor } from "../../components/JSONEditor";
 import { NumberInput } from "../../components/NumberInput";
 import { TextInput } from "../../components/TextInput";
+import { TooltipButton } from "../../components/TooltipButton";
+import { TooltipTab } from "../../components/TooltipTab";
 import { JSONValue } from "../../utils/Object";
 import { SettingsDialogProp } from "./Types";
 import { useTranslation } from "react-i18next";
@@ -23,7 +23,7 @@ import React from "react";
 /** Renders root style and editor appearance settings dialog. */
 export const SettingsDialog = React.memo(
   ({ open = false }: SettingsDialogProp): React.JSX.Element => {
-    const { t } = useTranslation("editor");
+    const { t } = useTranslation();
 
     const style = useGlobalStore((state) => {
       return state.style;
@@ -135,8 +135,16 @@ export const SettingsDialog = React.memo(
             onChange={handler.tabChange}
             sx={styles.tabs}
           >
-            <Tab value="general" label={t("dialog.general")} />
-            <Tab value="advanced" label={t("dialog.advanced")} />
+            <TooltipTab
+              title={t("dialog.general")}
+              value="general"
+              label={t("dialog.general")}
+            />
+            <TooltipTab
+              title={t("dialog.advanced")}
+              value="advanced"
+              label={t("dialog.advanced")}
+            />
           </Tabs>
 
           {!advanced ? (
@@ -146,7 +154,7 @@ export const SettingsDialog = React.memo(
                 value={style.name ?? ""}
                 onChange={handler.nameChange}
                 multiline={false}
-                size="small"
+                size={"small"}
               />
 
               <TextInput
@@ -154,7 +162,7 @@ export const SettingsDialog = React.memo(
                 value={style.glyphs ?? ""}
                 onChange={handler.glyphsChange}
                 multiline={false}
-                size="small"
+                size={"small"}
               />
 
               <TextInput
@@ -166,7 +174,7 @@ export const SettingsDialog = React.memo(
                 }
                 onChange={handler.spriteChange}
                 multiline={false}
-                size="small"
+                size={"small"}
               />
 
               <Stack direction="row" spacing={1}>
@@ -176,7 +184,7 @@ export const SettingsDialog = React.memo(
                   isLat={false}
                   showModeToggle={false}
                   onChange={handler.longitudeChange}
-                  size="small"
+                  size={"small"}
                   fullWidth
                 />
 
@@ -186,7 +194,7 @@ export const SettingsDialog = React.memo(
                   isLat
                   showModeToggle={false}
                   onChange={handler.latitudeChange}
-                  size="small"
+                  size={"small"}
                   fullWidth
                 />
 
@@ -194,7 +202,7 @@ export const SettingsDialog = React.memo(
                   label={t("dialog.zoom")}
                   value={style.zoom ?? 0}
                   onChange={handler.zoomChange}
-                  size="small"
+                  size={"small"}
                   fullWidth
                 />
               </Stack>
@@ -204,7 +212,7 @@ export const SettingsDialog = React.memo(
                   label={t("dialog.bearing")}
                   value={style.bearing ?? 0}
                   onChange={handler.bearingChange}
-                  size="small"
+                  size={"small"}
                   fullWidth
                 />
 
@@ -212,7 +220,7 @@ export const SettingsDialog = React.memo(
                   label={t("dialog.pitch")}
                   value={style.pitch ?? 0}
                   onChange={handler.pitchChange}
-                  size="small"
+                  size={"small"}
                   fullWidth
                 />
               </Stack>
@@ -230,7 +238,13 @@ export const SettingsDialog = React.memo(
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={close}>{t("actions.close")}</Button>
+          <TooltipButton
+            title={t("actions.close")}
+            variant={"text"}
+            onClick={close}
+          >
+            {t("actions.close")}
+          </TooltipButton>
         </DialogActions>
       </Dialog>
     );

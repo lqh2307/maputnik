@@ -8,7 +8,6 @@ import {
 import {
   Alert,
   Box,
-  Button,
   Card,
   CardActionArea,
   CardContent,
@@ -18,7 +17,6 @@ import {
   DialogContent,
   DialogTitle,
   Stack,
-  Tab,
   Tabs,
   Typography,
 } from "@mui/material";
@@ -32,6 +30,9 @@ import {
   replaceStyleAccessTokens,
 } from "../Utils";
 import { TextInput } from "../../components/TextInput";
+import { ImportFileButton } from "../../components/ImportFileButton";
+import { TooltipButton } from "../../components/TooltipButton";
+import { TooltipTab } from "../../components/TooltipTab";
 import publicStyleData from "../../configs/styles.json";
 import { useTranslation } from "react-i18next";
 import { OpenDialogProp, PublicStyle } from "./Types";
@@ -42,7 +43,7 @@ const publicStyles: PublicStyle[] = publicStyleData as PublicStyle[];
 /** Renders the local and public style picker dialog. */
 export const OpenDialog = React.memo(
   ({ open = false }: OpenDialogProp): React.JSX.Element => {
-    const { t } = useTranslation("editor");
+    const { t } = useTranslation();
 
     const updateDialog = useDialogStore((state) => {
       return state.updateDialog;
@@ -136,8 +137,8 @@ export const OpenDialog = React.memo(
         tabChange: (_: React.SyntheticEvent, value: string): void => {
           setTab(value);
         },
-        fileChange: (event: React.ChangeEvent<HTMLInputElement>): void => {
-          void readFile(event.target.files?.[0]);
+        fileChange: (file: File): void => {
+          void readFile(file);
         },
         urlChange: (value: string): void => {
           setUrl(value);
@@ -222,9 +223,20 @@ export const OpenDialog = React.memo(
 
         <DialogContent>
           <Tabs value={tab} onChange={handler.tabChange} sx={styles.tabs}>
-            <Tab value="file" label={t("dialog.localFile")} />
-            <Tab value="url" label={t("dialog.url")} />
-            <Tab
+            <TooltipTab
+              title={t("dialog.localFile")}
+              value="file"
+              label={t("dialog.localFile")}
+            />
+            <TooltipTab
+              title={t("dialog.url")}
+              value="url"
+              label={t("dialog.url")}
+            />
+            <TooltipTab
+              title={t("dialog.styles", {
+                count: publicStyles.length + 1,
+              })}
               value="styles"
               label={t("dialog.styles", {
                 count: publicStyles.length + 1,
@@ -233,27 +245,22 @@ export const OpenDialog = React.memo(
           </Tabs>
 
           {error && (
-            <Alert severity="error" sx={styles.error}>
+            <Alert severity={"error"} sx={styles.error}>
               {error}
             </Alert>
           )}
 
           {tab === "file" && (
-            <Button
-              component="label"
-              variant="outlined"
-              startIcon={<FileOpenRounded />}
+            <ImportFileButton
+              title={t("dialog.chooseFile")}
+              icon={<FileOpenRounded />}
               fullWidth
               sx={styles.choose}
+              acceptMimeType="application/json,.json"
+              onFileLoaded={handler.fileChange}
             >
               {t("dialog.chooseFile")}
-              <input
-                hidden
-                type="file"
-                accept="application/json,.json"
-                onChange={handler.fileChange}
-              />
-            </Button>
+            </ImportFileButton>
           )}
 
           {tab === "url" && (
@@ -264,40 +271,44 @@ export const OpenDialog = React.memo(
                 label={t("dialog.styleUrl")}
                 fullWidth
                 multiline={false}
-                size="small"
+                size={"small"}
               />
-              <Button
-                variant="contained"
+              <TooltipButton
+                title={t("actions.load")}
+                variant={"contained"}
                 startIcon={<LinkRounded />}
                 onClick={handler.loadUrlClick}
                 disabled={!url || loading}
               >
                 {t("actions.load")}
-              </Button>
+              </TooltipButton>
             </Stack>
           )}
 
           {tab === "styles" && (
             <Box sx={styles.grid}>
-              <Card variant="outlined">
+              <Card variant={"outlined"}>
                 <CardActionArea
                   onClick={handler.starterClick}
                   sx={styles.cardAction}
                 >
                   <Box sx={styles.preview}>
-                    <StorageRounded color="primary" sx={styles.starterIcon} />
+                    <StorageRounded sx={styles.starterIcon} />
                   </Box>
                   <CardContent sx={styles.cardContent}>
                     <Stack direction="row" spacing={1} sx={styles.row}>
                       <Box sx={styles.grow}>
-                        <Typography variant="subtitle2" noWrap>
+                        <Typography variant={"subtitle2"} noWrap>
                           {t("dialog.starter")}
                         </Typography>
-                        <Typography variant="caption" color="text.secondary">
+                        <Typography
+                          variant={"caption"}
+                          color={"text.secondary"}
+                        >
                           {t("dialog.localStarter")}
                         </Typography>
                       </Box>
-                      <AddCircleOutlineRounded color="primary" />
+                      <AddCircleOutlineRounded />
                     </Stack>
                   </CardContent>
                 </CardActionArea>
@@ -305,7 +316,7 @@ export const OpenDialog = React.memo(
 
               {publicStyles.map((preset) => {
                 return (
-                  <Card key={preset.id} variant="outlined">
+                  <Card key={preset.id} variant={"outlined"}>
                     <CardActionArea
                       disabled={loading}
                       onClick={handler.presetClick(preset)}
@@ -321,7 +332,7 @@ export const OpenDialog = React.memo(
                       <CardContent sx={styles.cardContent}>
                         <Stack direction="row" spacing={1} sx={styles.row}>
                           <Typography
-                            variant="subtitle2"
+                            variant={"subtitle2"}
                             noWrap
                             sx={styles.presetTitle}
                           >
@@ -330,10 +341,7 @@ export const OpenDialog = React.memo(
                           {activePreset === preset.id ? (
                             <CircularProgress size={20} />
                           ) : (
-                            <CloudDownloadRounded
-                              color="primary"
-                              fontSize="small"
-                            />
+                            <CloudDownloadRounded fontSize={"small"} />
                           )}
                         </Stack>
                       </CardContent>
@@ -346,7 +354,13 @@ export const OpenDialog = React.memo(
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={close}>{t("actions.close")}</Button>
+          <TooltipButton
+            title={t("actions.close")}
+            variant={"text"}
+            onClick={close}
+          >
+            {t("actions.close")}
+          </TooltipButton>
         </DialogActions>
       </Dialog>
     );

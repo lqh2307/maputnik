@@ -238,9 +238,9 @@ const JSONTreeRowInner = ({
             onClick={handleToggle}
             icon={
               isExpanded ? (
-                <KeyboardArrowDown fontSize="small" />
+                <KeyboardArrowDown fontSize={"small"} />
               ) : (
-                <KeyboardArrowRight fontSize="small" />
+                <KeyboardArrowRight fontSize={"small"} />
               )
             }
             sx={styles.caretButton}
@@ -318,7 +318,7 @@ const JSONTreeRowInner = ({
           <TooltipButton
             title="Delete node"
             disabled={isRoot}
-            color="error"
+            color={"error"}
             onClick={handleDelete}
             icon={<Delete sx={styles.actionIcon} />}
             sx={styles.deleteButton}
@@ -354,7 +354,7 @@ const JSONTreeRowInner = ({
             <TooltipButton
               title="Save (Ctrl/⌘+Enter)"
               size={"small"}
-              variant="contained"
+              variant={"contained"}
               onClick={handleSaveEditJSON}
               sx={styles.textButton}
             >
@@ -964,9 +964,9 @@ export const JSONEditor = React.memo(
                     variant={"outlined"}
                     icon={
                       parseError ? (
-                        <ErrorOutlined fontSize="small" />
+                        <ErrorOutlined fontSize={"small"} />
                       ) : (
-                        <CheckCircleOutlined fontSize="small" />
+                        <CheckCircleOutlined fontSize={"small"} />
                       )
                     }
                     label={parseError ? "Invalid JSON" : "Valid JSON"}
@@ -994,7 +994,7 @@ export const JSONEditor = React.memo(
                 title={sourceCollapsed ? "Show source" : "Hide source"}
                 onClick={handleToggleSource}
                 color={!sourceCollapsed ? "primary" : "inherit"}
-                icon={<Code fontSize="small" />}
+                icon={<Code fontSize={"small"} />}
                 sx={styles.headerButton}
               >
                 Source
@@ -1004,7 +1004,7 @@ export const JSONEditor = React.memo(
                 title={treeCollapsed ? "Show tree" : "Hide tree"}
                 onClick={handleToggleTree}
                 color={!treeCollapsed ? "primary" : "inherit"}
-                icon={<AccountTree fontSize="small" />}
+                icon={<AccountTree fontSize={"small"} />}
                 sx={styles.headerButton}
               >
                 Tree
@@ -1015,7 +1015,7 @@ export const JSONEditor = React.memo(
                   title={"Import"}
                   acceptMimeType={".json,application/json"}
                   onFileLoaded={handleImportFile}
-                  startIcon={<UploadFile fontSize="small" />}
+                  startIcon={<UploadFile fontSize={"small"} />}
                   sx={styles.headerButton}
                 >
                   Import
@@ -1026,7 +1026,7 @@ export const JSONEditor = React.memo(
                 <TooltipButton
                   title={"Download"}
                   onClick={handleDownload}
-                  startIcon={<Download fontSize="small" />}
+                  startIcon={<Download fontSize={"small"} />}
                   sx={styles.headerButton}
                 >
                   Download
@@ -1038,7 +1038,7 @@ export const JSONEditor = React.memo(
                   title={"Reset"}
                   color={"error"}
                   onClick={handleReset}
-                  startIcon={<RestartAlt fontSize="small" />}
+                  startIcon={<RestartAlt fontSize={"small"} />}
                   sx={styles.headerButton}
                 >
                   Reset
@@ -1049,7 +1049,7 @@ export const JSONEditor = React.memo(
                 <TooltipButton
                   title="Close"
                   onClick={onClose}
-                  icon={<Close fontSize="small" />}
+                  icon={<Close fontSize={"small"} />}
                   sx={styles.paneActionButton}
                 />
               )}
@@ -1066,28 +1066,28 @@ export const JSONEditor = React.memo(
                 <TooltipButton
                   title="Format JSON (Ctrl/⌘+Shift+F)"
                   onClick={handleFormat}
-                  icon={<FormatAlignLeft fontSize="small" />}
+                  icon={<FormatAlignLeft fontSize={"small"} />}
                   sx={styles.paneActionButton}
                 />
 
                 <TooltipButton
                   title="Minify JSON (Ctrl/⌘+Shift+M)"
                   onClick={handleMinify}
-                  icon={<Compress fontSize="small" />}
+                  icon={<Compress fontSize={"small"} />}
                   sx={styles.paneActionButton}
                 />
 
                 <TooltipButton
                   title="Sort object keys (Ctrl/⌘+Shift+S)"
                   onClick={handleSortKeys}
-                  icon={<SortByAlpha fontSize="small" />}
+                  icon={<SortByAlpha fontSize={"small"} />}
                   sx={styles.paneActionButton}
                 />
 
                 <TooltipButton
                   title="Copy source (Ctrl/⌘+Shift+C)"
                   onClick={handleCopy}
-                  icon={<ContentCopy fontSize="small" />}
+                  icon={<ContentCopy fontSize={"small"} />}
                   sx={styles.paneActionButton}
                 />
               </Stack>
@@ -1147,14 +1147,14 @@ export const JSONEditor = React.memo(
                   <TooltipButton
                     title="Expand all"
                     onClick={handleExpandAll}
-                    icon={<UnfoldMore fontSize="small" />}
+                    icon={<UnfoldMore fontSize={"small"} />}
                     sx={styles.paneActionButton}
                   />
 
                   <TooltipButton
                     title="Collapse all"
                     onClick={handleCollapseAll}
-                    icon={<UnfoldLess fontSize="small" />}
+                    icon={<UnfoldLess fontSize={"small"} />}
                     sx={styles.paneActionButton}
                   />
                 </Stack>

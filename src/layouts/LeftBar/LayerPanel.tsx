@@ -7,16 +7,16 @@ import {
 } from "@mui/icons-material";
 import {
   Box,
-  Button,
   Collapse,
   InputAdornment,
   Stack,
   Typography,
 } from "@mui/material";
 import { LayerSpecification } from "maplibre-gl";
-import { useDialogStore, useGlobalStore } from "../../stores";
+import { useGlobalStore } from "../../stores";
 import { SelectInput } from "../../components/SelectInput";
 import { TextInput } from "../../components/TextInput";
+import { TooltipButton } from "../../components/TooltipButton";
 import { AddLayerDialog } from "./AddLayerDialog";
 import { LAYER_TYPES } from "../Constants";
 import { LayerDragState, LayerGroup } from "./Types";
@@ -27,7 +27,7 @@ import React from "react";
 
 /** Renders the searchable and reorderable layer tree panel. */
 export const LayerPanel = React.memo((): React.JSX.Element => {
-  const { t } = useTranslation("editor");
+  const { t } = useTranslation();
 
   const layers = useGlobalStore((state) => {
     return state.style.layers;
@@ -57,10 +57,6 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
     return state.toggleGroup;
   });
 
-  const updateDialog = useDialogStore((state) => {
-    return state.updateDialog;
-  });
-
   const [addOpen, setAddOpen] = React.useState(false);
   const [dragState, setDragState] = React.useState<LayerDragState>({});
 
@@ -80,6 +76,9 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
         p: 1.25,
         borderBottom: 1,
         borderColor: "divider",
+        bgcolor: "background.paper",
+        boxShadow: "0 2px 8px rgba(15, 23, 42, 0.06)",
+        zIndex: 1,
       },
       headerRow: {
         mb: 1,
@@ -92,10 +91,17 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
         width: 104,
         flexShrink: 0,
       },
+      iconButton: {
+        minWidth: 34,
+        width: 34,
+        height: 34,
+        p: 0,
+      },
       list: {
         flex: 1,
         overflow: "auto",
         p: 0.75,
+        bgcolor: "background.default",
       },
       group: {
         mb: 0.5,
@@ -135,11 +141,6 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
         color: "text.secondary",
         alignItems: "center",
       },
-      footer: {
-        p: 1,
-        borderTop: 1,
-        borderColor: "divider",
-      },
     };
   }, []);
 
@@ -154,11 +155,6 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
       filter: (value: string): void => {
         setTypeFilter(value);
       },
-      sources: (): void => {
-        updateDialog({
-          sources: true,
-        });
-      },
       closeAdd: (): void => {
         setAddOpen(false);
       },
@@ -168,7 +164,7 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
         };
       },
     };
-  }, [setSearch, setTypeFilter, toggleGroup, updateDialog]);
+  }, [setSearch, setTypeFilter, toggleGroup]);
 
   const groups = React.useMemo(() => {
     const groupMap = new Map<string, LayerGroup>();
@@ -203,25 +199,25 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
     <Box component="aside" sx={styles.root}>
       <Box sx={styles.header}>
         <Stack direction="row" spacing={1} sx={styles.headerRow}>
-          <LayersRounded fontSize="small" color="primary" />
+          <LayersRounded fontSize={"small"} />
 
-          <Typography variant="subtitle2" sx={styles.title}>
+          <Typography variant={"subtitle2"} sx={styles.title}>
             {t("layers.title")}
           </Typography>
 
-          <Button
-            size={"small"}
-            variant="contained"
-            startIcon={<AddRounded />}
+          <TooltipButton
+            title={t("actions.add")}
+            variant={"contained"}
+            icon={<AddRounded />}
+            aria-label={t("actions.add")}
+            fullWidth={false}
             onClick={handler.add}
-          >
-            {t("actions.add")}
-          </Button>
+            sx={styles.iconButton}
+          />
         </Stack>
 
         <Stack direction="row" spacing={1}>
           <TextInput
-            size={"small"}
             value={search}
             onChange={handler.search}
             multiline={false}
@@ -230,8 +226,8 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
             slotProps={{
               input: {
                 startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchRounded fontSize="small" />
+                  <InputAdornment position={"start"}>
+                    <SearchRounded fontSize={"small"} />
                   </InputAdornment>
                 ),
               },
@@ -268,13 +264,13 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
 
                 <FolderRounded sx={styles.folder} />
 
-                <Typography variant="caption" noWrap sx={styles.groupTitle}>
+                <Typography variant={"caption"} noWrap sx={styles.groupTitle}>
                   {group.id === "style:root"
                     ? t("layers.styleGroup")
                     : group.title}
                 </Typography>
 
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant={"caption"} color={"text.secondary"}>
                   {group.layers.length}
                 </Typography>
               </Box>
@@ -301,21 +297,9 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
           <Stack spacing={1} sx={styles.empty}>
             <LayersRounded />
 
-            <Typography variant="body2">{t("layers.empty")}</Typography>
+            <Typography variant={"body2"}>{t("layers.empty")}</Typography>
           </Stack>
         )}
-      </Box>
-
-      <Box sx={styles.footer}>
-        <Button
-          fullWidth
-          size={"small"}
-          variant="outlined"
-          startIcon={<AddRounded />}
-          onClick={handler.sources}
-        >
-          {t("layers.manageSources")}
-        </Button>
       </Box>
 
       <AddLayerDialog open={addOpen} onClose={handler.closeAdd} />

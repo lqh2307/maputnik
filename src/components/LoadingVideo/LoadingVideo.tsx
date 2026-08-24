@@ -175,7 +175,7 @@ export const LoadingVideo = React.memo(
 
               {!!progress && (
                 <Box sx={styles.progressText}>
-                  <Typography variant="caption">{`${progress}%`}</Typography>
+                  <Typography variant={"caption"}>{`${progress}%`}</Typography>
                 </Box>
               )}
             </Box>

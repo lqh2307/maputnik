@@ -1,6 +1,5 @@
 import {
   Alert,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -13,6 +12,7 @@ import { useGlobalStore } from "../../stores";
 import { createUniqueId } from "../Utils";
 import { SelectInput } from "../../components/SelectInput";
 import { TextInput } from "../../components/TextInput";
+import { TooltipButton } from "../../components/TooltipButton";
 import { CODE_TEXTAREA } from "../../configs/styles";
 import { SourceEditorProp } from "./Types";
 import { useTranslation } from "react-i18next";
@@ -21,7 +21,7 @@ import React from "react";
 /** Renders the create or edit source dialog. */
 export const SourceEditor = React.memo(
   ({ open = false, draft, onClose }: SourceEditorProp): React.JSX.Element => {
-    const { t } = useTranslation("editor");
+    const { t } = useTranslation();
 
     const sources = useGlobalStore((state) => {
       return state.style.sources;
@@ -144,14 +144,14 @@ export const SourceEditor = React.memo(
 
         <DialogContent>
           <Stack spacing={2} sx={styles.content}>
-            {error && <Alert severity="error">{error}</Alert>}
+            {error && <Alert severity={"error"}>{error}</Alert>}
 
             <TextInput
               label={t("dialog.sourceId")}
               value={id}
               onChange={handler.idChange}
               multiline={false}
-              size="small"
+              size={"small"}
               fullWidth
             />
 
@@ -179,11 +179,21 @@ export const SourceEditor = React.memo(
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onClose}>{t("actions.cancel")}</Button>
+          <TooltipButton
+            title={t("actions.cancel")}
+            variant={"text"}
+            onClick={onClose}
+          >
+            {t("actions.cancel")}
+          </TooltipButton>
 
-          <Button variant="contained" onClick={save}>
+          <TooltipButton
+            title={t("dialog.saveSource")}
+            variant={"contained"}
+            onClick={save}
+          >
             {t("dialog.saveSource")}
-          </Button>
+          </TooltipButton>
         </DialogActions>
       </Dialog>
     );

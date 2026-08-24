@@ -24,7 +24,7 @@ import React from "react";
 /** Renders global editor actions: Map/Inspect mode switcher, Theme toggle, Language toggle, Shortcuts. */
 export const TopBarAction = React.memo(
   ({ compact = false }: TopBarActionProp): React.JSX.Element => {
-    const { t } = useTranslation("editor");
+    const { t } = useTranslation();
 
     const mapMode = useMapModeStore((state) => {
       return state.mapMode;
@@ -115,6 +115,23 @@ export const TopBarAction = React.memo(
         stack: {
           alignItems: "center",
         },
+        modeGroup: {
+          border: 1,
+          borderColor: "divider",
+          borderRadius: 1,
+          bgcolor: "background.paper",
+          overflow: "hidden",
+          "& .MuiToggleButton-root": {
+            border: 0,
+            borderRadius: 0,
+            minWidth: 34,
+            px: 0.75,
+            "& + .MuiToggleButton-root": {
+              borderLeft: 1,
+              borderColor: "divider",
+            },
+          },
+        },
       };
     }, []);
 
@@ -126,13 +143,14 @@ export const TopBarAction = React.memo(
           value={mapMode}
           onChange={handler.mapMode}
           aria-label={t("map.interaction")}
+          sx={styles.modeGroup}
         >
           <ToggleButton value="map" aria-label={t("map.mode")}>
-            <MapRounded fontSize="small" />
+            <MapRounded fontSize={"small"} />
           </ToggleButton>
 
           <ToggleButton value="inspect" aria-label={t("map.inspectMode")}>
-            <TroubleshootRounded fontSize="small" />
+            <TroubleshootRounded fontSize={"small"} />
           </ToggleButton>
         </ToggleButtonGroup>
 

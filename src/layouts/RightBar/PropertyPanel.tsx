@@ -1,20 +1,17 @@
 import React from "react";
 import {
-  CheckCircleOutlineRounded,
   CodeRounded,
-  ErrorOutlineRounded,
   FilterAltRounded,
-  InfoOutlined,
+  FormatPaintRounded,
   LayersRounded,
+  ViewQuiltRounded,
   SearchRounded,
 } from "@mui/icons-material";
 import {
   Alert,
   Box,
-  Chip,
   InputAdornment,
   Stack,
-  Tab,
   Tabs,
   Typography,
 } from "@mui/material";
@@ -24,17 +21,14 @@ import { useGlobalStore } from "../../stores";
 import { sourceSupportsLayer, validateStyleDocument } from "../Utils";
 import { LAYER_TYPES } from "../Constants";
 import { EditableLayer, LayerSection } from "../Types";
-import { LayerTypeIcon } from "../LeftBar/LayerTypeIcon";
+import { JSONEditor } from "../../components/JSONEditor";
 import { PropertyField } from "./PropertyField";
+import { FilterEditor } from "./FilterEditor";
 import { SelectInput } from "../../components/SelectInput";
 import { TextInput } from "../../components/TextInput";
-import { NewAccordion } from "../../components/NewAccordion";
-import { CODE_TEXTAREA } from "../../configs/styles";
-import {
-  CommitTextFieldProp,
-  JsonSectionProp,
-  StyleSpecificationSchema,
-} from "./Types";
+import { TooltipTab } from "../../components/TooltipTab";
+import { JSONValue } from "../../utils/Object";
+import { CommitTextFieldProp, StyleSpecificationSchema } from "./Types";
 import { useTranslation } from "react-i18next";
 
 /** Renders a text field that commits on blur or Enter. */
@@ -74,177 +68,13 @@ function CommitTextField({
       onBlur={handler.commit}
       onKeyDown={handler.keyDown}
       error={error}
-      fullWidth
-      size={"small"}
     />
-  );
-}
-
-/** Renders an editable JSON document section. */
-function JsonSection({
-  value,
-  onCommit,
-  emptyValue,
-}: JsonSectionProp): React.JSX.Element {
-  const { t } = useTranslation("editor");
-
-  const [draft, setDraft] = React.useState(
-    JSON.stringify(value ?? emptyValue, null, 2)
-  );
-
-  const [error, setError] = React.useState<string>();
-  React.useEffect(() => {
-    setDraft(JSON.stringify(value ?? emptyValue, null, 2));
-  }, [value, emptyValue]);
-
-  const handler = React.useMemo(() => {
-    return {
-      change: (value: string): void => {
-        setDraft(value);
-      },
-      commit: (): void => {
-        try {
-          onCommit(JSON.parse(draft));
-          setError(undefined);
-        } catch (reason) {
-          setError(
-            reason instanceof Error
-              ? reason.message
-              : t("properties.invalidJson")
-          );
-        }
-      },
-      keyDown: (event: React.KeyboardEvent<HTMLDivElement>): void => {
-        if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
-          handler.commit();
-        }
-      },
-    };
-  }, [draft, onCommit, t]);
-
-  const styles = React.useMemo(() => {
-    return {
-      input: {
-        p: 1.25,
-        ...CODE_TEXTAREA,
-      },
-    };
-  }, []);
-
-  return (
-    <TextInput
-      value={draft}
-      onChange={handler.change}
-      onBlur={handler.commit}
-      onKeyDown={handler.keyDown}
-      multiline
-      minRows={8}
-      maxRows={24}
-      fullWidth
-      error={!!error}
-      helperText={error ?? t("properties.applyHint")}
-      sx={styles.input}
-    />
-  );
-}
-
-/** Renders feature inspection results pinned from the map. */
-function InspectorResults(): React.JSX.Element | null {
-  const { t } = useTranslation("editor");
-
-  const features = useGlobalStore((state) => {
-    return state.inspectorFeatures;
-  });
-
-  const styles = React.useMemo(() => {
-    return {
-      accordion: {
-        flexShrink: 0,
-      },
-      details: {
-        p: 0,
-        maxHeight: 260,
-        overflow: "auto",
-        gap: 0,
-      },
-      feature: {
-        p: 1.25,
-        borderTop: 1,
-        borderColor: "divider",
-      },
-      row: {
-        alignItems: "center",
-      },
-      icon: {
-        fontSize: 16,
-      },
-      label: {
-        fontWeight: 700,
-      },
-      chip: {
-        height: 20,
-      },
-      pre: {
-        m: 0,
-        mt: 1,
-        fontSize: 10.5,
-        whiteSpace: "pre-wrap",
-        overflowWrap: "anywhere",
-      },
-    };
-  }, []);
-  if (!features.length) {
-    return null;
-  }
-
-  return (
-    <NewAccordion
-      defaultExpanded
-      sx={styles.accordion}
-      expandIcon={<InfoOutlined fontSize="small" />}
-      summary={
-        <Typography variant="subtitle2">
-          {t("properties.inspected", {
-            count: features.length,
-          })}
-        </Typography>
-      }
-      detailsProps={{
-        sx: styles.details,
-      }}
-    >
-      {features.map((feature, index) => {
-        return (
-          <Box
-            key={`${feature.layer.id}-${feature.id ?? index}`}
-            sx={styles.feature}
-          >
-            <Stack direction="row" spacing={1} sx={styles.row}>
-              <LayerTypeIcon type={feature.layer.type} sx={styles.icon} />
-
-              <Typography variant="caption" sx={styles.label}>
-                {feature.layer.id}
-              </Typography>
-              <Chip
-                size={"small"}
-                label={feature.geometryType}
-                sx={styles.chip}
-              />
-            </Stack>
-
-            <Box component="pre" sx={styles.pre}>
-              {JSON.stringify(feature.properties, null, 2)}
-            </Box>
-          </Box>
-        );
-      })}
-    </NewAccordion>
   );
 }
 
 /** Renders the selected layer's data and style properties. */
 export const PropertyPanel = React.memo((): React.JSX.Element => {
-  const { t } = useTranslation("editor");
+  const { t } = useTranslation();
 
   const style = useGlobalStore((state) => {
     return state.style;
@@ -262,11 +92,9 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
     return state.updateLayerProperty;
   });
 
-  const [tab, setTab] = React.useState<"properties" | "filter" | "metadata">(
-    "properties"
-  );
-
-  const [section, setSection] = React.useState<LayerSection>("paint");
+  const [tab, setTab] = React.useState<
+    "properties" | "paint" | "layout" | "filter" | "metadata"
+  >("properties");
 
   const [propertySearch, setPropertySearch] = React.useState("");
 
@@ -275,6 +103,8 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
   }) as LayerSpecification;
 
   const editableLayer: EditableLayer = layer as EditableLayer;
+  const activeSection: LayerSection | undefined =
+    tab === "paint" || tab === "layout" ? tab : undefined;
 
   const issues = React.useMemo(() => {
     return validateStyleDocument(style);
@@ -305,30 +135,27 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
         justifyContent: "center",
       },
       header: {
-        px: 1.25,
-        pt: 1.25,
+        px: 0,
+        pt: 0,
         borderBottom: 1,
         borderColor: "divider",
-      },
-      headerRow: {
-        mb: 1.25,
-        alignItems: "center",
-      },
-      grow: {
-        minWidth: 0,
-        flex: 1,
+        bgcolor: "background.paper",
+        boxShadow: "0 2px 8px rgba(15, 23, 42, 0.06)",
+        zIndex: 1,
       },
       warning: {
-        mb: 1,
+        m: 1.25,
       },
       scroll: {
         flex: 1,
         overflow: "auto",
+        bgcolor: "background.default",
       },
       section: {
         p: 1.25,
         borderBottom: 1,
         borderColor: "divider",
+        bgcolor: "background.paper",
       },
       sticky: {
         position: "sticky",
@@ -345,16 +172,19 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
         p: 4,
         textAlign: "center",
       },
+      jsonEditor: {
+        height: "calc(100vh - 120px)",
+        minHeight: 360,
+      },
     };
   }, []);
 
   const handler = React.useMemo(() => {
     return {
       tabChange: (_event: React.SyntheticEvent, value: string): void => {
-        setTab(value as "properties" | "filter" | "metadata");
-      },
-      sectionChange: (_event: React.SyntheticEvent, value: string): void => {
-        setSection(value as LayerSection);
+        setTab(
+          value as "properties" | "paint" | "layout" | "filter" | "metadata"
+        );
       },
       searchChange: (value: string): void => {
         setPropertySearch(value);
@@ -390,7 +220,9 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
       },
       propertyChange: (name: string) => {
         return (value: unknown): void => {
-          return updateProperty(layer.id, section, name, value);
+          if (activeSection) {
+            updateProperty(layer.id, activeSection, name, value);
+          }
         };
       },
       filterCommit: (filter: unknown): void => {
@@ -404,17 +236,17 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
         });
       },
     };
-  }, [updateLayer, updateProperty, layer, section]);
+  }, [activeSection, updateLayer, updateProperty, layer]);
 
   const propertySpecs = React.useMemo(() => {
-    if (!layer) {
+    if (!layer || !activeSection) {
       return [];
     }
     const schema =
       (latestSpec as unknown as StyleSpecificationSchema)[
-        `${section}_${layer.type}`
+        `${activeSection}_${layer.type}`
       ] ?? {};
-    const values: Record<string, unknown> = editableLayer[section] ?? {};
+    const values: Record<string, unknown> = editableLayer[activeSection] ?? {};
     const query = propertySearch.trim().toLowerCase();
     return Object.entries(schema)
       .filter(([name]) => {
@@ -425,16 +257,16 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
         const overriddenB = values[nameB] !== undefined ? 0 : 1;
         return overriddenA - overriddenB || nameA.localeCompare(nameB);
       });
-  }, [layer, section, propertySearch]);
+  }, [activeSection, layer, propertySearch]);
 
   if (!layer) {
     return (
       <Box component="aside" sx={styles.root}>
-        <InspectorResults />
-
         <Stack spacing={1} sx={styles.empty}>
           <LayersRounded />
-          <Typography variant="body2">{t("properties.selectLayer")}</Typography>
+          <Typography variant={"body2"}>
+            {t("properties.selectLayer")}
+          </Typography>
         </Stack>
       </Box>
     );
@@ -446,53 +278,37 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
 
   return (
     <Box component="aside" sx={styles.root}>
-      <InspectorResults />
-
       <Box sx={styles.header}>
-        <Stack direction="row" spacing={1} sx={styles.headerRow}>
-          <LayerTypeIcon type={layer.type} color="primary" />
-          <Box sx={styles.grow}>
-            <Typography variant="subtitle2" noWrap>
-              {layer.id}
-            </Typography>
-
-            <Typography variant="caption" color="text.secondary">
-              {t("properties.layerKind", {
-                type: layer.type,
-              })}
-            </Typography>
-          </Box>
-          {layerIssues.length ? (
-            <ErrorOutlineRounded color="warning" />
-          ) : (
-            <CheckCircleOutlineRounded color="success" />
-          )}
-        </Stack>
-
-        {layerIssues.length > 0 && (
-          <Alert severity="warning" sx={styles.warning}>
-            {layerIssues[0].message}
-          </Alert>
-        )}
-
-        <Tabs value={tab} onChange={handler.tabChange} variant="fullWidth">
-          <Tab
+        <Tabs value={tab} onChange={handler.tabChange} variant={"fullWidth"}>
+          <TooltipTab
+            title={t("properties.style")}
             value="properties"
             icon={<LayersRounded />}
-            iconPosition="start"
-            label={t("properties.style")}
+            aria-label={t("properties.style")}
           />
-          <Tab
+          <TooltipTab
+            title={t("properties.paint")}
+            value="paint"
+            icon={<FormatPaintRounded />}
+            aria-label={t("properties.paint")}
+          />
+          <TooltipTab
+            title={t("properties.layout")}
+            value="layout"
+            icon={<ViewQuiltRounded />}
+            aria-label={t("properties.layout")}
+          />
+          <TooltipTab
+            title={t("properties.filter")}
             value="filter"
             icon={<FilterAltRounded />}
-            iconPosition="start"
-            label={t("properties.filter")}
+            aria-label={t("properties.filter")}
           />
-          <Tab
+          <TooltipTab
+            title={t("properties.meta")}
             value="metadata"
             icon={<CodeRounded />}
-            iconPosition="start"
-            label={t("properties.meta")}
+            aria-label={t("properties.meta")}
           />
         </Tabs>
       </Box>
@@ -500,6 +316,12 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
       <Box sx={styles.scroll}>
         {tab === "properties" && (
           <>
+            {layerIssues.length > 0 && (
+              <Alert severity={"warning"} sx={styles.warning}>
+                {layerIssues[0].message}
+              </Alert>
+            )}
+
             <Stack spacing={1.25} sx={styles.section}>
               <CommitTextField
                 label={t("properties.layerId")}
@@ -555,25 +377,18 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
                 />
               </Stack>
             </Stack>
-
+          </>
+        )}
+        {activeSection && (
+          <>
             <Box sx={styles.sticky}>
-              <Tabs
-                value={section}
-                onChange={handler.sectionChange}
-                variant="fullWidth"
-              >
-                <Tab value="paint" label={t("properties.paint")} />
-                <Tab value="layout" label={t("properties.layout")} />
-              </Tabs>
               <TextInput
                 value={propertySearch}
                 onChange={handler.searchChange}
                 multiline={false}
                 placeholder={t("properties.search", {
-                  section,
+                  section: activeSection,
                 })}
-                size={"small"}
-                fullWidth
                 sx={styles.search}
                 slotProps={{
                   input: {
@@ -592,7 +407,7 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
                   key={name}
                   name={name}
                   spec={spec}
-                  value={editableLayer[section]?.[name]}
+                  value={editableLayer[activeSection]?.[name]}
                   onChange={handler.propertyChange(name)}
                 />
               );
@@ -604,25 +419,27 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
                 sx={styles.noMatch}
               >
                 {t("properties.noMatch", {
-                  section,
+                  section: activeSection,
                 })}
               </Typography>
             )}
           </>
         )}
         {tab === "filter" && (
-          <JsonSection
+          <FilterEditor
             value={editableLayer.filter}
-            emptyValue={["all"]}
-            onCommit={handler.filterCommit}
+            onChange={handler.filterCommit}
           />
         )}
         {tab === "metadata" && (
-          <JsonSection
-            value={layer.metadata}
-            emptyValue={{}}
-            onCommit={handler.metadataCommit}
-          />
+          <Box sx={styles.jsonEditor}>
+            <JSONEditor
+              embedded
+              compact
+              value={(layer.metadata ?? {}) as JSONValue}
+              onChange={handler.metadataCommit}
+            />
+          </Box>
         )}
       </Box>
     </Box>

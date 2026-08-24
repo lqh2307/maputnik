@@ -2,19 +2,22 @@ import React from "react";
 import {
   Alert,
   Box,
-  Chip,
   CircularProgress,
+  IconButton,
   Paper,
   Stack,
   Typography,
 } from "@mui/material";
+import { CloseRounded } from "@mui/icons-material";
 import Map, {
   FullscreenControl,
   GeolocateControl,
+  Marker,
   NavigationControl,
   ScaleControl,
   ViewStateChangeEvent,
   type MapLayerMouseEvent,
+  type MarkerDragEvent,
 } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useGlobalStore, useMapModeStore } from "../../stores";
@@ -22,9 +25,80 @@ import { summarizeFeature, validateStyleDocument } from "../Utils";
 import { HoverInspector } from "./Types";
 import { useTranslation } from "react-i18next";
 
+const MAP_CONTAINER_STYLE = {
+  width: "100%",
+  height: "100%",
+};
+
+const MAP_ATTRIBUTION_CONTROL = {
+  compact: true,
+};
+
+const INSPECTOR_WIDTH: number = 320;
+const INSPECTOR_FEATURE_HEIGHT: number = 180;
+const INSPECTOR_COORDINATE_HEIGHT: number = 120;
+const INSPECTOR_OFFSET: number = 14;
+
+type MarkerPosition = {
+  longitude: number;
+  latitude: number;
+};
+
+function getInspectorPosition(
+  event: MapLayerMouseEvent,
+  fallbackHeight: number,
+  inspectorElement?: HTMLDivElement
+): Pick<HoverInspector, "x" | "y"> {
+  const container = event.target.getContainer();
+  const width: number = Math.min(
+    inspectorElement?.offsetWidth || INSPECTOR_WIDTH,
+    Math.max(0, container.clientWidth - 16)
+  );
+  const height: number = inspectorElement?.offsetHeight || fallbackHeight;
+
+  return {
+    x: Math.max(
+      8,
+      Math.min(
+        event.point.x + INSPECTOR_OFFSET,
+        container.clientWidth - width - 8
+      )
+    ),
+    y: Math.max(
+      8,
+      Math.min(
+        event.point.y + INSPECTOR_OFFSET,
+        container.clientHeight - height - 8
+      )
+    ),
+  };
+}
+
+function createInspector(
+  event: MapLayerMouseEvent,
+  feature: HoverInspector["feature"],
+  pinned: boolean,
+  inspectorElement?: HTMLDivElement
+): HoverInspector {
+  const position = getInspectorPosition(
+    event,
+    feature ? INSPECTOR_FEATURE_HEIGHT : INSPECTOR_COORDINATE_HEIGHT,
+    inspectorElement
+  );
+
+  return {
+    kind: feature ? "feature" : "coordinate",
+    feature,
+    longitude: event.lngLat.lng,
+    latitude: event.lngLat.lat,
+    pinned,
+    ...position,
+  };
+}
+
 /** Renders the interactive MapLibre canvas. */
 export const MapCanvas = React.memo((): React.JSX.Element => {
-  const { t } = useTranslation("editor");
+  const { t } = useTranslation();
 
   const style = useGlobalStore((state) => {
     return state.style;
@@ -46,68 +120,170 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
     return state.setInspectorFeatures;
   });
 
+  const selectLayer = useGlobalStore((state) => {
+    return state.selectLayer;
+  });
+
   const [loaded, setLoaded] = React.useState(false);
   const [mapError, setMapError] = React.useState<string>();
   const [hoverInspector, setHoverInspector] = React.useState<HoverInspector>();
+  const [markerPosition, setMarkerPosition] = React.useState<MarkerPosition>();
+  const mapModeRef = React.useRef(mapMode);
+  const hoverMoveEventRef = React.useRef<MapLayerMouseEvent>(undefined);
+  const hoverMoveFrameRef = React.useRef<number>(undefined);
+  const hoverInspectorRef = React.useRef<HoverInspector>(undefined);
+  const inspectorElementRef = React.useRef<HTMLDivElement>(undefined);
+
+  mapModeRef.current = mapMode;
+  hoverInspectorRef.current = hoverInspector;
+
+  const cancelHoverMove = React.useCallback((): void => {
+    cancelAnimationFrame(hoverMoveFrameRef.current);
+    hoverMoveFrameRef.current = undefined;
+    hoverMoveEventRef.current = undefined;
+  }, []);
+
+  const clearHoverInspector = React.useCallback((): void => {
+    cancelHoverMove();
+    setHoverInspector(undefined);
+  }, [cancelHoverMove]);
+
+  const clearInspectorBox = React.useCallback((): void => {
+    clearHoverInspector();
+    setInspectorFeatures([]);
+  }, [clearHoverInspector, setInspectorFeatures]);
+
+  const clearPinnedInspector = React.useCallback((): void => {
+    clearInspectorBox();
+    setMarkerPosition(undefined);
+  }, [clearInspectorBox]);
 
   const issues = React.useMemo(() => {
     return validateStyleDocument(style);
   }, [style]);
 
   const handleClick = React.useCallback(
-    (event: MapLayerMouseEvent) => {
+    (event: MapLayerMouseEvent): void => {
+      const features = event.target.queryRenderedFeatures(event.point);
+      const feature = features[0];
+
+      if (feature?.layer?.id) {
+        selectLayer(feature.layer.id);
+      }
+
       if (mapMode !== "inspect") {
         return;
       }
-      const features = event.target.queryRenderedFeatures(event.point);
+
+      setHoverInspector(
+        createInspector(
+          event,
+          feature ? summarizeFeature(feature) : undefined,
+          true,
+          inspectorElementRef.current
+        )
+      );
+      setMarkerPosition({
+        longitude: event.lngLat.lng,
+        latitude: event.lngLat.lat,
+      });
       setInspectorFeatures(features.slice(0, 30).map(summarizeFeature));
     },
-    [mapMode, setInspectorFeatures]
+    [mapMode, selectLayer, setInspectorFeatures]
   );
 
-  const handleMouseMove = React.useCallback(
-    (event: MapLayerMouseEvent) => {
-      if (mapMode !== "inspect") {
-        setHoverInspector(undefined);
+  const updateHoverInspector = React.useCallback(
+    (event: MapLayerMouseEvent): void => {
+      if (mapModeRef.current !== "inspect") {
+        clearHoverInspector();
+        return;
+      }
+
+      if (hoverInspectorRef.current?.pinned) {
         return;
       }
 
       const features = event.target.queryRenderedFeatures(event.point);
       const feature = features[0];
-      if (!feature) {
-        setHoverInspector(undefined);
+
+      setHoverInspector(
+        createInspector(
+          event,
+          feature ? summarizeFeature(feature) : undefined,
+          false,
+          inspectorElementRef.current
+        )
+      );
+    },
+    [clearHoverInspector]
+  );
+
+  const handleMouseMove = React.useCallback(
+    (event: MapLayerMouseEvent): void => {
+      if (mapModeRef.current !== "inspect") {
+        clearHoverInspector();
         return;
       }
 
-      const container = event.target.getContainer();
-      const tooltipWidth = 270;
-      const tooltipHeight = 210;
-      setHoverInspector({
-        feature: summarizeFeature(feature),
-        featureCount: features.length,
-        x:
-          event.point.x + tooltipWidth + 20 > container.clientWidth
-            ? Math.max(8, event.point.x - tooltipWidth - 14)
-            : event.point.x + 14,
-        y:
-          event.point.y + tooltipHeight + 20 > container.clientHeight
-            ? Math.max(8, event.point.y - tooltipHeight - 14)
-            : event.point.y + 14,
+      hoverMoveEventRef.current = event;
+
+      if (hoverMoveFrameRef.current !== undefined) {
+        return;
+      }
+
+      hoverMoveFrameRef.current = requestAnimationFrame(() => {
+        hoverMoveFrameRef.current = undefined;
+
+        const pendingEvent: MapLayerMouseEvent = hoverMoveEventRef.current;
+        hoverMoveEventRef.current = undefined;
+
+        if (pendingEvent) {
+          updateHoverInspector(pendingEvent);
+        }
       });
     },
-    [mapMode]
+    [clearHoverInspector, updateHoverInspector]
   );
 
   React.useEffect(() => {
     if (mapMode !== "inspect") {
-      setHoverInspector(undefined);
-      setInspectorFeatures([]);
+      clearPinnedInspector();
     }
-  }, [mapMode]);
+  }, [clearPinnedInspector, mapMode]);
+
+  React.useEffect(() => {
+    return () => {
+      cancelHoverMove();
+    };
+  }, [cancelHoverMove]);
 
   const hoverProperties = React.useMemo(() => {
-    return Object.entries(hoverInspector?.feature.properties ?? {}).slice(0, 5);
+    return Object.entries(hoverInspector?.feature?.properties ?? {});
   }, [hoverInspector]);
+
+  const handleMarkerDragEnd = React.useCallback(
+    (event: MarkerDragEvent): void => {
+      const longitude: number = event.lngLat.lng;
+      const latitude: number = event.lngLat.lat;
+
+      setMarkerPosition({
+        longitude,
+        latitude,
+      });
+      setHoverInspector((current) => {
+        if (!current?.pinned) {
+          return current;
+        }
+
+        return {
+          ...current,
+          longitude,
+          latitude,
+        };
+      });
+    },
+    []
+  );
 
   const handler = React.useMemo(() => {
     return {
@@ -125,11 +301,27 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
       }): void => {
         setMapError(event.error?.message ?? t("map.error"));
       },
-      leave: (): void => {
-        setHoverInspector(undefined);
+      leaveMap: (): void => {
+        if (!hoverInspectorRef.current?.pinned) {
+          clearHoverInspector();
+        }
       },
+      leaveCanvas: clearInspectorBox,
+      contextMenu: (event: MapLayerMouseEvent): void => {
+        event.originalEvent.preventDefault();
+        clearPinnedInspector();
+      },
+      markerDragEnd: handleMarkerDragEnd,
+      close: clearInspectorBox,
     };
-  }, [setViewState, t]);
+  }, [
+    clearHoverInspector,
+    clearInspectorBox,
+    clearPinnedInspector,
+    handleMarkerDragEnd,
+    setViewState,
+    t,
+  ]);
 
   const styles = React.useMemo(() => {
     return {
@@ -148,53 +340,71 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
       loadingContent: {
         alignItems: "center",
       },
-      mode: {
-        position: "absolute",
-        top: 12,
-        left: 12,
-      },
       inspector: {
         position: "absolute",
-        zIndex: 3,
+        zIndex: 2,
         left: hoverInspector?.x,
         top: hoverInspector?.y,
-        width: 270,
-        p: 1.25,
-        pointerEvents: "none",
-        border: 1,
-        borderColor: "primary.main",
-        bgcolor: "background.paper",
-        animation: "inspect-pop 120ms ease-out",
-        "@keyframes inspect-pop": {
-          from: {
-            opacity: 0,
-            transform: "translateY(4px) scale(.98)",
-          },
-          to: {
-            opacity: 1,
-            transform: "translateY(0) scale(1)",
-          },
-        },
-      },
-      inspectorHeader: {
-        alignItems: "center",
-        mb: 0.75,
+        width: INSPECTOR_WIDTH,
+        maxWidth: "calc(100% - 32px)",
+        maxHeight: "42%",
+        overflow: "auto",
+        boxSizing: "border-box",
+        p: "14px 15px 12px",
+        border: "1px solid #c4d8f0",
+        borderLeft: "4px solid #0065ff",
+        borderRadius: "8px",
+        bgcolor: "#fff",
+        color: "#202328",
+        pointerEvents: "auto",
+        fontFamily: "sans-serif",
+        fontSize: 13,
+        lineHeight: 1.45,
       },
       inspectorTitle: {
+        display: "block",
+        fontWeight: 700,
+      },
+      inspectorClose: {
+        float: "right",
         minWidth: 0,
-        flex: 1,
+        m: 0,
+        ml: 1,
+        p: 0,
+        border: 0,
+        borderRadius: 0,
+        bgcolor: "transparent",
+        color: "#515f70",
+        fontSize: 22,
+        lineHeight: 1,
+        opacity: 0.8,
+        "&:hover": {
+          bgcolor: "transparent",
+          color: "#0065ff",
+          opacity: 1,
+        },
+      },
+      propertyList: {
+        m: "10px 0 0",
+        p: 0,
+      },
+      propertyRow: {
+        display: "grid",
+        gridTemplateColumns: "minmax(90px, 35%) 1fr",
+        gap: 1,
+        py: 0.5,
+        borderTop: "1px solid #e3e8ef",
+        overflowWrap: "anywhere",
       },
       propertyName: {
-        width: 92,
-        flexShrink: 0,
+        color: "#515f70",
       },
       propertyValue: {
-        flex: 1,
+        m: 0,
+        whiteSpace: "pre-wrap",
       },
-      inspectorHint: {
-        display: "block",
-        mt: 0.75,
-        fontWeight: 600,
+      emptyProperties: {
+        color: "#515f70",
       },
       error: {
         position: "absolute",
@@ -205,8 +415,10 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
     };
   }, [hoverInspector]);
 
+  const inspectorFeature = hoverInspector?.feature;
+
   return (
-    <Box sx={styles.root}>
+    <Box sx={styles.root} onMouseLeave={handler.leaveCanvas}>
       <Map
         {...viewState}
         mapStyle={style}
@@ -214,31 +426,37 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
         onLoad={handler.load}
         onError={handler.error}
         onClick={handleClick}
+        onContextMenu={handler.contextMenu}
         onMouseMove={handleMouseMove}
-        onMouseLeave={handler.leave}
+        onMouseLeave={handler.leaveMap}
         cursor={
           mapMode === "inspect"
-            ? hoverInspector
+            ? hoverInspector?.kind === "feature"
               ? "pointer"
-              : "crosshair"
+              : ""
             : "grab"
         }
-        attributionControl={{
-          compact: true,
-        }}
+        attributionControl={MAP_ATTRIBUTION_CONTROL}
         reuseMaps
-        style={{
-          width: "100%",
-          height: "100%",
-        }}
+        style={MAP_CONTAINER_STYLE}
       >
-        <NavigationControl position="top-right" visualizePitch />
+        <NavigationControl position={"top-right"} visualizePitch />
 
-        <FullscreenControl position="top-right" />
+        <FullscreenControl position={"top-right"} />
 
-        <GeolocateControl position="top-right" />
+        <GeolocateControl position={"top-right"} />
 
-        <ScaleControl position="bottom-right" />
+        <ScaleControl position={"bottom-right"} />
+
+        {mapMode === "inspect" && markerPosition && (
+          <Marker
+            longitude={markerPosition.longitude}
+            latitude={markerPosition.latitude}
+            color={"#0065ff"}
+            draggable
+            onDragEnd={handler.markerDragEnd}
+          />
+        )}
       </Map>
 
       {!loaded && (
@@ -246,77 +464,91 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
           <Stack direction="row" spacing={1.5} sx={styles.loadingContent}>
             <CircularProgress size={20} />
 
-            <Typography variant="body2">{t("map.loading")}</Typography>
+            <Typography variant={"body2"}>{t("map.loading")}</Typography>
           </Stack>
         </Paper>
       )}
 
-      {mapMode === "inspect" && (
-        <Chip color="primary" label={t("map.hoverInspect")} sx={styles.mode} />
-      )}
-
       {mapMode === "inspect" && hoverInspector && (
-        <Paper elevation={8} sx={styles.inspector}>
-          <Stack direction="row" spacing={1} sx={styles.inspectorHeader}>
-            <Box sx={styles.inspectorTitle}>
-              <Typography variant="subtitle2" noWrap>
-                {hoverInspector.feature.layer.id}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {hoverInspector.feature.geometryType}
-              </Typography>
-            </Box>
-
-            <Chip
-              size={"small"}
-              color="primary"
-              variant="outlined"
-              label={hoverInspector.feature.layer.type}
-            />
-          </Stack>
-          <Stack spacing={0.35}>
-            {hoverProperties.map(([name, value]) => {
-              return (
-                <Stack key={name} direction="row" spacing={1}>
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    noWrap
-                    sx={styles.propertyName}
-                  >
-                    {name}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    noWrap
-                    sx={styles.propertyValue}
-                  >
-                    {typeof value === "object"
-                      ? JSON.stringify(value)
-                      : String(value)}
-                  </Typography>
-                </Stack>
-              );
-            })}
-            {!hoverProperties.length && (
-              <Typography variant="caption" color="text.secondary">
-                Feature has no properties
-              </Typography>
-            )}
-          </Stack>
-          <Typography
-            variant="caption"
-            color="primary.main"
-            sx={styles.inspectorHint}
+        <Paper ref={inspectorElementRef} elevation={0} sx={styles.inspector}>
+          <IconButton
+            aria-label={t("map.closeInspector")}
+            onClick={handler.close}
+            sx={styles.inspectorClose}
           >
-            Click to pin {hoverInspector.featureCount} feature
-            {hoverInspector.featureCount === 1 ? "" : "s"}
-          </Typography>
+            <CloseRounded fontSize={"inherit"} />
+          </IconButton>
+
+          {inspectorFeature ? (
+            <>
+              <Box component="strong" sx={styles.inspectorTitle}>
+                {inspectorFeature.sourceLayer || t("map.feature")}
+              </Box>
+
+              <Box component="dl" sx={styles.propertyList}>
+                <Box component="div" sx={styles.propertyRow}>
+                  <Box component="dt" sx={styles.propertyName}>
+                    {t("properties.type")}
+                  </Box>
+                  <Box component="dd" sx={styles.propertyValue}>
+                    {inspectorFeature.geometryType}
+                  </Box>
+                </Box>
+
+                <Box component="div" sx={styles.propertyRow}>
+                  <Box component="dt" sx={styles.propertyName}>
+                    {t("map.coordinates")}
+                  </Box>
+                  <Box component="dd" sx={styles.propertyValue}>
+                    {`[${hoverInspector.longitude}, ${hoverInspector.latitude}]`}
+                  </Box>
+                </Box>
+
+                {hoverProperties.map(([name, value]) => {
+                  return (
+                    <Box component="div" key={name} sx={styles.propertyRow}>
+                      <Box component="dt" sx={styles.propertyName}>
+                        {name}
+                      </Box>
+                      <Box component="dd" sx={styles.propertyValue}>
+                        {typeof value === "object" && value !== null
+                          ? JSON.stringify(value)
+                          : String(value)}
+                      </Box>
+                    </Box>
+                  );
+                })}
+
+                {!hoverProperties.length && (
+                  <Box component="div" sx={styles.emptyProperties}>
+                    {t("map.noProperties")}
+                  </Box>
+                )}
+              </Box>
+            </>
+          ) : (
+            <>
+              <Box component="strong" sx={styles.inspectorTitle}>
+                {t("map.position")}
+              </Box>
+
+              <Box component="dl" sx={styles.propertyList}>
+                <Box component="div" sx={styles.propertyRow}>
+                  <Box component="dt" sx={styles.propertyName}>
+                    {t("map.coordinates")}
+                  </Box>
+                  <Box component="dd" sx={styles.propertyValue}>
+                    {`[${hoverInspector.longitude}, ${hoverInspector.latitude}]`}
+                  </Box>
+                </Box>
+              </Box>
+            </>
+          )}
         </Paper>
       )}
 
       {(mapError || issues.length > 0) && (
-        <Alert severity="warning" variant="filled" sx={styles.error}>
+        <Alert severity={"warning"} variant={"filled"} sx={styles.error}>
           {mapError ??
             `${issues.length} style validation issue${issues.length === 1 ? "" : "s"}`}
         </Alert>

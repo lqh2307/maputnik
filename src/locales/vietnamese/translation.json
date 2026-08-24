@@ -36,7 +36,21 @@
     "inspectMode": "Chế độ kiểm tra",
     "loading": "Đang tải bản đồ…",
     "error": "Lỗi hiển thị bản đồ",
-    "hoverInspect": "Di chuột để kiểm tra · nhấn để ghim"
+    "hoverInspect": "Di chuột để kiểm tra · nhấn để ghim",
+    "position": "Vị trí bản đồ",
+    "coordinates": "Tọa độ",
+    "feature": "Đối tượng",
+    "noProperties": "Đối tượng không có thuộc tính",
+    "closeInspector": "Đóng khung kiểm tra",
+    "searchLocation": "Tìm địa điểm",
+    "searching": "Đang tìm…",
+    "noGeocodingResults": "Không tìm thấy địa điểm",
+    "geocodingKeyRequired": "Hãy cấu hình API key MapTiler",
+    "geocodingError": "Không thể tìm kiếm địa điểm"
+  },
+  "leftBar": {
+    "layer": "Layer",
+    "source": "Nguồn"
   },
   "layers": {
     "title": "Layers",
@@ -49,6 +63,14 @@
     "all": "Tất cả",
     "empty": "Không có layer phù hợp",
     "manageSources": "Quản lý nguồn dữ liệu"
+  },
+  "sources": {
+    "title": "Nguồn dữ liệu",
+    "add": "Thêm nguồn dữ liệu",
+    "edit": "Sửa nguồn dữ liệu",
+    "delete": "Xóa nguồn dữ liệu",
+    "summary": "{{type}} · {{count}} layers",
+    "empty": "Chưa có nguồn dữ liệu. Hãy thêm nguồn trước khi tạo layer theo dữ liệu."
   },
   "properties": {
     "selectLayer": "Chọn một layer để chỉnh sửa thuộc tính.",
@@ -66,11 +88,23 @@
     "paint": "Hiển thị",
     "layout": "Bố cục",
     "search": "Tìm thuộc tính {{section}}",
+    "color": "Màu sắc",
+    "opacity": "Độ mờ",
     "noMatch": "Không có thuộc tính {{section}} phù hợp.",
     "invalidJson": "JSON không hợp lệ",
     "applyHint": "Ctrl/Cmd+Enter để áp dụng",
     "toggleExpression": "Chuyển biểu thức / giá trị JSON",
-    "resetDefault": "Khôi phục giá trị mặc định"
+    "resetDefault": "Khôi phục giá trị mặc định",
+    "filterBuilder": "Bộ dựng bộ lọc",
+    "filterJsonMode": "Bộ lọc JSON nâng cao",
+    "filterJsonHint": "Bộ lọc này chứa expression chưa được hỗ trợ trong bộ dựng trực quan. Hãy dùng JSONEditor để chỉnh sửa.",
+    "filterProperty": "Thuộc tính feature",
+    "filterNoConditions": "Chưa có điều kiện. Hãy thêm điều kiện hoặc nhóm.",
+    "filterAddRule": "Thêm điều kiện",
+    "filterAddGroup": "Thêm nhóm",
+    "filterRemove": "Xóa điều kiện hoặc nhóm",
+    "filterAddValue": "Thêm giá trị bộ lọc",
+    "filterRemoveValue": "Xóa giá trị bộ lọc"
   },
   "status": {
     "layers": "{{count}} layers",

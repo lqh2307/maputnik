@@ -91,7 +91,7 @@ Theme store quản lý riêng giao diện màu của application shell. `setThem
  
 ## `useLanguageStore` chi tiết
  
-Language store quản lý ngôn ngữ hiển thị của ứng dụng. `setLanguage(language)` cập nhật ngôn ngữ hiện tại, lưu vào `localStorage` (`maputnik-language`) và kích hoạt chuyển đổi ngôn ngữ trong `i18n`.
+Language store quản lý ngôn ngữ hiển thị của ứng dụng. `setLanguage(language)` cập nhật ngôn ngữ hiện tại và kích hoạt chuyển đổi ngôn ngữ trong `i18n`.
  
 ## `useDialogStore` chi tiết
 

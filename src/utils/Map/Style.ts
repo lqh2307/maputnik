@@ -20,6 +20,14 @@ const REPLACE_FILE_REGEX = /[^\w.-]/g;
 /** Default placeholder token used for demo MapTiler examples when a real token is unavailable. */
 const MAPTILER_DEFAULT_TOKEN = "get_your_own_OpIi9ZULNHzrESv6T2vL";
 
+// Validation is requested by several panels for the same immutable style
+// reference. Keep the result weakly cached so a style edit invalidates it
+// naturally without retaining old documents in memory.
+const styleValidationCache = new WeakMap<
+  StyleSpecification,
+  StyleValidationIssue[]
+>();
+
 /** Creates an independent clone of a MapLibre style document. */
 export function cloneStyle(style: StyleSpecification): StyleSpecification {
   return structuredClone(style);
@@ -147,8 +155,16 @@ export function sourceSupportsLayer(
 export function validateStyleDocument(
   style: StyleSpecification
 ): StyleValidationIssue[] {
+  const cachedIssues: StyleValidationIssue[] = styleValidationCache.get(style);
+
+  if (cachedIssues) {
+    return cachedIssues;
+  }
+
+  let issues: StyleValidationIssue[];
+
   try {
-    return validateStyleMin(style as StyleSpecification).map(
+    issues = validateStyleMin(style as StyleSpecification).map(
       (issue: ValidationError) => {
         const path: string = issue.message ?? "";
         const layerMatch = String(path).match(/layers\[(\d+)\]/);
@@ -165,12 +181,16 @@ export function validateStyleDocument(
       }
     );
   } catch (error) {
-    return [
+    issues = [
       {
         message: error instanceof Error ? error.message : String(error),
       },
     ];
   }
+
+  styleValidationCache.set(style, issues);
+
+  return issues;
 }
 
 /** Downloads a style document as formatted JSON file. */

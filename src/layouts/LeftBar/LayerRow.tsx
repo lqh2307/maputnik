@@ -5,8 +5,9 @@ import {
   VisibilityOffRounded,
   VisibilityRounded,
 } from "@mui/icons-material";
-import { Box, Stack, TextField, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { TooltipButton } from "../../components/TooltipButton";
+import { TextInput } from "../../components/TextInput";
 import { LayerTypeIcon } from "./LayerTypeIcon";
 import { useGlobalStore } from "../../stores";
 import { LayerRowProp } from "./Types";
@@ -16,7 +17,7 @@ import React from "react";
 /** Renders one selectable and draggable style layer. */
 export const LayerRow = React.memo(
   ({ layer, dragState, setDragState }: LayerRowProp): React.JSX.Element => {
-    const { t } = useTranslation("editor");
+    const { t } = useTranslation();
 
     const selected = useGlobalStore((state) => {
       return state.selectedLayerId === layer.id;
@@ -244,8 +245,8 @@ export const LayerRow = React.memo(
         select: (): void => {
           selectLayer(layer.id);
         },
-        nameChange: (event: React.ChangeEvent<HTMLInputElement>): void => {
-          setName(event.target.value);
+        nameChange: (value: string): void => {
+          setName(value);
         },
         nameKeyDown: (event: React.KeyboardEvent<HTMLInputElement>): void => {
           if (event.key === "Enter") {
@@ -314,10 +315,9 @@ export const LayerRow = React.memo(
         <LayerTypeIcon type={layer.type} sx={styles.layerIcon} />
 
         {editing ? (
-          <TextField
+          <TextInput
             autoFocus
             size={"small"}
-            variant="standard"
             value={name}
             onChange={handler.nameChange}
             onBlur={saveName}
@@ -327,14 +327,14 @@ export const LayerRow = React.memo(
           />
         ) : (
           <Box onDoubleClick={handler.edit} sx={styles.name}>
-            <Typography variant="body2" noWrap sx={styles.title}>
+            <Typography variant={"body2"} noWrap sx={styles.title}>
               {layer.id}
             </Typography>
 
             {"source-layer" in layer && layer["source-layer"] && (
               <Typography
-                variant="caption"
-                color="text.secondary"
+                variant={"caption"}
+                color={"text.secondary"}
                 noWrap
                 sx={styles.source}
               >
@@ -368,7 +368,7 @@ export const LayerRow = React.memo(
 
           <TooltipButton
             title={t("actions.delete")}
-            color="error"
+            color={"error"}
             icon={<DeleteOutlineRounded sx={styles.actionIcon} />}
             onClick={handler.remove}
             sx={styles.actionBtn}

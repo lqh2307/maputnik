@@ -29,8 +29,27 @@ export const ToolbarAction = React.memo(
           width: 32,
           height: 32,
           p: 0,
-          border: "none",
-          color: "inherit",
+          border: 1,
+          borderColor: "divider",
+          borderRadius: 1,
+          color: "text.secondary",
+          bgcolor: "background.paper",
+          boxShadow: "0 1px 2px rgba(15, 23, 42, 0.08)",
+          "&&:hover": {
+            outline: "none",
+            borderColor: "primary.main",
+            color: "primary.main",
+            bgcolor: "action.hover",
+            boxShadow: "0 3px 8px rgba(15, 23, 42, 0.14)",
+            transform: "translateY(-1px)",
+          },
+          "&.Mui-disabled": {
+            opacity: 1,
+            borderColor: "divider",
+            color: "text.disabled",
+            bgcolor: "action.hover",
+            boxShadow: "none",
+          },
         },
       };
     }, []);
@@ -42,6 +61,7 @@ export const ToolbarAction = React.memo(
         onClick={handler.click}
         disabled={disabled}
         color={color}
+        fullWidth={false}
         sx={styles.button}
       />
     );

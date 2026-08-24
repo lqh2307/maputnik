@@ -11,7 +11,7 @@ import React from "react";
 
 /** Renders file and IO actions: New style, Open style, and Export style. */
 export const TopBarIO = React.memo((): React.JSX.Element => {
-  const { t } = useTranslation("editor");
+  const { t } = useTranslation();
 
   const newStyle = useGlobalStore((state) => {
     return state.newStyle;
@@ -40,7 +40,7 @@ export const TopBarIO = React.memo((): React.JSX.Element => {
   }, [newStyle, updateDialog]);
 
   return (
-    <ButtonGroup size={"small"} variant="text" color="inherit">
+    <ButtonGroup size={"small"} variant={"text"}>
       <ToolbarAction
         title={t("actions.new")}
         icon={<AddRounded />}

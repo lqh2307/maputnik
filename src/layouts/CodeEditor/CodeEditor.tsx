@@ -13,7 +13,7 @@ import React from "react";
 
 /** Renders the embedded style JSON editor layout component. */
 export const CodeEditor = React.memo((): React.JSX.Element => {
-  const { t } = useTranslation("editor");
+  const { t } = useTranslation();
 
   const style = useGlobalStore((state) => {
     return state.style;
@@ -57,8 +57,8 @@ export const CodeEditor = React.memo((): React.JSX.Element => {
   const styles = React.useMemo(() => {
     return {
       root: {
-        width: "48%",
-        minWidth: 420,
+        width: "100%",
+        minWidth: 0,
         height: "100%",
         borderRight: 1,
         borderColor: "divider",
@@ -77,7 +77,7 @@ export const CodeEditor = React.memo((): React.JSX.Element => {
         headerExtra={
           <Chip
             size={"small"}
-            variant="outlined"
+            variant={"outlined"}
             color={issues.length ? "warning" : "success"}
             icon={
               issues.length ? (

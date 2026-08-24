@@ -6,7 +6,7 @@ import React from "react";
 
 /** Renders the brand logo, application name, style title, and dirty badge. */
 export const TopBarBrand = React.memo((): React.JSX.Element => {
-  const { t } = useTranslation("editor");
+  const { t } = useTranslation();
 
   const styleName = useGlobalStore((state) => {
     return state.style.name;
@@ -43,17 +43,17 @@ export const TopBarBrand = React.memo((): React.JSX.Element => {
   return (
     <Stack direction="row" spacing={1} sx={styles.brand}>
       <Box sx={styles.logo}>
-        <MapRounded fontSize="small" />
+        <MapRounded fontSize={"small"} />
       </Box>
 
       <Box sx={styles.title}>
-        <Typography variant="subtitle2" noWrap>
+        <Typography variant={"subtitle2"} noWrap>
           {t("app.name")}
         </Typography>
 
         <Typography
-          variant="caption"
-          color="text.secondary"
+          variant={"caption"}
+          color={"text.secondary"}
           noWrap
           sx={styles.subtitle}
         >
@@ -62,7 +62,7 @@ export const TopBarBrand = React.memo((): React.JSX.Element => {
       </Box>
 
       {dirty && (
-        <Chip label={t("app.edited")} size={"small"} variant="outlined" />
+        <Chip label={t("app.edited")} size={"small"} variant={"outlined"} />
       )}
     </Stack>
   );

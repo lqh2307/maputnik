@@ -7,8 +7,8 @@ export const RightBar = React.memo((): React.JSX.Element => {
   const styles = React.useMemo(() => {
     return {
       root: {
-        width: 370,
-        minWidth: 320,
+        width: "100%",
+        minWidth: 0,
         height: "100%",
         flexShrink: 0,
         display: "flex",

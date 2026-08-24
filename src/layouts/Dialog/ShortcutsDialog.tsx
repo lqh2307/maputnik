@@ -1,5 +1,4 @@
 import {
-  Button,
   Chip,
   Dialog,
   DialogActions,
@@ -11,6 +10,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useDialogStore } from "../../stores";
+import { TooltipButton } from "../../components/TooltipButton";
 import { ShortcutsDialogProp } from "./Types";
 import { useTranslation } from "react-i18next";
 import React from "react";
@@ -18,7 +18,7 @@ import React from "react";
 /** Renders the keyboard shortcut cheatsheet dialog. */
 export const ShortcutsDialog = React.memo(
   ({ open = false }: ShortcutsDialogProp): React.JSX.Element => {
-    const { t } = useTranslation("editor");
+    const { t } = useTranslation();
 
     const updateDialog = useDialogStore((state) => {
       return state.updateDialog;
@@ -59,7 +59,7 @@ export const ShortcutsDialog = React.memo(
 
                   <ListItem>
                     <ListItemText primary={action} />
-                    <Chip label={keys} size="small" variant="outlined" />
+                    <Chip label={keys} size={"small"} variant={"outlined"} />
                   </ListItem>
                 </React.Fragment>
               );
@@ -68,7 +68,13 @@ export const ShortcutsDialog = React.memo(
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={close}>{t("actions.close")}</Button>
+          <TooltipButton
+            title={t("actions.close")}
+            variant={"text"}
+            onClick={close}
+          >
+            {t("actions.close")}
+          </TooltipButton>
         </DialogActions>
       </Dialog>
     );

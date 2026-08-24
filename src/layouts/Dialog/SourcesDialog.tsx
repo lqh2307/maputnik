@@ -7,7 +7,6 @@ import {
 import {
   Alert,
   Box,
-  Button,
   Card,
   CardContent,
   Chip,
@@ -28,7 +27,7 @@ import React from "react";
 /** Renders source management dialog for the current style document. */
 export const SourcesDialog = React.memo(
   ({ open = false }: SourcesDialogProp): React.JSX.Element => {
-    const { t } = useTranslation("editor");
+    const { t } = useTranslation();
 
     const sources = useGlobalStore((state) => {
       return state.style.sources;
@@ -107,20 +106,21 @@ export const SourcesDialog = React.memo(
         <Dialog open={open} onClose={close} fullWidth maxWidth="md">
           <DialogTitle>
             <Stack direction="row" spacing={1} sx={styles.titleStack}>
-              <StorageRounded color="primary" />
+              <StorageRounded />
 
               <span>{t("dialog.sourceData")}</span>
 
               <Box sx={styles.spacer} />
 
-              <Button
-                size="small"
-                variant="contained"
+              <TooltipButton
+                title={t("dialog.sourceAdd")}
+                size={"small"}
+                variant={"contained"}
                 startIcon={<AddRounded />}
                 onClick={handler.addClick}
               >
                 {t("dialog.sourceAdd")}
-              </Button>
+              </TooltipButton>
             </Stack>
           </DialogTitle>
 
@@ -132,15 +132,18 @@ export const SourcesDialog = React.memo(
                 }).length;
 
                 return (
-                  <Card key={id} variant="outlined">
+                  <Card key={id} variant={"outlined"}>
                     <CardContent sx={styles.cardContent}>
                       <Stack direction="row" spacing={1} sx={styles.row}>
                         <Box sx={styles.sourceLabel}>
-                          <Typography variant="subtitle2" noWrap>
+                          <Typography variant={"subtitle2"} noWrap>
                             {id}
                           </Typography>
 
-                          <Typography variant="caption" color="text.secondary">
+                          <Typography
+                            variant={"caption"}
+                            color={"text.secondary"}
+                          >
                             {t("dialog.sourceSummary", {
                               type: source.type,
                               count: layerCount,
@@ -148,18 +151,18 @@ export const SourcesDialog = React.memo(
                           </Typography>
                         </Box>
 
-                        <Chip size="small" label={source.type} />
+                        <Chip size={"small"} label={source.type} />
 
                         <TooltipButton
                           title={t("actions.edit")}
-                          icon={<EditRounded fontSize="small" />}
+                          icon={<EditRounded fontSize={"small"} />}
                           onClick={handler.editClick(id, source)}
                         />
 
                         <TooltipButton
                           title={t("actions.delete")}
-                          color="error"
-                          icon={<DeleteOutlineRounded fontSize="small" />}
+                          color={"error"}
+                          icon={<DeleteOutlineRounded fontSize={"small"} />}
                           onClick={handler.deleteClick(id)}
                         />
                       </Stack>
@@ -169,13 +172,19 @@ export const SourcesDialog = React.memo(
               })}
 
               {!Object.keys(sources).length && (
-                <Alert severity="info">{t("dialog.emptySources")}</Alert>
+                <Alert severity={"info"}>{t("dialog.emptySources")}</Alert>
               )}
             </Stack>
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={close}>{t("actions.close")}</Button>
+            <TooltipButton
+              title={t("actions.close")}
+              variant={"text"}
+              onClick={close}
+            >
+              {t("actions.close")}
+            </TooltipButton>
           </DialogActions>
         </Dialog>
 

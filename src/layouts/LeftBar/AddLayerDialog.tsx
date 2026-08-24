@@ -1,5 +1,4 @@
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,6 +8,7 @@ import {
 } from "@mui/material";
 import { LayerSpecification } from "maplibre-gl";
 import { SelectInput } from "../../components/SelectInput";
+import { TooltipButton } from "../../components/TooltipButton";
 import { useGlobalStore } from "../../stores";
 import { sourceSupportsLayer } from "../Utils";
 import { LAYER_TYPES } from "../Constants";
@@ -20,7 +20,7 @@ import React from "react";
 /** Renders the layer type and source picker dialog. */
 export const AddLayerDialog = React.memo(
   ({ open, onClose }: AddLayerDialogProp): React.JSX.Element => {
-    const { t } = useTranslation("editor");
+    const { t } = useTranslation();
 
     const sources = useGlobalStore((state) => {
       return state.style.sources;
@@ -95,7 +95,7 @@ export const AddLayerDialog = React.memo(
                   menuItemProp: {
                     children: (
                       <Stack direction="row" spacing={1} sx={styles.item}>
-                        <LayerTypeIcon type={value} fontSize="small" />
+                        <LayerTypeIcon type={value} fontSize={"small"} />
                         <span>{value}</span>
                       </Stack>
                     ),
@@ -119,7 +119,7 @@ export const AddLayerDialog = React.memo(
             )}
 
             {type !== "background" && compatibleSources.length === 0 && (
-              <Typography variant="body2" color="warning.main">
+              <Typography variant={"body2"} color={"warning.main"}>
                 {t("layers.sourceRequired")}
               </Typography>
             )}
@@ -127,15 +127,22 @@ export const AddLayerDialog = React.memo(
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onClose}>{t("actions.cancel")}</Button>
+          <TooltipButton
+            title={t("actions.cancel")}
+            variant={"text"}
+            onClick={onClose}
+          >
+            {t("actions.cancel")}
+          </TooltipButton>
 
-          <Button
-            variant="contained"
+          <TooltipButton
+            title={t("layers.addTitle")}
+            variant={"contained"}
             onClick={submit}
             disabled={type !== "background" && !sourceId}
           >
             {t("layers.addTitle")}
-          </Button>
+          </TooltipButton>
         </DialogActions>
       </Dialog>
     );

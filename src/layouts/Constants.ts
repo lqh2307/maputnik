@@ -1,28 +1,14 @@
 import { StyleSpecification } from "maplibre-gl";
+import {
+  getStyleLayerTypes,
+  getStyleSourceTypes,
+} from "../utils/Map/StyleSpec";
 
 export const REPLACE_FILE_REGEX: RegExp = /[^a-zA-Z0-9-_]+/gi;
 
-export const SOURCE_TYPES: readonly string[] = [
-  "vector",
-  "raster",
-  "raster-dem",
-  "geojson",
-  "image",
-  "video",
-];
+export const SOURCE_TYPES: readonly string[] = getStyleSourceTypes();
 
-export const LAYER_TYPES: readonly string[] = [
-  "background",
-  "fill",
-  "line",
-  "symbol",
-  "circle",
-  "heatmap",
-  "fill-extrusion",
-  "raster",
-  "hillshade",
-  "color-relief",
-];
+export const LAYER_TYPES: readonly string[] = getStyleLayerTypes();
 
 export const DEFAULT_STYLE: StyleSpecification = {
   version: 8,

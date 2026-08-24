@@ -27,6 +27,44 @@ function isStructured(value: unknown): boolean {
   return Array.isArray(value) || (!!value && typeof value === "object");
 }
 
+/** Types represented by JSON objects/arrays in the style specification. */
+function isStructuredSpec(type: string): boolean {
+  return [
+    "*",
+    "any",
+    "array",
+    "array<T>",
+    "collator",
+    "colorArray",
+    "expression",
+    "filter",
+    "fontFaces",
+    "formatted",
+    "GeoJSON object",
+    "interpolation",
+    "light",
+    "line",
+    "JSON array",
+    "JSON object",
+    "object",
+    "padding",
+    "Point",
+    "Polygon",
+    "projection",
+    "projectionDefinition",
+    "promoteId",
+    "property-function",
+    "resolvedImage",
+    "sky",
+    "sources",
+    "sprite",
+    "state",
+    "terrain",
+    "transition",
+    "variableAnchorOffsetCollection",
+  ].includes(type);
+}
+
 /** Renders an expression or structured property using the shared JSON editor. */
 function JsonValueEditor({
   value,
@@ -214,13 +252,16 @@ export const PropertyField = React.memo(
     const { t } = useTranslation();
     const overridden = value !== undefined;
     const resolvedValue = overridden ? value : spec.default;
+    const structuredSpec = isStructuredSpec(spec.type);
     const [expressionMode, setExpressionMode] = React.useState(
-      isStructured(resolvedValue)
+      Boolean(spec.expression && isStructured(resolvedValue))
     );
 
     React.useEffect(() => {
-      setExpressionMode(isStructured(resolvedValue));
-    }, [resolvedValue]);
+      setExpressionMode(
+        Boolean(spec.expression && isStructured(resolvedValue))
+      );
+    }, [resolvedValue, spec.expression]);
 
     const handler = React.useMemo(() => {
       return {
@@ -309,7 +350,7 @@ export const PropertyField = React.memo(
     }, []);
 
     let editor: React.ReactNode;
-    if (expressionMode || isStructured(resolvedValue)) {
+    if (structuredSpec || expressionMode || isStructured(resolvedValue)) {
       editor = (
         <JsonValueEditor value={resolvedValue ?? null} onChange={onChange} />
       );

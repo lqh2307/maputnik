@@ -104,6 +104,14 @@ export function createLayer(
     layer.paint = {
       "raster-opacity": 1,
     };
+  } else if (type === "hillshade") {
+    layer.paint = {
+      "hillshade-exaggeration": 0.5,
+    };
+  } else if (type === "color-relief") {
+    layer.paint = {
+      "color-relief-opacity": 1,
+    };
   } else if (type === "symbol") {
     layer.layout = {
       "text-field": ["coalesce", ["get", "name"], ""],

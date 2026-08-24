@@ -18,6 +18,9 @@ import {
 /** Defines where a moved style layer is placed relative to its target. */
 export type LayerPlacement = "before" | "after";
 
+/** JSON path used to address any editable value inside a style document. */
+export type StylePath = (string | number)[];
+
 /** Defines undo and redo snapshots for the Maputnik style editor. */
 export type EditorHistoryState = {
   /** Ordered snapshots of previously committed style documents. */
@@ -76,6 +79,8 @@ export type GlobalAction = {
   newStyle: () => void;
   /** Applies a partial patch to the root style object. */
   updateRoot: (patch: Partial<StyleSpecification>) => void;
+  /** Sets or removes one value at a nested path in the style document. */
+  updateStyleValue: (path: StylePath, value: unknown) => void;
   /** Creates a new layer of the supplied type and optional source binding. */
   addLayer: (type: LayerSpecification["type"], sourceId?: string) => void;
   /** Updates a specific layer record or renames it while keeping source semantics aligned. */

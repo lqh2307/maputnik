@@ -15,10 +15,13 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import latestSpec from "@maplibre/maplibre-gl-style-spec/dist/latest.json";
 import { FilterSpecification, LayerSpecification } from "maplibre-gl";
 import { useGlobalStore } from "../../stores";
-import { sourceSupportsLayer, validateStyleDocument } from "../Utils";
+import {
+  getLayerSectionSpecs,
+  sourceSupportsLayer,
+  validateStyleDocument,
+} from "../Utils";
 import { LAYER_TYPES } from "../Constants";
 import { EditableLayer, LayerSection } from "../Types";
 import { JSONEditor } from "../../components/JSONEditor";
@@ -28,7 +31,7 @@ import { SelectInput } from "../../components/SelectInput";
 import { TextInput } from "../../components/TextInput";
 import { TooltipTab } from "../../components/TooltipTab";
 import { JSONValue } from "../../utils/Object";
-import { CommitTextFieldProp, StyleSpecificationSchema } from "./Types";
+import { CommitTextFieldProp } from "./Types";
 import { useTranslation } from "react-i18next";
 
 /** Renders a text field that commits on blur or Enter. */
@@ -242,15 +245,12 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
     if (!layer || !activeSection) {
       return [];
     }
-    const schema =
-      (latestSpec as unknown as StyleSpecificationSchema)[
-        `${activeSection}_${layer.type}`
-      ] ?? {};
+    const schema = getLayerSectionSpecs(activeSection, layer.type);
     const values: Record<string, unknown> = editableLayer[activeSection] ?? {};
     const query = propertySearch.trim().toLowerCase();
     return Object.entries(schema)
       .filter(([name]) => {
-        return name !== "visibility" && (!query || name.includes(query));
+        return !query || name.includes(query);
       })
       .sort(([nameA], [nameB]) => {
         const overriddenA = values[nameA] !== undefined ? 0 : 1;

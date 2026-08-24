@@ -1,5 +1,7 @@
+import { CodeRounded } from "@mui/icons-material";
 import {
   Alert,
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,11 +11,13 @@ import {
 import { SourceSpecification } from "maplibre-gl";
 import { SOURCE_TYPES } from "../Constants";
 import { useGlobalStore } from "../../stores";
-import { createUniqueId } from "../Utils";
+import { createUniqueId, getSourcePropertySpecs } from "../Utils";
 import { SelectInput } from "../../components/SelectInput";
+import { JSONEditor } from "../../components/JSONEditor";
 import { TextInput } from "../../components/TextInput";
 import { TooltipButton } from "../../components/TooltipButton";
-import { CODE_TEXTAREA } from "../../configs/styles";
+import { JSONValue } from "../../utils/Object";
+import { SpecObjectEditor } from "../RightBar/SpecObjectEditor";
 import { SourceEditorProp } from "./Types";
 import { useTranslation } from "react-i18next";
 import React from "react";
@@ -43,8 +47,8 @@ export const SourceEditor = React.memo(
         } as SourceSpecification)
     );
 
-    const [json, setJson] = React.useState(JSON.stringify(source, null, 2));
     const [error, setError] = React.useState<string>();
+    const [advanced, setAdvanced] = React.useState(false);
 
     const updateType = React.useCallback((type: string): void => {
       let next: SourceSpecification;
@@ -84,19 +88,41 @@ export const SourceEditor = React.memo(
         } as SourceSpecification;
       }
       setSource(next);
-      setJson(JSON.stringify(next, null, 2));
+      setError(undefined);
     }, []);
+
+    const updateProperty = React.useCallback(
+      (name: string, value: unknown): void => {
+        setSource((current) => {
+          const next = {
+            ...(current as Record<string, unknown>),
+          };
+
+          if (value === undefined) {
+            delete next[name];
+          } else {
+            next[name] = value;
+          }
+
+          return next as SourceSpecification;
+        });
+      },
+      []
+    );
 
     const save = React.useCallback((): void => {
       try {
-        const parsed = JSON.parse(json) as SourceSpecification;
-        if (!id.trim()) {
+        const sourceId = id.trim();
+        if (!sourceId) {
           throw new Error(t("dialog.sourceIdRequired"));
         }
-        if (id !== draft?.id && sources[id]) {
+        if (sourceId !== draft?.id && sources[sourceId]) {
           throw new Error(t("dialog.sourceExists"));
         }
-        upsertSource(id.trim(), parsed, draft?.previousId);
+        if (!source.type) {
+          throw new Error(t("dialog.invalidSource"));
+        }
+        upsertSource(sourceId, source, draft?.previousId);
         onClose();
       } catch (reason) {
         setError(
@@ -107,8 +133,8 @@ export const SourceEditor = React.memo(
       draft?.id,
       draft?.previousId,
       id,
-      json,
       onClose,
+      source,
       sources,
       t,
       upsertSource,
@@ -119,25 +145,43 @@ export const SourceEditor = React.memo(
         idChange: (value: string): void => {
           setId(value);
         },
-        jsonChange: (value: string): void => {
-          setJson(value);
+        advancedToggle: (): void => {
+          setAdvanced((value) => {
+            return !value;
+          });
+        },
+        jsonChange: (value: JSONValue): void => {
+          if (value && typeof value === "object" && !Array.isArray(value)) {
+            const next = {
+              ...(value as Record<string, JSONValue>),
+            };
+            if (typeof next.type !== "string") {
+              next.type = source.type;
+            }
+            setSource(next as SourceSpecification);
+          }
         },
       };
-    }, []);
+    }, [source.type]);
 
     const styles = React.useMemo(() => {
       return {
         content: {
           pt: 1,
         },
-        textarea: {
-          ...CODE_TEXTAREA,
+        editor: {
+          height: 360,
+          minHeight: 300,
+          overflow: "hidden",
+          border: 1,
+          borderColor: "divider",
+          borderRadius: 1,
         },
       };
     }, []);
 
     return (
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
         <DialogTitle>
           {draft ? t("dialog.sourceEdit") : t("dialog.sourceAdd")}
         </DialogTitle>
@@ -167,14 +211,38 @@ export const SourceEditor = React.memo(
               onChange={updateType}
             />
 
-            <TextInput
-              value={json}
-              onChange={handler.jsonChange}
-              multiline
-              minRows={12}
-              fullWidth
-              sx={styles.textarea}
-            />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <TooltipButton
+                title={t("dialog.advanced")}
+                icon={<CodeRounded fontSize="small" />}
+                color={advanced ? "primary" : "inherit"}
+                fullWidth={false}
+                onClick={handler.advancedToggle}
+              />
+            </Box>
+
+            {advanced ? (
+              <Box sx={styles.editor}>
+                <JSONEditor
+                  embedded
+                  compact
+                  value={source as unknown as JSONValue}
+                  onChange={handler.jsonChange}
+                />
+              </Box>
+            ) : (
+              <SpecObjectEditor
+                value={source as Record<string, unknown>}
+                specs={getSourcePropertySpecs(source.type)}
+                exclude={["type"]}
+                onChange={updateProperty}
+              />
+            )}
           </Stack>
         </DialogContent>
 

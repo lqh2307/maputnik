@@ -10,6 +10,8 @@ export type ToolbarActionProp = {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   /** Whether the action button is disabled. */
   disabled?: boolean;
+  /** Whether the action button represents an active toggle state. */
+  active?: boolean;
   /** Button color scheme. */
   color?:
     | "inherit"

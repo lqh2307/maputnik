@@ -21,7 +21,7 @@ export function closeWindow(): void {
  * @param isFull - true for fullscreen, false to exit fullscreen
  */
 export async function setFullscreen(isFull?: boolean): Promise<void> {
-  const elem = document.documentElement;
+  const elem: HTMLElement = document.documentElement;
 
   try {
     if (isFull) {

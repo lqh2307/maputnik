@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { CloseRounded } from "@mui/icons-material";
 import Map, {
-  FullscreenControl,
   GeolocateControl,
   Marker,
   NavigationControl,
@@ -441,8 +440,6 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
         style={MAP_CONTAINER_STYLE}
       >
         <NavigationControl position={"top-right"} visualizePitch />
-
-        <FullscreenControl position={"top-right"} />
 
         <GeolocateControl position={"top-right"} />
 

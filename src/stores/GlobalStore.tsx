@@ -1,4 +1,4 @@
-import { GlobalAction, GlobalStore, LayerPlacement } from "./Types";
+import { GlobalAction, GlobalStore, LayerPlacement, StylePath } from "./Types";
 import { EditableLayer, LayerSection } from "../layouts/Types";
 import { DEFAULT_STYLE } from "../layouts/Constants";
 import {
@@ -23,6 +23,7 @@ import {
   EDITOR_MAX_HISTORY,
   commitEditorStyle,
 } from "./Utils";
+import { deleteNestedValue, setNestedValue } from "../utils/Object";
 
 const initialStyle: StyleSpecification = loadPersistedEditorStyle();
 
@@ -164,6 +165,23 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
     });
   }
 
+  /** Sets one nested style value and removes its key when the value is undefined. */
+  function updateStyleValue(path: StylePath, value: unknown): void {
+    if (!path.length) {
+      return;
+    }
+
+    set((state) => {
+      return commitEditorStyle(state, (draft) => {
+        if (value === undefined) {
+          deleteNestedValue(draft, path, true);
+        } else {
+          setNestedValue(draft, path, value, true);
+        }
+      });
+    });
+  }
+
   /** Creates a new layer of the supplied type and optional source binding. */
   function addLayer(type: LayerSpecification["type"], sourceId?: string): void {
     set((state) => {
@@ -224,9 +242,18 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
                   nextId,
                   sourceId
                 ),
+                id: nextId,
                 minzoom: current.minzoom,
                 maxzoom: current.maxzoom,
                 metadata: current.metadata,
+                ...(Object.prototype.hasOwnProperty.call(
+                  current,
+                  "source-layer"
+                )
+                  ? {
+                      "source-layer": current["source-layer"],
+                    }
+                  : {}),
                 ...patch,
               } as LayerSpecification;
             } else {
@@ -583,6 +610,7 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
     replaceStyle,
     newStyle,
     updateRoot,
+    updateStyleValue,
     addLayer,
     updateLayer,
     updateLayerProperty,

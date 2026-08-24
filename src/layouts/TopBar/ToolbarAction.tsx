@@ -9,6 +9,7 @@ export const ToolbarAction = React.memo(
     icon,
     onClick,
     disabled = false,
+    active = false,
     color = "inherit",
   }: ToolbarActionProp): React.JSX.Element => {
     const handler = React.useMemo(() => {
@@ -30,16 +31,16 @@ export const ToolbarAction = React.memo(
           height: 32,
           p: 0,
           border: 1,
-          borderColor: "divider",
+          borderColor: active ? "primary.main" : "divider",
           borderRadius: 1,
-          color: "text.secondary",
-          bgcolor: "background.paper",
+          color: active ? "primary.main" : "text.secondary",
+          bgcolor: active ? "action.selected" : "background.paper",
           boxShadow: "0 1px 2px rgba(15, 23, 42, 0.08)",
           "&&:hover": {
             outline: "none",
             borderColor: "primary.main",
             color: "primary.main",
-            bgcolor: "action.hover",
+            bgcolor: active ? "action.selected" : "action.hover",
             boxShadow: "0 3px 8px rgba(15, 23, 42, 0.14)",
             transform: "translateY(-1px)",
           },
@@ -52,7 +53,7 @@ export const ToolbarAction = React.memo(
           },
         },
       };
-    }, []);
+    }, [active]);
 
     return (
       <TooltipButton
@@ -62,6 +63,7 @@ export const ToolbarAction = React.memo(
         disabled={disabled}
         color={color}
         fullWidth={false}
+        aria-pressed={active}
         sx={styles.button}
       />
     );

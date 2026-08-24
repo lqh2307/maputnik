@@ -2,8 +2,14 @@
 export type PropertySpec = {
   /** Primitive type of the property (color, number, string, enum, boolean, array, etc.). */
   type: string;
+  /** Whether the property is required by the style specification. */
+  required?: boolean;
   /** Default value specified by the style spec. */
   default?: unknown;
+  /** Element type or nested schema for array-like values. */
+  value?: string | PropertySpec;
+  /** Fixed array length, when required by the style specification. */
+  length?: number;
   /** Minimum numerical boundary. */
   minimum?: number;
   /** Maximum numerical boundary. */
@@ -21,6 +27,12 @@ export type PropertySpec = {
   doc?: string;
   /** Expression metadata. */
   expression?: unknown;
+  /** Whether the property supports a matching transition property. */
+  transition?: boolean;
+  /** Property category used by MapLibre. */
+  propertyType?: string;
+  /** SDK support metadata from the style specification. */
+  sdkSupport?: Record<string, Record<string, string>>;
 };
 
 /** Defines the property tables loaded from the MapLibre style specification. */

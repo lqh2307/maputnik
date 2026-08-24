@@ -5,12 +5,11 @@ import {
   FullscreenTwoTone,
   HelpOutlineRounded,
   LightModeRounded,
-  MapRounded,
   SettingsRounded,
   TranslateRounded,
   TroubleshootRounded,
 } from "@mui/icons-material";
-import { Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Stack } from "@mui/material";
 import { setFullscreen } from "../../utils/Window";
 import {
   useDialogStore,
@@ -21,7 +20,6 @@ import {
 import { ToolbarAction } from "./ToolbarAction";
 import { TopBarActionProp } from "./Types";
 import { useTranslation } from "react-i18next";
-import { MapMode } from "../Types";
 import React from "react";
 
 /** Renders global editor actions: Map/Inspect mode switcher, Fullscreen, Theme toggle, Language toggle, Shortcuts. */
@@ -82,13 +80,8 @@ export const TopBarAction = React.memo(
 
     const handler = React.useMemo(() => {
       return {
-        mapMode: (
-          _event: React.MouseEvent<HTMLElement>,
-          value: MapMode
-        ): void => {
-          if (value) {
-            setMapMode(value);
-          }
+        toggleInspect: (): void => {
+          setMapMode(mapMode === "inspect" ? "map" : "inspect");
         },
         toggleJson: (): void => {
           updateDialog({
@@ -128,6 +121,7 @@ export const TopBarAction = React.memo(
     }, [
       codeEditorOpen,
       language,
+      mapMode,
       setLanguage,
       setMapMode,
       setTheme,
@@ -140,44 +134,17 @@ export const TopBarAction = React.memo(
         stack: {
           alignItems: "center",
         },
-        modeGroup: {
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
-          bgcolor: "background.paper",
-          overflow: "hidden",
-          "& .MuiToggleButton-root": {
-            border: 0,
-            borderRadius: 0,
-            minWidth: 34,
-            px: 0.75,
-            "& + .MuiToggleButton-root": {
-              borderLeft: 1,
-              borderColor: "divider",
-            },
-          },
-        },
       };
     }, []);
 
     return (
       <Stack direction="row" spacing={0.5} sx={styles.stack}>
-        <ToggleButtonGroup
-          exclusive
-          size={"small"}
-          value={mapMode}
-          onChange={handler.mapMode}
-          aria-label={t("map.interaction")}
-          sx={styles.modeGroup}
-        >
-          <ToggleButton value="map" aria-label={t("map.mode")}>
-            <MapRounded fontSize={"small"} />
-          </ToggleButton>
-
-          <ToggleButton value="inspect" aria-label={t("map.inspectMode")}>
-            <TroubleshootRounded fontSize={"small"} />
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <ToolbarAction
+          title={t("map.inspectMode")}
+          icon={<TroubleshootRounded />}
+          active={mapMode === "inspect"}
+          onClick={handler.toggleInspect}
+        />
 
         {compact && (
           <ToolbarAction

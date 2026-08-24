@@ -1,8 +1,10 @@
-import { Box } from "@mui/material";
+import { Paper } from "@mui/material";
+import { SearchRounded } from "@mui/icons-material";
 import { isCancel } from "axios";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import React from "react";
+import { PopperButton } from "../../components/PopperButton";
 import {
   FreeSoloInput,
   FreeSoloInputOption,
@@ -180,14 +182,38 @@ export const TopBarGeocoding = React.memo((): React.JSX.Element => {
 
   const styles = React.useMemo(() => {
     return {
-      root: {
-        width: {
-          xs: 180,
-          sm: 240,
-          md: 300,
+      button: {
+        minWidth: 32,
+        width: 32,
+        height: 32,
+        p: 0,
+        border: 1,
+        borderColor: "divider",
+        borderRadius: 1,
+        color: "text.secondary",
+        bgcolor: "background.paper",
+        boxShadow: "0 1px 2px rgba(15, 23, 42, 0.08)",
+        "&&:hover": {
+          outline: "none",
+          borderColor: "primary.main",
+          color: "primary.main",
+          bgcolor: "action.hover",
+          boxShadow: "0 3px 8px rgba(15, 23, 42, 0.14)",
+          transform: "translateY(-1px)",
         },
-        minWidth: 150,
-        flexShrink: 1,
+      },
+      popper: {
+        width: {
+          xs: 280,
+          sm: 320,
+          md: 360,
+        },
+        maxWidth: "calc(100vw - 32px)",
+        p: 1,
+        border: 1,
+        borderColor: "divider",
+        borderRadius: 1,
+        bgcolor: "background.paper",
       },
       input: {
         "& .MuiInputBase-root": {
@@ -221,26 +247,35 @@ export const TopBarGeocoding = React.memo((): React.JSX.Element => {
   }, []);
 
   return (
-    <Box sx={styles.root}>
-      <FreeSoloInput
-        label={t("map.searchLocation")}
-        value={value}
-        options={options}
-        loading={loading}
-        loadingText={t("map.searching")}
-        noOptionsText={
-          getMapTilerApiKey()
-            ? t("map.noGeocodingResults")
-            : t("map.geocodingKeyRequired")
-        }
-        filterOptions={(availableOptions) => {
-          return availableOptions;
-        }}
-        sx={styles.input}
-        onChange={handleSearch}
-        delay={250}
-        delaySelect={0}
-      />
-    </Box>
+    <PopperButton
+      title={t("map.searchLocation")}
+      aria-label={t("map.searchLocation")}
+      icon={<SearchRounded />}
+      placement="bottom"
+      closeOnClickAway={true}
+      sx={styles.button}
+    >
+      <Paper elevation={4} sx={styles.popper}>
+        <FreeSoloInput
+          label={t("map.searchLocation")}
+          value={value}
+          options={options}
+          loading={loading}
+          loadingText={t("map.searching")}
+          noOptionsText={
+            getMapTilerApiKey()
+              ? t("map.noGeocodingResults")
+              : t("map.geocodingKeyRequired")
+          }
+          filterOptions={(availableOptions) => {
+            return availableOptions;
+          }}
+          sx={styles.input}
+          onChange={handleSearch}
+          delay={250}
+          delaySelect={0}
+        />
+      </Paper>
+    </PopperButton>
   );
 });

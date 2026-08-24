@@ -4,23 +4,21 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Stack,
   Tabs,
 } from "@mui/material";
 import { StyleSpecification } from "maplibre-gl";
-import { useDialogStore, useGlobalStore } from "../../stores";
-import { CoordinateInput } from "../../components/CoordinateInput";
 import { JSONEditor } from "../../components/JSONEditor";
-import { NumberInput } from "../../components/NumberInput";
-import { TextInput } from "../../components/TextInput";
 import { TooltipButton } from "../../components/TooltipButton";
 import { TooltipTab } from "../../components/TooltipTab";
 import { JSONValue } from "../../utils/Object";
+import { getRootPropertySpecs } from "../Utils";
+import { SpecObjectEditor } from "../RightBar/SpecObjectEditor";
+import { useDialogStore, useGlobalStore } from "../../stores";
 import { SettingsDialogProp } from "./Types";
 import { useTranslation } from "react-i18next";
 import React from "react";
 
-/** Renders root style and editor appearance settings dialog. */
+/** Renders the schema-driven root style editor and complete JSON fallback. */
 export const SettingsDialog = React.memo(
   ({ open = false }: SettingsDialogProp): React.JSX.Element => {
     const { t } = useTranslation();
@@ -33,25 +31,15 @@ export const SettingsDialog = React.memo(
       return state.updateDialog;
     });
 
-    const updateRoot = useGlobalStore((state) => {
-      return state.updateRoot;
+    const updateStyleValue = useGlobalStore((state) => {
+      return state.updateStyleValue;
+    });
+
+    const replaceStyle = useGlobalStore((state) => {
+      return state.replaceStyle;
     });
 
     const [advanced, setAdvanced] = React.useState(false);
-
-    const advancedValue = React.useMemo(() => {
-      return Object.fromEntries(
-        Object.entries({
-          metadata: style.metadata ?? {},
-          light: style.light,
-          terrain: style.terrain,
-          projection: style.projection,
-          transition: style.transition,
-        }).filter(([, value]) => {
-          return value !== undefined;
-        })
-      ) as JSONValue;
-    }, [style]);
 
     const close = React.useCallback((): void => {
       updateDialog({
@@ -61,66 +49,41 @@ export const SettingsDialog = React.memo(
 
     const handler = React.useMemo(() => {
       return {
-        tabChange: (_: React.SyntheticEvent, value: string): void => {
+        tabChange: (_event: React.SyntheticEvent, value: string): void => {
           setAdvanced(value === "advanced");
         },
-        nameChange: (value: string): void => {
-          updateRoot({
-            name: value,
-          });
+        rootChange: (name: string, value: unknown): void => {
+          updateStyleValue([name], value);
         },
-        glyphsChange: (value: string): void => {
-          updateRoot({
-            glyphs: value,
-          });
-        },
-        spriteChange: (value: string): void => {
-          updateRoot({
-            sprite: value,
-          });
-        },
-        longitudeChange: (value: number): void => {
-          updateRoot({
-            center: [value, style.center?.[1] ?? 0],
-          });
-        },
-        latitudeChange: (value: number): void => {
-          updateRoot({
-            center: [style.center?.[0] ?? 0, value],
-          });
-        },
-        zoomChange: (value: number): void => {
-          updateRoot({
-            zoom: value,
-          });
-        },
-        bearingChange: (value: number): void => {
-          updateRoot({
-            bearing: value,
-          });
-        },
-        pitchChange: (value: number): void => {
-          updateRoot({
-            pitch: value,
-          });
-        },
-        advancedChange: (value: JSONValue): void => {
-          if (value && typeof value === "object" && !Array.isArray(value)) {
-            updateRoot(value as Partial<StyleSpecification>);
+        fullStyleChange: (value: JSONValue): void => {
+          if (
+            value &&
+            typeof value === "object" &&
+            !Array.isArray(value) &&
+            value.version === 8 &&
+            Array.isArray(value.layers) &&
+            value.sources &&
+            typeof value.sources === "object" &&
+            !Array.isArray(value.sources)
+          ) {
+            replaceStyle(value as StyleSpecification);
           }
         },
       };
-    }, [style.center, updateRoot]);
+    }, [replaceStyle, updateStyleValue]);
 
     const styles = React.useMemo(() => {
       return {
         tabs: {
-          mb: 2,
+          mb: 1,
         },
-        advancedBox: {
+        editor: {
           height: "58vh",
           minHeight: 420,
           overflow: "hidden",
+          border: 1,
+          borderColor: "divider",
+          borderRadius: 1,
         },
       };
     }, []);
@@ -147,93 +110,21 @@ export const SettingsDialog = React.memo(
             />
           </Tabs>
 
-          {!advanced ? (
-            <Stack spacing={2}>
-              <TextInput
-                label={t("dialog.styleName")}
-                value={style.name ?? ""}
-                onChange={handler.nameChange}
-                multiline={false}
-                size={"small"}
-              />
-
-              <TextInput
-                label={t("dialog.glyphsUrl")}
-                value={style.glyphs ?? ""}
-                onChange={handler.glyphsChange}
-                multiline={false}
-                size={"small"}
-              />
-
-              <TextInput
-                label={t("dialog.spriteUrl")}
-                value={
-                  typeof style.sprite === "string"
-                    ? style.sprite
-                    : JSON.stringify(style.sprite ?? "")
-                }
-                onChange={handler.spriteChange}
-                multiline={false}
-                size={"small"}
-              />
-
-              <Stack direction="row" spacing={1}>
-                <CoordinateInput
-                  decimalLabel={t("dialog.longitude")}
-                  value={style.center?.[0] ?? 0}
-                  isLat={false}
-                  showModeToggle={false}
-                  onChange={handler.longitudeChange}
-                  size={"small"}
-                  fullWidth
-                />
-
-                <CoordinateInput
-                  decimalLabel={t("dialog.latitude")}
-                  value={style.center?.[1] ?? 0}
-                  isLat
-                  showModeToggle={false}
-                  onChange={handler.latitudeChange}
-                  size={"small"}
-                  fullWidth
-                />
-
-                <NumberInput
-                  label={t("dialog.zoom")}
-                  value={style.zoom ?? 0}
-                  onChange={handler.zoomChange}
-                  size={"small"}
-                  fullWidth
-                />
-              </Stack>
-
-              <Stack direction="row" spacing={1}>
-                <NumberInput
-                  label={t("dialog.bearing")}
-                  value={style.bearing ?? 0}
-                  onChange={handler.bearingChange}
-                  size={"small"}
-                  fullWidth
-                />
-
-                <NumberInput
-                  label={t("dialog.pitch")}
-                  value={style.pitch ?? 0}
-                  onChange={handler.pitchChange}
-                  size={"small"}
-                  fullWidth
-                />
-              </Stack>
-            </Stack>
-          ) : (
-            <Box sx={styles.advancedBox}>
+          {advanced ? (
+            <Box sx={styles.editor}>
               <JSONEditor
                 embedded
                 title={t("dialog.advanced")}
-                value={advancedValue}
-                onChange={handler.advancedChange}
+                value={style as unknown as JSONValue}
+                onChange={handler.fullStyleChange}
               />
             </Box>
+          ) : (
+            <SpecObjectEditor
+              value={style as unknown as Record<string, unknown>}
+              specs={getRootPropertySpecs()}
+              onChange={handler.rootChange}
+            />
           )}
         </DialogContent>
 

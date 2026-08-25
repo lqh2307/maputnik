@@ -75,7 +75,7 @@ export const OpenDialog = React.memo(
           open: false,
         });
       },
-      [loadStyle, t, updateDialog]
+      [t]
     );
 
     const readFile = React.useCallback(
@@ -130,7 +130,7 @@ export const OpenDialog = React.memo(
       updateDialog({
         open: false,
       });
-    }, [updateDialog]);
+    }, []);
 
     const handler = React.useMemo(() => {
       return {
@@ -274,13 +274,13 @@ export const OpenDialog = React.memo(
                 size={"small"}
               />
               <TooltipButton
-                title={t("actions.load")}
+                title={t("topBar.actions.load")}
                 variant={"contained"}
                 startIcon={<LinkRounded />}
                 onClick={handler.loadUrlClick}
                 disabled={!url || loading}
               >
-                {t("actions.load")}
+                {t("topBar.actions.load")}
               </TooltipButton>
             </Stack>
           )}
@@ -355,11 +355,11 @@ export const OpenDialog = React.memo(
 
         <DialogActions>
           <TooltipButton
-            title={t("actions.close")}
+            title={t("topBar.actions.close")}
             variant={"text"}
             onClick={close}
           >
-            {t("actions.close")}
+            {t("topBar.actions.close")}
           </TooltipButton>
         </DialogActions>
       </Dialog>

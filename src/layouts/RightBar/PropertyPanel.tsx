@@ -108,6 +108,9 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
   const editableLayer: EditableLayer = layer as EditableLayer;
   const activeSection: LayerSection | undefined =
     tab === "paint" || tab === "layout" ? tab : undefined;
+  const activeSectionLabel = activeSection
+    ? t(`rightBar.properties.section.${activeSection}`)
+    : "";
 
   const issues = React.useMemo(() => {
     return validateStyleDocument(style);
@@ -239,7 +242,7 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
         });
       },
     };
-  }, [activeSection, updateLayer, updateProperty, layer]);
+  }, [activeSection, layer]);
 
   const propertySpecs = React.useMemo(() => {
     if (!layer || !activeSection) {
@@ -259,13 +262,21 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
       });
   }, [activeSection, layer, propertySearch]);
 
+  const propertyChangeHandlers = React.useMemo(() => {
+    return new Map(
+      propertySpecs.map(([name]) => {
+        return [name, handler.propertyChange(name)] as const;
+      })
+    );
+  }, [handler, propertySpecs]);
+
   if (!layer) {
     return (
       <Box component="aside" sx={styles.root}>
         <Stack spacing={1} sx={styles.empty}>
           <LayersRounded />
           <Typography variant={"body2"}>
-            {t("properties.selectLayer")}
+            {t("rightBar.properties.selectLayer")}
           </Typography>
         </Stack>
       </Box>
@@ -281,34 +292,29 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
       <Box sx={styles.header}>
         <Tabs value={tab} onChange={handler.tabChange} variant={"fullWidth"}>
           <TooltipTab
-            title={t("properties.style")}
+            title={t("rightBar.properties.style")}
             value="properties"
             icon={<LayersRounded />}
-            aria-label={t("properties.style")}
           />
           <TooltipTab
-            title={t("properties.paint")}
+            title={t("rightBar.properties.paint")}
             value="paint"
             icon={<FormatPaintRounded />}
-            aria-label={t("properties.paint")}
           />
           <TooltipTab
-            title={t("properties.layout")}
+            title={t("rightBar.properties.layout")}
             value="layout"
             icon={<ViewQuiltRounded />}
-            aria-label={t("properties.layout")}
           />
           <TooltipTab
-            title={t("properties.filter")}
+            title={t("rightBar.properties.filter")}
             value="filter"
             icon={<FilterAltRounded />}
-            aria-label={t("properties.filter")}
           />
           <TooltipTab
-            title={t("properties.meta")}
+            title={t("rightBar.properties.meta")}
             value="metadata"
             icon={<CodeRounded />}
-            aria-label={t("properties.meta")}
           />
         </Tabs>
       </Box>
@@ -324,17 +330,17 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
 
             <Stack spacing={1.25} sx={styles.section}>
               <CommitTextField
-                label={t("properties.layerId")}
+                label={t("rightBar.properties.layerId")}
                 value={layer.id}
                 onCommit={handler.layerIdCommit}
               />
 
               <SelectInput
-                label={t("properties.type")}
+                label={t("rightBar.properties.type")}
                 value={layer.type}
                 options={LAYER_TYPES.map((type) => {
                   return {
-                    title: type,
+                    title: t(`common.layerType.${type}`),
                     value: type,
                   };
                 })}
@@ -342,7 +348,7 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
               />
               {layer.type !== "background" && (
                 <SelectInput
-                  label={t("properties.source")}
+                  label={t("rightBar.properties.source")}
                   value={
                     "source" in layer && typeof layer.source === "string"
                       ? layer.source
@@ -359,19 +365,19 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
               )}
               {"source" in layer && layer.source && (
                 <CommitTextField
-                  label={t("properties.sourceLayer")}
+                  label={t("rightBar.properties.sourceLayer")}
                   value={editableLayer["source-layer"]}
                   onCommit={handler.sourceLayerCommit}
                 />
               )}
               <Stack direction="row" spacing={1}>
                 <CommitTextField
-                  label={t("properties.minZoom")}
+                  label={t("rightBar.properties.minZoom")}
                   value={layer.minzoom}
                   onCommit={handler.zoomCommit("minzoom")}
                 />
                 <CommitTextField
-                  label={t("properties.maxZoom")}
+                  label={t("rightBar.properties.maxZoom")}
                   value={layer.maxzoom}
                   onCommit={handler.zoomCommit("maxzoom")}
                 />
@@ -386,15 +392,15 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
                 value={propertySearch}
                 onChange={handler.searchChange}
                 multiline={false}
-                placeholder={t("properties.search", {
-                  section: activeSection,
+                placeholder={t("rightBar.properties.search", {
+                  section: activeSectionLabel,
                 })}
                 sx={styles.search}
                 slotProps={{
                   input: {
                     startAdornment: (
                       <InputAdornment position="start">
-                        <SearchRounded fontSize="small" />
+                        <SearchRounded fontSize={"small"} />
                       </InputAdornment>
                     ),
                   },
@@ -408,7 +414,7 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
                   name={name}
                   spec={spec}
                   value={editableLayer[activeSection]?.[name]}
-                  onChange={handler.propertyChange(name)}
+                  onChange={propertyChangeHandlers.get(name)!}
                 />
               );
             })}
@@ -418,8 +424,8 @@ export const PropertyPanel = React.memo((): React.JSX.Element => {
                 color="text.secondary"
                 sx={styles.noMatch}
               >
-                {t("properties.noMatch", {
-                  section: activeSection,
+                {t("rightBar.properties.noMatch", {
+                  section: activeSectionLabel,
                 })}
               </Typography>
             )}

@@ -14,6 +14,7 @@ import { JSONEditor } from "../../components/JSONEditor";
 import { TextInput } from "../../components/TextInput";
 import { colorToRGBA, colorToRGBAString } from "../../utils/Color";
 import { normalizedMarks } from "../../types/Common";
+import { NumbersInput } from "../../components/NumbersInput";
 import { useTranslation } from "react-i18next";
 import { JSONValue } from "../../utils/Object";
 import {
@@ -224,16 +225,16 @@ function ColorOpacityEditor({
   return (
     <Stack direction="row" spacing={1} sx={styles.root}>
       <ColorInput
-        icon={<BorderColorTwoTone fontSize="small" />}
-        title={t("properties.color")}
+        icon={<BorderColorTwoTone fontSize={"small"} />}
+        title={t("rightBar.properties.color")}
         value={color}
         onChange={handler.color}
         sx={styles.colorInput}
       />
 
       <SliderInput
-        icon={<OpacityTwoTone fontSize="small" />}
-        title={t("properties.opacity")}
+        icon={<OpacityTwoTone fontSize={"small"} />}
+        title={t("rightBar.properties.opacity")}
         value={opacity}
         min={0}
         max={1}
@@ -397,6 +398,37 @@ export const PropertyField = React.memo(
           type="number"
         />
       );
+    } else if (spec.type === "numberArray") {
+      const values = Array.isArray(resolvedValue)
+        ? resolvedValue.filter((item): item is number => {
+            return typeof item === "number" && Number.isFinite(item);
+          })
+        : typeof resolvedValue === "number"
+          ? [resolvedValue]
+          : [];
+      const minimum = Number.isFinite(spec.minimum)
+        ? Number(spec.minimum)
+        : undefined;
+      const maximum = Number.isFinite(spec.maximum)
+        ? Number(spec.maximum)
+        : undefined;
+
+      editor = (
+        <NumbersInput
+          value={values}
+          onChange={(nextValues) => {
+            const boundedValues = nextValues.map((nextValue) => {
+              return Math.min(
+                maximum ?? nextValue,
+                Math.max(minimum ?? nextValue, nextValue)
+              );
+            });
+            onChange(
+              boundedValues.length === 1 ? boundedValues[0] : boundedValues
+            );
+          }}
+        />
+      );
     } else if (spec.type === "color") {
       editor = (
         <Box sx={styles.colorEditor}>
@@ -436,10 +468,9 @@ export const PropertyField = React.memo(
 
           {spec.expression && (
             <TooltipButton
-              title={t("properties.toggleExpression")}
+              title={t("rightBar.properties.toggleExpression")}
               color={expressionMode ? "primary" : "inherit"}
               icon={<CodeRounded sx={styles.icon} />}
-              aria-label={t("properties.toggleExpression")}
               fullWidth={false}
               onClick={handler.toggleExpression}
               sx={styles.actionBtn}
@@ -447,10 +478,9 @@ export const PropertyField = React.memo(
           )}
 
           <TooltipButton
-            title={t("properties.resetDefault")}
+            title={t("rightBar.properties.resetDefault")}
             disabled={!overridden}
             icon={<RestartAltRounded sx={styles.icon} />}
-            aria-label={t("properties.resetDefault")}
             fullWidth={false}
             onClick={handler.reset}
             sx={styles.actionBtn}

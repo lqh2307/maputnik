@@ -1,7 +1,9 @@
 import { LayerSpecification, StyleSpecification } from "maplibre-gl";
+import { ViewState } from "react-map-gl/maplibre";
 import { DEFAULT_STYLE } from "../layouts/Constants";
 import { GlobalStore, DialogStore } from "./Types";
-import { cloneStyle } from "../layouts/Utils";
+import { cloneStyle, normalizeStyleSourceTypes } from "../layouts/Utils";
+import { produce, type Draft } from "immer";
 
 /** Browser persistence key for the active MapLibre style document. */
 const EDITOR_STYLE_STORAGE_KEY: string = "maputnik-mui-style";
@@ -19,7 +21,7 @@ export function loadPersistedEditorStyle(): StyleSpecification {
     if (value) {
       const style: StyleSpecification = JSON.parse(value) as StyleSpecification;
       if (style.version === 8 && Array.isArray(style.layers) && style.sources) {
-        return style;
+        return normalizeStyleSourceTypes(style);
       }
     }
   } catch {
@@ -63,9 +65,13 @@ export function commitEditorStyle(
   producer: (draft: StyleSpecification) => void,
   selectedLayerId: string = state.selectedLayerId
 ): Partial<GlobalStore> {
-  const nextStyle: StyleSpecification = cloneStyle(state.style);
+  const nextStyle = produce(state.style, (draft: Draft<StyleSpecification>) => {
+    producer(draft as unknown as StyleSpecification);
+  }) as StyleSpecification;
 
-  producer(nextStyle);
+  if (nextStyle === state.style) {
+    return {};
+  }
 
   persistEditorStyle(nextStyle);
 
@@ -82,12 +88,29 @@ export function commitEditorStyle(
   };
 }
 
+/** Derives the controlled map camera from the style root camera fields. */
+export function getStyleViewState(
+  style: StyleSpecification
+): Partial<ViewState> {
+  return {
+    longitude: style.center?.[0] ?? 0,
+    latitude: style.center?.[1] ?? 0,
+    zoom: style.zoom ?? 1,
+    bearing: style.bearing ?? 0,
+    pitch: style.pitch ?? 0,
+  };
+}
+
 /** Returns the initial state attributes for `useDialogStore`. */
 export function createInitDialog(): DialogStore {
   return {
+    about: undefined,
     code: undefined,
     export: undefined,
+    generalSetting: undefined,
+    guide: undefined,
     open: undefined,
+    profile: undefined,
     settings: undefined,
     shortcuts: undefined,
     sources: undefined,
@@ -106,13 +129,7 @@ export function createInitGlobalStore(
     collapsedGroups: new Set(),
     inspectorFeatures: [],
     layerClipboard: loadEditorLayerClipboard(),
-    viewState: {
-      longitude: initialStyle.center?.[0] ?? 0,
-      latitude: initialStyle.center?.[1] ?? 0,
-      zoom: initialStyle.zoom ?? 1,
-      bearing: initialStyle.bearing ?? 0,
-      pitch: initialStyle.pitch ?? 0,
-    },
+    viewState: getStyleViewState(initialStyle),
     history: {
       past: [],
       future: [],

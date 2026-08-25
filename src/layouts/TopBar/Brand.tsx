@@ -8,6 +8,13 @@ import React from "react";
 export const TopBarBrand = React.memo((): React.JSX.Element => {
   const { t } = useTranslation();
 
+  const translate = React.useCallback(
+    (section: string): string => {
+      return t(`common.app.${section}`);
+    },
+    [t]
+  );
+
   const styleName = useGlobalStore((state) => {
     return state.style.name;
   });
@@ -48,7 +55,7 @@ export const TopBarBrand = React.memo((): React.JSX.Element => {
 
       <Box sx={styles.title}>
         <Typography variant={"subtitle2"} noWrap>
-          {t("app.name")}
+          {translate("name")}
         </Typography>
 
         <Typography
@@ -57,12 +64,12 @@ export const TopBarBrand = React.memo((): React.JSX.Element => {
           noWrap
           sx={styles.subtitle}
         >
-          {styleName || t("app.untitled")}
+          {styleName || translate("untitled")}
         </Typography>
       </Box>
 
       {dirty && (
-        <Chip label={t("app.edited")} size={"small"} variant={"outlined"} />
+        <Chip label={translate("edited")} size={"small"} variant={"outlined"} />
       )}
     </Stack>
   );

@@ -13,7 +13,10 @@ export const RightBar = React.memo((): React.JSX.Element => {
         flexShrink: 0,
         display: "flex",
         flexDirection: "column",
-        overflow: "hidden",
+        overflowX: "hidden",
+        overflowY: "auto",
+        boxSizing: "border-box",
+        bgcolor: "background.paper",
       },
     };
   }, []);

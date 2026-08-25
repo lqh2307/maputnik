@@ -44,14 +44,14 @@ const EDITOR_BAR_SIZE_PROPERTY: Record<WindowSide, string> = {
 };
 
 const DEFAULT_SIZES: EditorBarSizes = {
-  top: 52,
-  right: 370,
+  top: 50,
+  right: 320,
   bottom: 28,
-  left: 300,
+  left: 260,
 };
 
 const MIN_SIZES: EditorBarSizes = {
-  top: 52,
+  top: 50,
   right: 320,
   bottom: 28,
   left: 260,
@@ -450,10 +450,6 @@ export const Editor = React.memo((): React.JSX.Element => {
           mapModeState.setMapMode(
             mapModeState.mapMode === "inspect" ? "map" : "inspect"
           );
-        } else if (!isEditing && event.key === "?") {
-          dialogState.updateDialog({
-            shortcuts: true,
-          });
         }
       },
     };
@@ -468,8 +464,10 @@ export const Editor = React.memo((): React.JSX.Element => {
         [EDITOR_BAR_SIZE_PROPERTY.left]: `${leftBarWidth}px`,
         display: "grid",
         position: "relative",
-        width: "100vw",
-        height: "100vh",
+        padding: 0,
+        margin: 0,
+        width: "100%",
+        height: "100%",
         overflow: "hidden",
         boxSizing: "border-box",
         gridTemplateRows: `var(${EDITOR_BAR_SIZE_PROPERTY.top}) minmax(${CANVAS_HEIGHT}px, 1fr) var(${EDITOR_BAR_SIZE_PROPERTY.bottom})`,
@@ -486,11 +484,18 @@ export const Editor = React.memo((): React.JSX.Element => {
         minWidth: 0,
         minHeight: 0,
         overflow: "hidden",
+        margin: 0,
+        padding: 0,
+        boxSizing: "border-box",
       },
       wrapTopBar: {
         gridArea: "top",
         minWidth: 0,
-        overflow: "hidden",
+        overflowX: "auto",
+        overflowY: "hidden",
+        margin: 0,
+        padding: 0,
+        boxSizing: "border-box",
         borderBottom: 1,
         borderColor: "divider",
         display: topBarHeight ? "flex" : "none",
@@ -498,7 +503,11 @@ export const Editor = React.memo((): React.JSX.Element => {
       wrapBottomBar: {
         gridArea: "bottom",
         minWidth: 0,
-        overflow: "hidden",
+        overflowX: "auto",
+        overflowY: "hidden",
+        margin: 0,
+        padding: 0,
+        boxSizing: "border-box",
         borderTop: 1,
         borderColor: "divider",
         display: bottomBarHeight ? "flex" : "none",
@@ -506,7 +515,11 @@ export const Editor = React.memo((): React.JSX.Element => {
       wrapLeftBar: {
         gridArea: "left",
         minWidth: 0,
-        overflow: "hidden",
+        overflowX: "hidden",
+        overflowY: "auto",
+        margin: 0,
+        padding: 0,
+        boxSizing: "border-box",
         borderRight: 1,
         borderColor: "divider",
         display: leftBarWidth ? "flex" : "none",
@@ -514,7 +527,11 @@ export const Editor = React.memo((): React.JSX.Element => {
       wrapRightBar: {
         gridArea: "right",
         minWidth: 0,
-        overflow: "hidden",
+        overflowX: "hidden",
+        overflowY: "auto",
+        margin: 0,
+        padding: 0,
+        boxSizing: "border-box",
         borderLeft: 1,
         borderColor: "divider",
         display: rightBarWidth ? "flex" : "none",
@@ -691,7 +708,9 @@ export const Editor = React.memo((): React.JSX.Element => {
 
         <Box sx={styles.topBarToggleButton}>
           <TooltipButton
-            title={t(topBarHeight ? "actions.hide" : "actions.show")}
+            title={t(
+              topBarHeight ? "topBar.actions.hide" : "topBar.actions.show"
+            )}
             onClick={toggleHandlers.top}
             icon={<FaChevronUp style={styles.topBarToggleIcon} />}
           />
@@ -703,7 +722,9 @@ export const Editor = React.memo((): React.JSX.Element => {
 
         <Box sx={styles.bottomBarToggleButton}>
           <TooltipButton
-            title={t(bottomBarHeight ? "actions.hide" : "actions.show")}
+            title={t(
+              bottomBarHeight ? "topBar.actions.hide" : "topBar.actions.show"
+            )}
             onClick={toggleHandlers.bottom}
             icon={<FaChevronUp style={styles.bottomBarToggleIcon} />}
           />
@@ -713,7 +734,9 @@ export const Editor = React.memo((): React.JSX.Element => {
 
         <Box sx={styles.leftBarToggleButton}>
           <TooltipButton
-            title={t(leftBarWidth ? "actions.hide" : "actions.show")}
+            title={t(
+              leftBarWidth ? "topBar.actions.hide" : "topBar.actions.show"
+            )}
             onClick={toggleHandlers.left}
             icon={<FaChevronUp style={styles.leftBarToggleIcon} />}
           />
@@ -741,7 +764,9 @@ export const Editor = React.memo((): React.JSX.Element => {
 
         <Box sx={styles.rightBarToggleButton}>
           <TooltipButton
-            title={t(rightBarWidth ? "actions.hide" : "actions.show")}
+            title={t(
+              rightBarWidth ? "topBar.actions.hide" : "topBar.actions.show"
+            )}
             onClick={toggleHandlers.right}
             icon={<FaChevronUp style={styles.rightBarToggleIcon} />}
           />

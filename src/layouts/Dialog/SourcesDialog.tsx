@@ -9,7 +9,6 @@ import {
   Box,
   Card,
   CardContent,
-  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,25 +16,32 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { LayerSpecification, SourceSpecification } from "maplibre-gl";
 import { useDialogStore, useGlobalStore } from "../../stores";
 import { TooltipButton } from "../../components/TooltipButton";
 import { SourcesDialogProp, SourceDraft } from "./Types";
 import { SourceEditor } from "./SourceEditor";
 import { useTranslation } from "react-i18next";
 import React from "react";
+import { TOOLBAR_ICON_BUTTON_STYLE } from "../../configs";
+
+const EMPTY_SOURCES: Record<string, SourceSpecification> = {};
+const EMPTY_LAYERS: LayerSpecification[] = [];
 
 /** Renders source management dialog for the current style document. */
 export const SourcesDialog = React.memo(
   ({ open = false }: SourcesDialogProp): React.JSX.Element => {
     const { t } = useTranslation();
 
-    const sources = useGlobalStore((state) => {
-      return state.style.sources;
-    });
+    const sources =
+      useGlobalStore((state) => {
+        return open ? state.style.sources : undefined;
+      }) ?? EMPTY_SOURCES;
 
-    const layers = useGlobalStore((state) => {
-      return state.style.layers;
-    });
+    const layers =
+      useGlobalStore((state) => {
+        return open ? state.style.layers : undefined;
+      }) ?? EMPTY_LAYERS;
 
     const updateDialog = useDialogStore((state) => {
       return state.updateDialog;
@@ -57,7 +63,7 @@ export const SourcesDialog = React.memo(
       updateDialog({
         sources: false,
       });
-    }, [updateDialog]);
+    }, []);
 
     const handler = React.useMemo(() => {
       return {
@@ -79,7 +85,7 @@ export const SourcesDialog = React.memo(
           };
         },
       };
-    }, [deleteSource]);
+    }, []);
 
     const styles = React.useMemo(() => {
       return {
@@ -97,6 +103,27 @@ export const SourcesDialog = React.memo(
         },
         sourceLabel: {
           flex: 1,
+        },
+        action: {
+          minWidth: 28,
+          width: 28,
+          height: 28,
+          p: 0,
+          color: "text.secondary",
+          ...TOOLBAR_ICON_BUTTON_STYLE,
+        },
+        deleteAction: {
+          minWidth: 28,
+          width: 28,
+          height: 28,
+          p: 0,
+          color: "error.main",
+          ...TOOLBAR_ICON_BUTTON_STYLE,
+          "&&:hover": {
+            ...TOOLBAR_ICON_BUTTON_STYLE["&&:hover"],
+            borderColor: "error.main",
+            color: "error.main",
+          },
         },
       };
     }, []);
@@ -130,6 +157,7 @@ export const SourcesDialog = React.memo(
                 const layerCount = layers.filter((layer) => {
                   return "source" in layer && layer.source === id;
                 }).length;
+                const sourceTypeLabel = t(`common.sourceType.${source.type}`);
 
                 return (
                   <Card key={id} variant={"outlined"}>
@@ -145,25 +173,26 @@ export const SourcesDialog = React.memo(
                             color={"text.secondary"}
                           >
                             {t("dialog.sourceSummary", {
-                              type: source.type,
+                              type: sourceTypeLabel,
                               count: layerCount,
                             })}
                           </Typography>
                         </Box>
 
-                        <Chip size={"small"} label={source.type} />
-
                         <TooltipButton
-                          title={t("actions.edit")}
+                          title={t("topBar.actions.edit")}
                           icon={<EditRounded fontSize={"small"} />}
+                          fullWidth={false}
                           onClick={handler.editClick(id, source)}
+                          sx={styles.action}
                         />
 
                         <TooltipButton
-                          title={t("actions.delete")}
-                          color={"error"}
+                          title={t("topBar.actions.delete")}
                           icon={<DeleteOutlineRounded fontSize={"small"} />}
+                          fullWidth={false}
                           onClick={handler.deleteClick(id)}
+                          sx={styles.deleteAction}
                         />
                       </Stack>
                     </CardContent>
@@ -179,11 +208,11 @@ export const SourcesDialog = React.memo(
 
           <DialogActions>
             <TooltipButton
-              title={t("actions.close")}
+              title={t("topBar.actions.close")}
               variant={"text"}
               onClick={close}
             >
-              {t("actions.close")}
+              {t("topBar.actions.close")}
             </TooltipButton>
           </DialogActions>
         </Dialog>

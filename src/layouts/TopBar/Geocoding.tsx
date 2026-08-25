@@ -1,10 +1,11 @@
-import { Paper } from "@mui/material";
-import { SearchRounded } from "@mui/icons-material";
+import { Paper, Stack } from "@mui/material";
+import { MyLocationRounded, SearchRounded } from "@mui/icons-material";
 import { isCancel } from "axios";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import React from "react";
 import { PopperButton } from "../../components/PopperButton";
+import { TooltipButton } from "../../components/TooltipButton";
 import {
   FreeSoloInput,
   FreeSoloInputOption,
@@ -18,6 +19,7 @@ import {
   searchGeocoding,
 } from "../../apis/geocoding";
 import { useGlobalStore, useLanguageStore } from "../../stores";
+import { TOOLBAR_ICON_BUTTON_STYLE } from "../../configs";
 
 const MIN_QUERY_LENGTH = 2;
 const RESULT_LIMIT = 5;
@@ -48,6 +50,14 @@ function getFeatureLabel(feature: GeocodingFeature): string | undefined {
 /** Renders a MapTiler-powered place search in the editor top bar. */
 export const TopBarGeocoding = React.memo((): React.JSX.Element => {
   const { t } = useTranslation();
+
+  const translate = React.useCallback(
+    (section: string): string => {
+      return t(`topBar.map.${section}`);
+    },
+    [t]
+  );
+
   const language = useLanguageStore((state) => {
     return state.language;
   });
@@ -81,8 +91,39 @@ export const TopBarGeocoding = React.memo((): React.JSX.Element => {
         zoom: Math.max(currentZoom ?? 0, RESULT_ZOOM),
       });
     },
-    [currentZoom, setViewState]
+    [currentZoom]
   );
+
+  const locate = React.useCallback((): void => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      toast.error(translate("geolocationUnavailable"), {
+        toasterId: "alert",
+        id: "geolocation-error",
+      });
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        setViewState({
+          longitude: coords.longitude,
+          latitude: coords.latitude,
+          zoom: Math.max(currentZoom ?? 0, RESULT_ZOOM),
+        });
+      },
+      () => {
+        toast.error(translate("geolocationError"), {
+          toasterId: "alert",
+          id: "geolocation-error",
+        });
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 300000,
+        timeout: 10000,
+      }
+    );
+  }, [currentZoom, translate]);
 
   const handleSearch = React.useCallback(
     async (inputValue: string, bySelect: boolean): Promise<void> => {
@@ -129,7 +170,7 @@ export const TopBarGeocoding = React.memo((): React.JSX.Element => {
         const response = await searchGeocoding({
           query,
           controller,
-          language: language === "vietnamese" ? "vi" : "en",
+          language,
           limit: RESULT_LIMIT,
           proximity: "ip",
           fuzzyMatch: true,
@@ -159,7 +200,7 @@ export const TopBarGeocoding = React.memo((): React.JSX.Element => {
       } catch (error) {
         if (!isCancel(error)) {
           console.error("Error fetching geocoding suggestions:", error);
-          toast.error(t("map.geocodingError"), {
+          toast.error(translate("geocodingError"), {
             toasterId: "alert",
             id: "geocoding-error",
           });
@@ -170,7 +211,7 @@ export const TopBarGeocoding = React.memo((): React.JSX.Element => {
         }
       }
     },
-    [focusFeature, language, t]
+    [focusFeature, language, translate]
   );
 
   React.useEffect(() => {
@@ -188,19 +229,8 @@ export const TopBarGeocoding = React.memo((): React.JSX.Element => {
         height: 32,
         p: 0,
         border: 1,
-        borderColor: "divider",
-        borderRadius: 1,
         color: "text.secondary",
-        bgcolor: "background.paper",
-        boxShadow: "0 1px 2px rgba(15, 23, 42, 0.08)",
-        "&&:hover": {
-          outline: "none",
-          borderColor: "primary.main",
-          color: "primary.main",
-          bgcolor: "action.hover",
-          boxShadow: "0 3px 8px rgba(15, 23, 42, 0.14)",
-          transform: "translateY(-1px)",
-        },
+        ...TOOLBAR_ICON_BUTTON_STYLE,
       },
       popper: {
         width: {
@@ -247,35 +277,44 @@ export const TopBarGeocoding = React.memo((): React.JSX.Element => {
   }, []);
 
   return (
-    <PopperButton
-      title={t("map.searchLocation")}
-      aria-label={t("map.searchLocation")}
-      icon={<SearchRounded />}
-      placement="bottom"
-      closeOnClickAway={true}
-      sx={styles.button}
-    >
-      <Paper elevation={4} sx={styles.popper}>
-        <FreeSoloInput
-          label={t("map.searchLocation")}
-          value={value}
-          options={options}
-          loading={loading}
-          loadingText={t("map.searching")}
-          noOptionsText={
-            getMapTilerApiKey()
-              ? t("map.noGeocodingResults")
-              : t("map.geocodingKeyRequired")
-          }
-          filterOptions={(availableOptions) => {
-            return availableOptions;
-          }}
-          sx={styles.input}
-          onChange={handleSearch}
-          delay={250}
-          delaySelect={0}
-        />
-      </Paper>
-    </PopperButton>
+    <Stack direction="row" spacing={0.5}>
+      <PopperButton
+        title={translate("searchLocation")}
+        icon={<SearchRounded />}
+        placement="bottom"
+        closeOnClickAway={true}
+        sx={styles.button}
+      >
+        <Paper elevation={4} sx={styles.popper}>
+          <FreeSoloInput
+            label={translate("searchLocation")}
+            value={value}
+            options={options}
+            loading={loading}
+            loadingText={translate("searching")}
+            noOptionsText={
+              getMapTilerApiKey()
+                ? translate("noGeocodingResults")
+                : translate("geocodingKeyRequired")
+            }
+            filterOptions={(availableOptions) => {
+              return availableOptions;
+            }}
+            sx={styles.input}
+            onChange={handleSearch}
+            delay={250}
+            delaySelect={0}
+          />
+        </Paper>
+      </PopperButton>
+
+      <TooltipButton
+        title={translate("myLocation")}
+        icon={<MyLocationRounded />}
+        fullWidth={false}
+        onClick={locate}
+        sx={styles.button}
+      />
+    </Stack>
   );
 });

@@ -20,7 +20,10 @@ export const LeftBar = React.memo((): React.JSX.Element => {
         flexShrink: 0,
         display: "flex",
         flexDirection: "column",
-        overflow: "hidden",
+        overflowX: "hidden",
+        overflowY: "auto",
+        boxSizing: "border-box",
+        bgcolor: "background.paper",
       },
       tabs: {
         flexShrink: 0,
@@ -51,12 +54,12 @@ export const LeftBar = React.memo((): React.JSX.Element => {
           <TooltipTab
             title={t("leftBar.layer")}
             value="layers"
-            icon={<LayersRounded fontSize="small" />}
+            icon={<LayersRounded fontSize={"small"} />}
           />
           <TooltipTab
             title={t("leftBar.source")}
             value="sources"
-            icon={<StorageRounded fontSize="small" />}
+            icon={<StorageRounded fontSize={"small"} />}
           />
         </Tabs>
       </Box>

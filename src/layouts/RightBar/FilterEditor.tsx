@@ -42,86 +42,69 @@ type FilterEditorProp = {
   onChange: (value: unknown) => void;
 };
 
-const GROUP_OPERATORS: Array<{ title: string; value: GroupOperator }> = [
+const GROUP_OPERATORS: Array<{ value: GroupOperator }> = [
   {
-    title: "all",
     value: "all",
   },
   {
-    title: "any",
     value: "any",
   },
   {
-    title: "none",
     value: "none",
   },
 ];
 
-const RULE_OPERATORS: Array<{ title: string; value: RuleOperator }> = [
+const RULE_OPERATORS: Array<{ value: RuleOperator }> = [
   {
-    title: "==",
     value: "==",
   },
   {
-    title: "!=",
     value: "!=",
   },
   {
-    title: ">",
     value: ">",
   },
   {
-    title: ">=",
     value: ">=",
   },
   {
-    title: "<",
     value: "<",
   },
   {
-    title: "<=",
     value: "<=",
   },
   {
-    title: "in",
     value: "in",
   },
   {
-    title: "!in",
     value: "!in",
   },
   {
-    title: "has",
     value: "has",
   },
   {
-    title: "!has",
     value: "!has",
   },
 ];
 
 const FILTER_OPERATORS = [...GROUP_OPERATORS, ...RULE_OPERATORS].map((item) => {
   return {
-    title: item.title,
+    title: item.value,
     value: item.value,
   };
 });
 
 const VALUE_TYPES = [
   {
-    title: "text",
     value: "string",
   },
   {
-    title: "number",
     value: "number",
   },
   {
-    title: "true / false",
     value: "boolean",
   },
   {
-    title: "null",
     value: "null",
   },
 ];
@@ -258,7 +241,16 @@ function FilterValueEditor({
   value,
   onChange,
 }: FilterValueEditorProp): React.JSX.Element {
+  const { t } = useTranslation();
   const valueType = getValueType(value);
+  const valueTypeOptions = React.useMemo(() => {
+    return VALUE_TYPES.map((item) => {
+      return {
+        ...item,
+        title: t(`rightBar.properties.filterValueType.${item.value}`),
+      };
+    });
+  }, [t]);
 
   const handler = React.useMemo(() => {
     return {
@@ -291,8 +283,7 @@ function FilterValueEditor({
     >
       <SelectInput
         value={valueType}
-        options={VALUE_TYPES}
-        delay={0}
+        options={valueTypeOptions}
         onChange={handler.typeChange}
         sx={{
           minWidth: 102,
@@ -304,9 +295,8 @@ function FilterValueEditor({
         <TextInput
           value={String(value ?? "")}
           onChange={handler.textChange}
-          delay={0}
           multiline={false}
-          placeholder="value"
+          placeholder={t("rightBar.properties.value")}
           sx={{
             minWidth: 0,
             flex: 1,
@@ -319,9 +309,8 @@ function FilterValueEditor({
           type="number"
           value={String(value)}
           onChange={handler.numberChange}
-          delay={0}
           multiline={false}
-          placeholder="value"
+          placeholder={t("rightBar.properties.value")}
           sx={{
             minWidth: 0,
             flex: 1,
@@ -342,7 +331,6 @@ function FilterValueEditor({
               value: "false",
             },
           ]}
-          delay={0}
           onChange={handler.booleanChange}
           sx={{
             minWidth: 84,
@@ -381,6 +369,16 @@ function FilterNodeEditor({
   depth,
 }: FilterNodeEditorProp): React.JSX.Element {
   const { t } = useTranslation();
+  const operatorOptions = React.useMemo(() => {
+    return FILTER_OPERATORS.map((item) => {
+      return {
+        ...item,
+        title: isGroupOperator(item.value)
+          ? t(`rightBar.properties.filterOperator.${item.value}`)
+          : item.title,
+      };
+    });
+  }, [t]);
 
   const handler = React.useMemo(() => {
     return {
@@ -507,8 +505,7 @@ function FilterNodeEditor({
       >
         <SelectInput
           value={node.operator}
-          options={FILTER_OPERATORS}
-          delay={0}
+          options={operatorOptions}
           onChange={handler.operatorChange}
           sx={{
             minWidth: 76,
@@ -518,9 +515,8 @@ function FilterNodeEditor({
 
         {onRemove && (
           <TooltipButton
-            title={t("properties.filterRemove")}
-            icon={<DeleteOutlineRounded fontSize="small" />}
-            aria-label={t("properties.filterRemove")}
+            title={t("rightBar.properties.filterRemove")}
+            icon={<DeleteOutlineRounded fontSize={"small"} />}
             fullWidth={false}
             onClick={handler.remove}
             sx={styles.action}
@@ -538,9 +534,8 @@ function FilterNodeEditor({
           <TextInput
             value={node.property}
             onChange={handler.propertyChange}
-            delay={0}
             multiline={false}
-            placeholder={t("properties.filterProperty")}
+            placeholder={t("rightBar.properties.filterProperty")}
             sx={styles.field}
           />
 
@@ -564,9 +559,8 @@ function FilterNodeEditor({
                     />
                     {(node.operator === "in" || node.operator === "!in") && (
                       <TooltipButton
-                        title={t("properties.filterRemoveValue")}
-                        icon={<DeleteOutlineRounded fontSize="small" />}
-                        aria-label={t("properties.filterRemoveValue")}
+                        title={t("rightBar.properties.filterRemoveValue")}
+                        icon={<DeleteOutlineRounded fontSize={"small"} />}
                         fullWidth={false}
                         onClick={() => {
                           return handler.removeValue(index);
@@ -580,9 +574,8 @@ function FilterNodeEditor({
 
               {(node.operator === "in" || node.operator === "!in") && (
                 <TooltipButton
-                  title={t("properties.filterAddValue")}
-                  icon={<AddRounded fontSize="small" />}
-                  aria-label={t("properties.filterAddValue")}
+                  title={t("rightBar.properties.filterAddValue")}
+                  icon={<AddRounded fontSize={"small"} />}
                   fullWidth={false}
                   onClick={handler.addValue}
                   sx={styles.action}
@@ -595,7 +588,7 @@ function FilterNodeEditor({
         <Stack spacing={0.75} sx={styles.children}>
           {node.children.length === 0 && (
             <Typography variant="caption" sx={styles.empty}>
-              {t("properties.filterNoConditions")}
+              {t("rightBar.properties.filterNoConditions")}
             </Typography>
           )}
 
@@ -627,17 +620,15 @@ function FilterNodeEditor({
 
           <Stack direction="row" spacing={0.5}>
             <TooltipButton
-              title={t("properties.filterAddRule")}
-              icon={<AddRounded fontSize="small" />}
-              aria-label={t("properties.filterAddRule")}
+              title={t("rightBar.properties.filterAddRule")}
+              icon={<AddRounded fontSize={"small"} />}
               fullWidth={false}
               onClick={handler.addRule}
               sx={styles.action}
             />
             <TooltipButton
-              title={t("properties.filterAddGroup")}
-              icon={<AccountTreeRounded fontSize="small" />}
-              aria-label={t("properties.filterAddGroup")}
+              title={t("rightBar.properties.filterAddGroup")}
+              icon={<AccountTreeRounded fontSize={"small"} />}
               fullWidth={false}
               onClick={handler.addGroup}
               sx={styles.action}
@@ -724,15 +715,14 @@ export const FilterEditor = React.memo(
             }}
           >
             {advanced
-              ? t("properties.filterJsonMode")
-              : t("properties.filterBuilder")}
+              ? t("rightBar.properties.filterJsonMode")
+              : t("rightBar.properties.filterBuilder")}
           </Typography>
 
           <Stack direction="row" spacing={0.5}>
             <TooltipButton
-              title={t("properties.filterBuilder")}
-              icon={<TuneRounded fontSize="small" />}
-              aria-label={t("properties.filterBuilder")}
+              title={t("rightBar.properties.filterBuilder")}
+              icon={<TuneRounded fontSize={"small"} />}
               fullWidth={false}
               color={!advanced ? "primary" : "inherit"}
               disabled={!parsedFilter}
@@ -742,9 +732,8 @@ export const FilterEditor = React.memo(
               sx={styles.modeButton}
             />
             <TooltipButton
-              title={t("properties.filterJsonMode")}
-              icon={<CodeRounded fontSize="small" />}
-              aria-label={t("properties.filterJsonMode")}
+              title={t("rightBar.properties.filterJsonMode")}
+              icon={<CodeRounded fontSize={"small"} />}
               fullWidth={false}
               color={advanced ? "primary" : "inherit"}
               onClick={() => {
@@ -759,7 +748,7 @@ export const FilterEditor = React.memo(
           <>
             {!parsedFilter && (
               <Alert severity="info" sx={styles.hint}>
-                {t("properties.filterJsonHint")}
+                {t("rightBar.properties.filterJsonHint")}
               </Alert>
             )}
             <Box sx={styles.editor}>

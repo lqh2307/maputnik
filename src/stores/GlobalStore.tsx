@@ -14,6 +14,8 @@ import {
   duplicateLayer,
   createLayer,
   cloneStyle,
+  normalizeStyleSourceType,
+  normalizeStyleSourceTypes,
 } from "../layouts/Utils";
 import {
   persistEditorLayerClipboard,
@@ -22,13 +24,17 @@ import {
   persistEditorStyle,
   EDITOR_MAX_HISTORY,
   commitEditorStyle,
+  getStyleViewState,
 } from "./Utils";
 import { deleteNestedValue, setNestedValue } from "../utils/Object";
 
 const initialStyle: StyleSpecification = loadPersistedEditorStyle();
 
 /** Zustand hook for Maputnik style and workspace state. */
-export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
+export const useGlobalStore = create<GlobalStore & GlobalAction>()((
+  set,
+  get
+) => {
   // =========================
   // Start Methods
   // =========================
@@ -90,21 +96,25 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
     });
   }
 
+  /** Checks a layer identifier without making layer rows subscribe to the full style. */
+  function isLayerIdAvailable(
+    layerId: string,
+    currentLayerId?: string
+  ): boolean {
+    return !get().style.layers.some((layer) => {
+      return layer.id === layerId && layer.id !== currentLayerId;
+    });
+  }
+
   /** Replaces the current document with a loaded style, resetting transient inspect state. */
   function loadStyle(style: StyleSpecification): void {
-    const nextStyle = cloneStyle(style);
+    const nextStyle = normalizeStyleSourceTypes(style);
     persistEditorStyle(nextStyle);
     set({
       style: nextStyle,
       selectedLayerId: nextStyle.layers[0]?.id,
       inspectorFeatures: [],
-      viewState: {
-        longitude: nextStyle.center?.[0] ?? 0,
-        latitude: nextStyle.center?.[1] ?? 0,
-        zoom: nextStyle.zoom ?? 1,
-        bearing: nextStyle.bearing ?? 0,
-        pitch: nextStyle.pitch ?? 0,
-      },
+      viewState: getStyleViewState(nextStyle),
       history: {
         past: [],
         future: [],
@@ -115,19 +125,13 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
 
   /** Resets the editor to the built-in default style template. */
   function newStyle(): void {
-    const style = cloneStyle(DEFAULT_STYLE);
+    const style = normalizeStyleSourceTypes(DEFAULT_STYLE);
     persistEditorStyle(style);
     set({
       style,
       selectedLayerId: style.layers[0]?.id,
       inspectorFeatures: [],
-      viewState: {
-        longitude: style.center?.[0] ?? 0,
-        latitude: style.center?.[1] ?? 0,
-        zoom: style.zoom ?? 1,
-        bearing: style.bearing ?? 0,
-        pitch: style.pitch ?? 0,
-      },
+      viewState: getStyleViewState(style),
       history: {
         past: [],
         future: [],
@@ -138,30 +142,47 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
 
   /** Replaces the current style document while preserving editor history semantics. */
   function replaceStyle(style: StyleSpecification): void {
+    const nextStyle = normalizeStyleSourceTypes(style);
     set((state) => {
-      return commitEditorStyle(
+      const committed = commitEditorStyle(
         state,
         (draft) => {
           Object.keys(draft).forEach((key) => {
             return Reflect.deleteProperty(draft, key);
           });
-          Object.assign(draft, cloneStyle(style));
+          Object.assign(draft, nextStyle);
         },
-        style.layers.some((layer) => {
+        nextStyle.layers.some((layer) => {
           return layer.id === state.selectedLayerId;
         })
           ? state.selectedLayerId
-          : style.layers[0]?.id
+          : nextStyle.layers[0]?.id
       );
+
+      return {
+        ...committed,
+        viewState: getStyleViewState(nextStyle),
+      };
     });
   }
 
   /** Applies a partial patch to the root style object. */
   function updateRoot(patch: Partial<StyleSpecification>): void {
     set((state) => {
-      return commitEditorStyle(state, (draft) => {
+      const committed = commitEditorStyle(state, (draft) => {
         Object.assign(draft, patch);
       });
+
+      return Object.keys(patch).some((key) => {
+        return ["center", "zoom", "bearing", "pitch"].includes(key);
+      })
+        ? {
+            ...committed,
+            viewState: getStyleViewState(
+              (committed.style as StyleSpecification) ?? state.style
+            ),
+          }
+        : committed;
     });
   }
 
@@ -172,13 +193,22 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
     }
 
     set((state) => {
-      return commitEditorStyle(state, (draft) => {
+      const committed = commitEditorStyle(state, (draft) => {
         if (value === undefined) {
           deleteNestedValue(draft, path, true);
         } else {
           setNestedValue(draft, path, value, true);
         }
       });
+
+      return ["center", "zoom", "bearing", "pitch"].includes(String(path[0]))
+        ? {
+            ...committed,
+            viewState: getStyleViewState(
+              (committed.style as StyleSpecification) ?? state.style
+            ),
+          }
+        : committed;
     });
   }
 
@@ -478,7 +508,12 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
               : layer;
           });
         }
-        draft.sources[sourceId] = source;
+        draft.sources[sourceId] = {
+          ...source,
+          type: normalizeStyleSourceType(
+            String(source.type)
+          ) as SourceSpecification["type"],
+        } as SourceSpecification;
       });
     });
   }
@@ -529,6 +564,7 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
             EDITOR_MAX_HISTORY
           ),
         },
+        viewState: getStyleViewState(previous),
         dirty: true,
       };
     });
@@ -555,6 +591,7 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
           ),
           future: state.history.future.slice(1),
         },
+        viewState: getStyleViewState(next),
         dirty: true,
       };
     });
@@ -583,13 +620,7 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
     collapsedGroups: new Set(),
     inspectorFeatures: [],
     layerClipboard: loadEditorLayerClipboard(),
-    viewState: {
-      longitude: initialStyle.center?.[0] ?? 0,
-      latitude: initialStyle.center?.[1] ?? 0,
-      zoom: initialStyle.zoom ?? 1,
-      bearing: initialStyle.bearing ?? 0,
-      pitch: initialStyle.pitch ?? 0,
-    },
+    viewState: getStyleViewState(initialStyle),
     history: {
       past: [],
       future: [],
@@ -606,6 +637,7 @@ export const useGlobalStore = create<GlobalStore & GlobalAction>()((set) => {
     setInspectorFeatures,
     setViewState,
     selectLayer,
+    isLayerIdAvailable,
     loadStyle,
     replaceStyle,
     newStyle,

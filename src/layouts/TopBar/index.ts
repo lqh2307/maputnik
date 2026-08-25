@@ -7,3 +7,7 @@ export * from "./TopBar";
 export * from "./Types";
 export * from "./IO";
 export * from "./Geocoding";
+export * from "./GeneralSetting";
+export * from "./Help";
+export * from "./Close";
+export * from "./Profile";

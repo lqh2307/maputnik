@@ -54,7 +54,7 @@ export const AddLayerDialog = React.memo(
     const submit = React.useCallback(() => {
       addLayer(type, sourceId || undefined);
       onClose();
-    }, [addLayer, onClose, sourceId, type]);
+    }, [onClose, sourceId, type]);
 
     const styles = React.useMemo(() => {
       return {
@@ -80,23 +80,23 @@ export const AddLayerDialog = React.memo(
 
     return (
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle>{t("layers.addTitle")}</DialogTitle>
+        <DialogTitle>{t("leftBar.layers.addTitle")}</DialogTitle>
 
         <DialogContent>
           <Stack spacing={2} sx={styles.content}>
             <SelectInput
-              label={t("layers.type")}
+              label={t("leftBar.layers.type")}
               value={type}
               onChange={handler.typeChange}
               options={LAYER_TYPES.map((value) => {
                 return {
                   value,
-                  title: value,
+                  title: t(`common.layerType.${value}`),
                   menuItemProp: {
                     children: (
                       <Stack direction="row" spacing={1} sx={styles.item}>
                         <LayerTypeIcon type={value} fontSize={"small"} />
-                        <span>{value}</span>
+                        <span>{t(`common.layerType.${value}`)}</span>
                       </Stack>
                     ),
                   },
@@ -106,7 +106,7 @@ export const AddLayerDialog = React.memo(
 
             {type !== "background" && (
               <SelectInput
-                label={t("layers.source")}
+                label={t("leftBar.layers.source")}
                 value={sourceId}
                 onChange={handler.sourceChange}
                 options={compatibleSources.map(([id]) => {
@@ -120,7 +120,7 @@ export const AddLayerDialog = React.memo(
 
             {type !== "background" && compatibleSources.length === 0 && (
               <Typography variant={"body2"} color={"warning.main"}>
-                {t("layers.sourceRequired")}
+                {t("leftBar.layers.sourceRequired")}
               </Typography>
             )}
           </Stack>
@@ -128,20 +128,20 @@ export const AddLayerDialog = React.memo(
 
         <DialogActions>
           <TooltipButton
-            title={t("actions.cancel")}
+            title={t("topBar.actions.cancel")}
             variant={"text"}
             onClick={onClose}
           >
-            {t("actions.cancel")}
+            {t("topBar.actions.cancel")}
           </TooltipButton>
 
           <TooltipButton
-            title={t("layers.addTitle")}
+            title={t("leftBar.layers.addTitle")}
             variant={"contained"}
             onClick={submit}
             disabled={type !== "background" && !sourceId}
           >
-            {t("layers.addTitle")}
+            {t("leftBar.layers.addTitle")}
           </TooltipButton>
         </DialogActions>
       </Dialog>

@@ -11,6 +11,7 @@ import {
 import { runtimeTokens, type RuntimeTokens } from "../../configs/runtime";
 import { InspectorFeature, StyleResource, StyleValidationIssue } from "./Types";
 import { saveToFile } from "../File";
+import { normalizeStyleSourceType } from "./StyleSpec";
 
 type TokenName = keyof RuntimeTokens;
 
@@ -31,6 +32,21 @@ const styleValidationCache = new WeakMap<
 /** Creates an independent clone of a MapLibre style document. */
 export function cloneStyle(style: StyleSpecification): StyleSpecification {
   return structuredClone(style);
+}
+
+/** Returns a cloned style with legacy source type aliases normalized. */
+export function normalizeStyleSourceTypes(
+  style: StyleSpecification
+): StyleSpecification {
+  const nextStyle = cloneStyle(style);
+
+  Object.values(nextStyle.sources ?? {}).forEach((source) => {
+    source.type = normalizeStyleSourceType(
+      String(source.type)
+    ) as SourceSpecification["type"];
+  });
+
+  return nextStyle;
 }
 
 /** Creates a stable unique identifier from a human-readable seed and existing list. */

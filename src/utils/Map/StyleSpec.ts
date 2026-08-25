@@ -36,9 +36,20 @@ export function getRootPropertySpecs(): Record<string, PropertySpec> {
 export function getSourcePropertySpecs(
   sourceType: string
 ): Record<string, PropertySpec> {
-  return getStyleSpecSection(`source_${sourceType}`)["*"]
-    ? getStyleSpecSection(`source_${sourceType}`)
-    : getStyleSpecSection("source");
+  const canonicalType = normalizeStyleSourceType(sourceType);
+  const section = Object.keys(MAPLIBRE_STYLE_SPEC).find((name) => {
+    if (!name.startsWith("source_")) {
+      return false;
+    }
+
+    const typeSpec = getStyleSpecSection(name).type;
+    return Boolean(
+      typeSpec?.values &&
+      Object.prototype.hasOwnProperty.call(typeSpec.values, canonicalType)
+    );
+  });
+
+  return section ? getStyleSpecSection(section) : {};
 }
 
 /** Return the common layer property specifications. */
@@ -63,11 +74,17 @@ export function getStyleLayerTypes(): string[] {
 
 /** Return the source types advertised by the bundled style specification. */
 export function getStyleSourceTypes(): string[] {
-  return Object.keys(MAPLIBRE_STYLE_SPEC)
-    .filter((name) => {
-      return name.startsWith("source_");
-    })
-    .map((name) => {
-      return name.slice("source_".length);
-    });
+  return Object.keys(MAPLIBRE_STYLE_SPEC).flatMap((name) => {
+    if (!name.startsWith("source_")) {
+      return [];
+    }
+
+    const values = getStyleSpecSection(name).type?.values;
+    return values ? Object.keys(values) : [];
+  });
+}
+
+/** Converts legacy editor aliases into the canonical MapLibre source type. */
+export function normalizeStyleSourceType(sourceType: string): string {
+  return sourceType === "raster_dem" ? "raster-dem" : sourceType;
 }

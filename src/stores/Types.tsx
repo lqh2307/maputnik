@@ -9,6 +9,7 @@
 import { InspectorFeature, LayerSection, MapMode } from "../layouts/Types";
 import { ThemeMode } from "../components/AppTheme";
 import { ViewState } from "react-map-gl/maplibre";
+import { Language } from "../types/Language";
 import {
   SourceSpecification,
   LayerSpecification,
@@ -71,6 +72,8 @@ export type GlobalAction = {
   setViewState: (viewState: Partial<ViewState>) => void;
   /** Sets the active layer ID or clears the selection. */
   selectLayer: (layerId?: string) => void;
+  /** Checks whether a layer identifier is available without subscribing to the style. */
+  isLayerIdAvailable: (layerId: string, currentLayerId?: string) => boolean;
   /** Replaces the current document with a loaded style, resetting transient inspect state. */
   loadStyle: (style: StyleSpecification) => void;
   /** Replaces the current style document while preserving editor history semantics. */
@@ -129,7 +132,7 @@ export type GlobalAction = {
  */
 export type LanguageStore = {
   /** Current language of the application. */
-  language: string;
+  language: Language;
 };
 
 /**
@@ -137,7 +140,7 @@ export type LanguageStore = {
  */
 export type LanguageAction = {
   /** Changes the language of the application. */
-  setLanguage: (language: string) => void;
+  setLanguage: (language: Language) => void;
 };
 
 /** Interaction state of the map canvas. */
@@ -168,6 +171,18 @@ export type ThemeAction = {
 export type DialogStore = {
   /** Whether the JSON code editor is open. */
   code?: boolean;
+
+  /** Whether the About dialog is open. */
+  about?: boolean;
+
+  /** Whether the general application settings dialog is open. */
+  generalSetting?: boolean;
+
+  /** Whether the user guide dialog is open. */
+  guide?: boolean;
+
+  /** Whether the profile dialog is open. */
+  profile?: boolean;
 
   /** Whether the style export dialog is open. */
   export?: boolean;

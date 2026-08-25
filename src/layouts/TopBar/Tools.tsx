@@ -1,14 +1,14 @@
-import {
-  CodeRounded,
-  SettingsRounded,
-  StorageRounded,
-} from "@mui/icons-material";
-import { Stack } from "@mui/material";
 import { TooltipButton } from "../../components/TooltipButton";
+import { useTranslation } from "react-i18next";
 import { useDialogStore } from "../../stores";
 import { TopBarToolsProp } from "./Types";
-import { useTranslation } from "react-i18next";
+import { Stack } from "@mui/material";
 import React from "react";
+import {
+  SettingsRounded,
+  StorageRounded,
+  CodeRounded,
+} from "@mui/icons-material";
 
 /** Renders navigation and modal tool launchers: JSON editor, Sources, and Style settings. */
 export const TopBarTools = React.memo(
@@ -22,6 +22,13 @@ export const TopBarTools = React.memo(
     const updateDialog = useDialogStore((state) => {
       return state.updateDialog;
     });
+
+    const translate = React.useCallback(
+      (section: string): string => {
+        return t(`topBar.actions.${section}`);
+      },
+      [t]
+    );
 
     const handler = React.useMemo(() => {
       return {
@@ -41,7 +48,7 @@ export const TopBarTools = React.memo(
           });
         },
       };
-    }, [codeEditorOpen, updateDialog]);
+    }, [codeEditorOpen]);
 
     const styles = React.useMemo(() => {
       return {
@@ -68,30 +75,27 @@ export const TopBarTools = React.memo(
     return (
       <Stack direction="row" spacing={0.25}>
         <TooltipButton
-          title="JSON"
+          title={translate("editJson")}
           variant={"text"}
           icon={<CodeRounded />}
-          aria-label="JSON"
           fullWidth={false}
           onClick={handler.toggleJson}
           sx={styles.button}
         />
 
         <TooltipButton
-          title={t("actions.sources")}
+          title={translate("sources")}
           variant={"text"}
           icon={<StorageRounded />}
-          aria-label={t("actions.sources")}
           fullWidth={false}
           onClick={handler.sources}
           sx={styles.button}
         />
 
         <TooltipButton
-          title={t("actions.style")}
+          title={translate("settings")}
           variant={"text"}
           icon={<SettingsRounded />}
-          aria-label={t("actions.style")}
           fullWidth={false}
           onClick={handler.settings}
           sx={styles.button}

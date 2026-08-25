@@ -15,14 +15,21 @@ import { ExportDialogProp } from "./Types";
 import { useTranslation } from "react-i18next";
 import React from "react";
 
+const EMPTY_STYLE = {
+  version: 8,
+  sources: {},
+  layers: [],
+} as import("maplibre-gl").StyleSpecification;
+
 /** Renders style validation and formatted JSON export dialog. */
 export const ExportDialog = React.memo(
   ({ open = false }: ExportDialogProp): React.JSX.Element => {
     const { t } = useTranslation();
 
-    const style = useGlobalStore((state) => {
-      return state.style;
-    });
+    const style =
+      useGlobalStore((state) => {
+        return open ? state.style : undefined;
+      }) ?? EMPTY_STYLE;
 
     const updateDialog = useDialogStore((state) => {
       return state.updateDialog;
@@ -47,12 +54,12 @@ export const ExportDialog = React.memo(
       updateDialog({
         export: false,
       });
-    }, [updateDialog]);
+    }, []);
 
     const download = React.useCallback(async (): Promise<void> => {
       await downloadStyle(style);
       markSaved();
-    }, [markSaved, style]);
+    }, [style]);
 
     const styles = React.useMemo(() => {
       return {
@@ -94,29 +101,31 @@ export const ExportDialog = React.memo(
 
         <DialogActions>
           <TooltipButton
-            title={copied ? t("actions.copied") : t("actions.copy")}
+            title={
+              copied ? t("topBar.actions.copied") : t("topBar.actions.copy")
+            }
             variant={"text"}
             startIcon={<ContentCopyRounded />}
             onClick={copy}
           >
-            {copied ? t("actions.copied") : t("actions.copy")}
+            {copied ? t("topBar.actions.copied") : t("topBar.actions.copy")}
           </TooltipButton>
 
           <TooltipButton
-            title={t("actions.download")}
+            title={t("topBar.actions.download")}
             variant={"contained"}
             startIcon={<DownloadRounded />}
             onClick={download}
           >
-            {t("actions.download")}
+            {t("topBar.actions.download")}
           </TooltipButton>
 
           <TooltipButton
-            title={t("actions.close")}
+            title={t("topBar.actions.close")}
             variant={"text"}
             onClick={close}
           >
-            {t("actions.close")}
+            {t("topBar.actions.close")}
           </TooltipButton>
         </DialogActions>
       </Dialog>

@@ -2,7 +2,6 @@ import {
   AddRounded,
   ExpandMoreRounded,
   FolderRounded,
-  LayersRounded,
   SearchRounded,
 } from "@mui/icons-material";
 import {
@@ -24,6 +23,7 @@ import { getLayerGroup } from "./Utils";
 import { LayerRow } from "./LayerRow";
 import { useTranslation } from "react-i18next";
 import React from "react";
+import { TOOLBAR_ICON_BUTTON_STYLE } from "../../configs";
 
 /** Renders the searchable and reorderable layer tree panel. */
 export const LayerPanel = React.memo((): React.JSX.Element => {
@@ -80,22 +80,16 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
         boxShadow: "0 2px 8px rgba(15, 23, 42, 0.06)",
         zIndex: 1,
       },
-      headerRow: {
-        mb: 1,
-        alignItems: "center",
-      },
-      title: {
-        flex: 1,
-      },
       filter: {
         width: 104,
         flexShrink: 0,
       },
-      iconButton: {
-        minWidth: 34,
-        width: 34,
-        height: 34,
+      addButton: {
+        mt: 1,
+        minHeight: 32,
         p: 0,
+        color: "text.secondary",
+        ...TOOLBAR_ICON_BUTTON_STYLE,
       },
       list: {
         flex: 1,
@@ -164,7 +158,7 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
         };
       },
     };
-  }, [setSearch, setTypeFilter, toggleGroup]);
+  }, []);
 
   const groups = React.useMemo(() => {
     const groupMap = new Map<string, LayerGroup>();
@@ -198,30 +192,12 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
   return (
     <Box component="aside" sx={styles.root}>
       <Box sx={styles.header}>
-        <Stack direction="row" spacing={1} sx={styles.headerRow}>
-          <LayersRounded fontSize={"small"} />
-
-          <Typography variant={"subtitle2"} sx={styles.title}>
-            {t("layers.title")}
-          </Typography>
-
-          <TooltipButton
-            title={t("actions.add")}
-            variant={"contained"}
-            icon={<AddRounded />}
-            aria-label={t("actions.add")}
-            fullWidth={false}
-            onClick={handler.add}
-            sx={styles.iconButton}
-          />
-        </Stack>
-
         <Stack direction="row" spacing={1}>
           <TextInput
             value={search}
             onChange={handler.search}
             multiline={false}
-            placeholder={t("layers.search")}
+            placeholder={t("leftBar.layers.search")}
             fullWidth
             slotProps={{
               input: {
@@ -241,17 +217,26 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
             options={[
               {
                 value: "all",
-                title: t("layers.all"),
+                title: t("leftBar.layers.all"),
               },
               ...LAYER_TYPES.map((type) => {
                 return {
                   value: type,
-                  title: type,
+                  title: t(`common.layerType.${type}`),
                 };
               }),
             ]}
           />
         </Stack>
+
+        <TooltipButton
+          title={t("topBar.actions.add")}
+          variant={"outlined"}
+          icon={<AddRounded />}
+          fullWidth
+          onClick={handler.add}
+          sx={styles.addButton}
+        />
       </Box>
 
       <Box sx={styles.list}>
@@ -266,7 +251,7 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
 
                 <Typography variant={"caption"} noWrap sx={styles.groupTitle}>
                   {group.id === "style:root"
-                    ? t("layers.styleGroup")
+                    ? t("leftBar.layers.styleGroup")
                     : group.title}
                 </Typography>
 
@@ -295,9 +280,9 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
 
         {groups.length === 0 && (
           <Stack spacing={1} sx={styles.empty}>
-            <LayersRounded />
-
-            <Typography variant={"body2"}>{t("layers.empty")}</Typography>
+            <Typography variant={"body2"}>
+              {t("leftBar.layers.empty")}
+            </Typography>
           </Stack>
         )}
       </Box>

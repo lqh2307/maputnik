@@ -67,3 +67,27 @@ export type SourcesDialogProp = {
   /** Whether the dialog is open. */
   open?: boolean;
 };
+
+/** Defines GeneralSetttingDialog component props. */
+export type GeneralSetttingDialogProp = {
+  /** Whether the dialog is open. */
+  open?: boolean;
+};
+
+/** Defines AboutDialog component props. */
+export type AboutDialogProp = {
+  /** Whether the dialog is open. */
+  open?: boolean;
+};
+
+/** Defines GuideDialog component props. */
+export type GuideDialogProp = {
+  /** Whether the dialog is open. */
+  open?: boolean;
+};
+
+/** Defines ProfileDialog component props. */
+export type ProfileDialogProp = {
+  /** Whether the dialog is open. */
+  open?: boolean;
+};

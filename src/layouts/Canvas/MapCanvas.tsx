@@ -10,12 +10,12 @@ import {
 } from "@mui/material";
 import { CloseRounded } from "@mui/icons-material";
 import Map, {
-  GeolocateControl,
   Marker,
   NavigationControl,
   ScaleControl,
   ViewStateChangeEvent,
   type MapLayerMouseEvent,
+  type MapRef,
   type MarkerDragEvent,
 } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -127,6 +127,7 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
   const [mapError, setMapError] = React.useState<string>();
   const [hoverInspector, setHoverInspector] = React.useState<HoverInspector>();
   const [markerPosition, setMarkerPosition] = React.useState<MarkerPosition>();
+  const mapRef = React.useRef<MapRef>(undefined);
   const mapModeRef = React.useRef(mapMode);
   const hoverMoveEventRef = React.useRef<MapLayerMouseEvent>(undefined);
   const hoverMoveFrameRef = React.useRef<number>(undefined);
@@ -135,6 +136,27 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
 
   mapModeRef.current = mapMode;
   hoverInspectorRef.current = hoverInspector;
+
+  React.useEffect(() => {
+    if (!loaded) {
+      return;
+    }
+
+    const map = mapRef.current?.getMap();
+    if (!map) {
+      return;
+    }
+
+    const roll = style.roll ?? 0;
+    const centerAltitude = style.centerAltitude ?? 0;
+
+    if (map.getRoll() !== roll) {
+      map.setRoll(roll);
+    }
+    if (map.getCenterElevation() !== centerAltitude) {
+      map.setCenterElevation(centerAltitude);
+    }
+  }, [loaded, style.centerAltitude, style.roll]);
 
   const cancelHoverMove = React.useCallback((): void => {
     cancelAnimationFrame(hoverMoveFrameRef.current);
@@ -150,7 +172,7 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
   const clearInspectorBox = React.useCallback((): void => {
     clearHoverInspector();
     setInspectorFeatures([]);
-  }, [clearHoverInspector, setInspectorFeatures]);
+  }, [clearHoverInspector]);
 
   const clearPinnedInspector = React.useCallback((): void => {
     clearInspectorBox();
@@ -188,7 +210,7 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
       });
       setInspectorFeatures(features.slice(0, 30).map(summarizeFeature));
     },
-    [mapMode, selectLayer, setInspectorFeatures]
+    [mapMode]
   );
 
   const updateHoverInspector = React.useCallback(
@@ -298,7 +320,7 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
           message?: string;
         };
       }): void => {
-        setMapError(event.error?.message ?? t("map.error"));
+        setMapError(event.error?.message ?? t("topBar.map.error"));
       },
       leaveMap: (): void => {
         if (!hoverInspectorRef.current?.pinned) {
@@ -318,7 +340,6 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
     clearInspectorBox,
     clearPinnedInspector,
     handleMarkerDragEnd,
-    setViewState,
     t,
   ]);
 
@@ -419,6 +440,7 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
   return (
     <Box sx={styles.root} onMouseLeave={handler.leaveCanvas}>
       <Map
+        ref={mapRef}
         {...viewState}
         mapStyle={style}
         onMove={handler.move}
@@ -441,8 +463,6 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
       >
         <NavigationControl position={"top-right"} visualizePitch />
 
-        <GeolocateControl position={"top-right"} />
-
         <ScaleControl position={"bottom-right"} />
 
         {mapMode === "inspect" && markerPosition && (
@@ -461,31 +481,27 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
           <Stack direction="row" spacing={1.5} sx={styles.loadingContent}>
             <CircularProgress size={20} />
 
-            <Typography variant={"body2"}>{t("map.loading")}</Typography>
+            <Typography variant={"body2"}>{t("topBar.map.loading")}</Typography>
           </Stack>
         </Paper>
       )}
 
       {mapMode === "inspect" && hoverInspector && (
         <Paper ref={inspectorElementRef} elevation={0} sx={styles.inspector}>
-          <IconButton
-            aria-label={t("map.closeInspector")}
-            onClick={handler.close}
-            sx={styles.inspectorClose}
-          >
+          <IconButton onClick={handler.close} sx={styles.inspectorClose}>
             <CloseRounded fontSize={"inherit"} />
           </IconButton>
 
           {inspectorFeature ? (
             <>
               <Box component="strong" sx={styles.inspectorTitle}>
-                {inspectorFeature.sourceLayer || t("map.feature")}
+                {inspectorFeature.sourceLayer || t("topBar.map.feature")}
               </Box>
 
               <Box component="dl" sx={styles.propertyList}>
                 <Box component="div" sx={styles.propertyRow}>
                   <Box component="dt" sx={styles.propertyName}>
-                    {t("properties.type")}
+                    {t("rightBar.properties.type")}
                   </Box>
                   <Box component="dd" sx={styles.propertyValue}>
                     {inspectorFeature.geometryType}
@@ -494,7 +510,7 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
 
                 <Box component="div" sx={styles.propertyRow}>
                   <Box component="dt" sx={styles.propertyName}>
-                    {t("map.coordinates")}
+                    {t("topBar.map.coordinates")}
                   </Box>
                   <Box component="dd" sx={styles.propertyValue}>
                     {`[${hoverInspector.longitude}, ${hoverInspector.latitude}]`}
@@ -518,7 +534,7 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
 
                 {!hoverProperties.length && (
                   <Box component="div" sx={styles.emptyProperties}>
-                    {t("map.noProperties")}
+                    {t("topBar.map.noProperties")}
                   </Box>
                 )}
               </Box>
@@ -526,13 +542,13 @@ export const MapCanvas = React.memo((): React.JSX.Element => {
           ) : (
             <>
               <Box component="strong" sx={styles.inspectorTitle}>
-                {t("map.position")}
+                {t("topBar.map.position")}
               </Box>
 
               <Box component="dl" sx={styles.propertyList}>
                 <Box component="div" sx={styles.propertyRow}>
                   <Box component="dt" sx={styles.propertyName}>
-                    {t("map.coordinates")}
+                    {t("topBar.map.coordinates")}
                   </Box>
                   <Box component="dd" sx={styles.propertyValue}>
                     {`[${hoverInspector.longitude}, ${hoverInspector.latitude}]`}

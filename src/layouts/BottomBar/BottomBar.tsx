@@ -4,7 +4,7 @@ import { useGlobalStore } from "../../stores";
 import { useTranslation } from "react-i18next";
 import React from "react";
 
-/** Renders the editor status bar showing layer count, source count, clipboard state, and coordinates. */
+/** Renders the editor status bar showing the style name and validation status. */
 export const BottomBar = React.memo((): React.JSX.Element => {
   const { t } = useTranslation();
 
@@ -12,30 +12,30 @@ export const BottomBar = React.memo((): React.JSX.Element => {
     return state.style;
   });
 
-  const view = useGlobalStore((state) => {
-    return state.viewState;
-  });
-
-  const clipboardLayerId = useGlobalStore((state) => {
-    return state.layerClipboard?.id;
-  });
-
   const issues = React.useMemo(() => {
     return validateStyleDocument(style);
   }, [style]);
 
+  const styleName = style.name?.trim();
+  const displayStyleName =
+    !styleName || styleName === "Untitled style"
+      ? t("common.app.untitled")
+      : styleName;
+
   const styles = React.useMemo(() => {
     return {
       root: {
+        width: "100%",
         height: 28,
+        minWidth: 0,
         px: 1.5,
-        borderTop: 1,
-        borderColor: "divider",
         bgcolor: "background.paper",
         color: "text.secondary",
         boxShadow: "0 -2px 8px rgba(15, 23, 42, 0.04)",
         display: "flex",
         alignItems: "center",
+        boxSizing: "border-box",
+        overflow: "hidden",
       },
       content: {
         width: "100%",
@@ -53,25 +53,7 @@ export const BottomBar = React.memo((): React.JSX.Element => {
   return (
     <Box component="footer" sx={styles.root}>
       <Stack direction="row" spacing={1.5} sx={styles.content}>
-        <Typography variant={"caption"}>
-          {t("status.layers", {
-            count: style.layers.length,
-          })}
-        </Typography>
-
-        <Typography variant={"caption"}>
-          {t("status.sources", {
-            count: Object.keys(style.sources).length,
-          })}
-        </Typography>
-
-        {clipboardLayerId && (
-          <Typography variant={"caption"} color={"text.secondary"}>
-            {t("status.clipboard", {
-              id: clipboardLayerId,
-            })}
-          </Typography>
-        )}
+        <Typography variant={"caption"}>{displayStyleName}</Typography>
 
         <Chip
           size={"small"}
@@ -79,20 +61,13 @@ export const BottomBar = React.memo((): React.JSX.Element => {
           variant={"outlined"}
           label={
             issues.length
-              ? t("status.issues", {
-                  count: issues.length,
-                })
-              : t("status.valid")
+              ? t("bottomBar.status.invalid")
+              : t("bottomBar.status.valid")
           }
           sx={styles.issueChip}
         />
 
         <Box sx={styles.spacer} />
-
-        <Typography variant={"caption"} color={"text.secondary"}>
-          {view.latitude.toFixed(5)}, {view.longitude.toFixed(5)} · z
-          {view.zoom.toFixed(2)}
-        </Typography>
       </Stack>
     </Box>
   );

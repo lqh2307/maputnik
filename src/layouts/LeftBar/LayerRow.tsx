@@ -19,16 +19,23 @@ export const LayerRow = React.memo(
   ({ layer, dragState, setDragState }: LayerRowProp): React.JSX.Element => {
     const { t } = useTranslation();
 
+    const translate = React.useCallback(
+      (section: string): string => {
+        return t(`topBar.actions.${section}`);
+      },
+      [t]
+    );
+
     const selected = useGlobalStore((state) => {
       return state.selectedLayerId === layer.id;
     });
 
-    const style = useGlobalStore((state) => {
-      return state.style;
-    });
-
     const selectLayer = useGlobalStore((state) => {
       return state.selectLayer;
+    });
+
+    const isLayerIdAvailable = useGlobalStore((state) => {
+      return state.isLayerIdAvailable;
     });
 
     const updateLayer = useGlobalStore((state) => {
@@ -71,13 +78,7 @@ export const LayerRow = React.memo(
 
     const saveName = React.useCallback(() => {
       const nextName = name.trim();
-      if (
-        nextName &&
-        (nextName === layer.id ||
-          !style.layers.some((item) => {
-            return item.id === nextName;
-          }))
-      ) {
+      if (nextName && isLayerIdAvailable(nextName, layer.id)) {
         updateLayer(layer.id, {
           id: nextName,
         });
@@ -85,7 +86,7 @@ export const LayerRow = React.memo(
         setName(layer.id);
       }
       setEditing(false);
-    }, [layer.id, name, style.layers, updateLayer]);
+    }, [layer.id, name]);
 
     const styles = React.useMemo(() => {
       return {
@@ -285,18 +286,7 @@ export const LayerRow = React.memo(
           deleteLayer(layer.id);
         },
       };
-    }, [
-      copyLayer,
-      deleteLayer,
-      dragState.edge,
-      dragState.overId,
-      layer.id,
-      moveLayer,
-      saveName,
-      selectLayer,
-      setDragState,
-      toggleVisibility,
-    ]);
+    }, [dragState.edge, dragState.overId, layer.id, saveName, setDragState]);
 
     return (
       <Box
@@ -346,7 +336,7 @@ export const LayerRow = React.memo(
 
         <Stack direction="row" spacing={0.25} sx={styles.actions}>
           <TooltipButton
-            title={hidden ? t("actions.show") : t("actions.hide")}
+            title={translate(hidden ? "show" : "hide")}
             icon={
               hidden ? (
                 <VisibilityOffRounded sx={styles.actionIcon} />
@@ -359,7 +349,7 @@ export const LayerRow = React.memo(
           />
 
           <TooltipButton
-            title={t("actions.copyLayer")}
+            title={translate("copy")}
             color={clipboardLayerId === layer.id ? "primary" : "inherit"}
             icon={<ContentCopyRounded sx={styles.copyIcon} />}
             onClick={handler.copy}
@@ -367,7 +357,7 @@ export const LayerRow = React.memo(
           />
 
           <TooltipButton
-            title={t("actions.delete")}
+            title={translate("delete")}
             color={"error"}
             icon={<DeleteOutlineRounded sx={styles.actionIcon} />}
             onClick={handler.remove}

@@ -11,7 +11,11 @@ import {
 import { SourceSpecification } from "maplibre-gl";
 import { SOURCE_TYPES } from "../Constants";
 import { useGlobalStore } from "../../stores";
-import { createUniqueId, getSourcePropertySpecs } from "../Utils";
+import {
+  createUniqueId,
+  getSourcePropertySpecs,
+  normalizeStyleSourceType,
+} from "../Utils";
 import { SelectInput } from "../../components/SelectInput";
 import { JSONEditor } from "../../components/JSONEditor";
 import { TextInput } from "../../components/TextInput";
@@ -39,20 +43,30 @@ export const SourceEditor = React.memo(
       draft?.id ?? createUniqueId("source", Object.keys(sources))
     );
 
-    const [source, setSource] = React.useState<SourceSpecification>(
-      draft?.source ??
+    const [source, setSource] = React.useState<SourceSpecification>(() => {
+      const initial =
+        draft?.source ??
         ({
           type: "vector",
           url: "",
-        } as SourceSpecification)
-    );
+        } as SourceSpecification);
+      const type = normalizeStyleSourceType(String(initial.type));
+
+      return type === initial.type
+        ? initial
+        : ({
+            ...initial,
+            type,
+          } as SourceSpecification);
+    });
 
     const [error, setError] = React.useState<string>();
     const [advanced, setAdvanced] = React.useState(false);
 
     const updateType = React.useCallback((type: string): void => {
+      const canonicalType = normalizeStyleSourceType(type);
       let next: SourceSpecification;
-      if (type === "geojson") {
+      if (canonicalType === "geojson") {
         next = {
           type: "geojson",
           data: {
@@ -60,7 +74,7 @@ export const SourceEditor = React.memo(
             features: [],
           },
         };
-      } else if (type === "image") {
+      } else if (canonicalType === "image") {
         next = {
           type: "image",
           url: "",
@@ -71,7 +85,7 @@ export const SourceEditor = React.memo(
             [0, 0],
           ],
         };
-      } else if (type === "video") {
+      } else if (canonicalType === "video") {
         next = {
           type: "video",
           urls: [],
@@ -84,7 +98,7 @@ export const SourceEditor = React.memo(
         };
       } else {
         next = {
-          type,
+          type: canonicalType,
         } as SourceSpecification;
       }
       setSource(next);
@@ -122,23 +136,23 @@ export const SourceEditor = React.memo(
         if (!source.type) {
           throw new Error(t("dialog.invalidSource"));
         }
-        upsertSource(sourceId, source, draft?.previousId);
+        upsertSource(
+          sourceId,
+          {
+            ...source,
+            type: normalizeStyleSourceType(
+              String(source.type)
+            ) as SourceSpecification["type"],
+          } as SourceSpecification,
+          draft?.previousId
+        );
         onClose();
       } catch (reason) {
         setError(
           reason instanceof Error ? reason.message : t("dialog.invalidSource")
         );
       }
-    }, [
-      draft?.id,
-      draft?.previousId,
-      id,
-      onClose,
-      source,
-      sources,
-      t,
-      upsertSource,
-    ]);
+    }, [draft?.id, draft?.previousId, id, onClose, source, sources, t]);
 
     const handler = React.useMemo(() => {
       return {
@@ -201,10 +215,10 @@ export const SourceEditor = React.memo(
 
             <SelectInput
               label={t("dialog.sourceType")}
-              value={source.type}
+              value={normalizeStyleSourceType(String(source.type))}
               options={SOURCE_TYPES.map((type) => {
                 return {
-                  title: type,
+                  title: t(`common.sourceType.${type}`),
                   value: type,
                 };
               })}
@@ -219,7 +233,7 @@ export const SourceEditor = React.memo(
             >
               <TooltipButton
                 title={t("dialog.advanced")}
-                icon={<CodeRounded fontSize="small" />}
+                icon={<CodeRounded fontSize={"small"} />}
                 color={advanced ? "primary" : "inherit"}
                 fullWidth={false}
                 onClick={handler.advancedToggle}
@@ -238,7 +252,9 @@ export const SourceEditor = React.memo(
             ) : (
               <SpecObjectEditor
                 value={source as Record<string, unknown>}
-                specs={getSourcePropertySpecs(source.type)}
+                specs={getSourcePropertySpecs(
+                  normalizeStyleSourceType(String(source.type))
+                )}
                 exclude={["type"]}
                 onChange={updateProperty}
               />
@@ -248,11 +264,11 @@ export const SourceEditor = React.memo(
 
         <DialogActions>
           <TooltipButton
-            title={t("actions.cancel")}
+            title={t("topBar.actions.cancel")}
             variant={"text"}
             onClick={onClose}
           >
-            {t("actions.cancel")}
+            {t("topBar.actions.cancel")}
           </TooltipButton>
 
           <TooltipButton

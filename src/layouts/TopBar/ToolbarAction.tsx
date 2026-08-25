@@ -1,4 +1,5 @@
 import { TooltipButton } from "../../components/TooltipButton";
+import { TOOLBAR_ICON_BUTTON_STYLE } from "../../configs";
 import { ToolbarActionProp } from "./Types";
 import React from "react";
 
@@ -30,12 +31,12 @@ export const ToolbarAction = React.memo(
           width: 32,
           height: 32,
           p: 0,
+          ...TOOLBAR_ICON_BUTTON_STYLE,
           border: 1,
           borderColor: active ? "primary.main" : "divider",
           borderRadius: 1,
           color: active ? "primary.main" : "text.secondary",
           bgcolor: active ? "action.selected" : "background.paper",
-          boxShadow: "0 1px 2px rgba(15, 23, 42, 0.08)",
           "&&:hover": {
             outline: "none",
             borderColor: "primary.main",
@@ -43,13 +44,6 @@ export const ToolbarAction = React.memo(
             bgcolor: active ? "action.selected" : "action.hover",
             boxShadow: "0 3px 8px rgba(15, 23, 42, 0.14)",
             transform: "translateY(-1px)",
-          },
-          "&.Mui-disabled": {
-            opacity: 1,
-            borderColor: "divider",
-            color: "text.disabled",
-            bgcolor: "action.hover",
-            boxShadow: "none",
           },
         },
       };

@@ -20,35 +20,49 @@ export const ShortcutsDialog = React.memo(
   ({ open = false }: ShortcutsDialogProp): React.JSX.Element => {
     const { t } = useTranslation();
 
+    const translateAction = React.useCallback(
+      (section: string): string => {
+        return t(`topBar.actions.${section}`);
+      },
+      [t]
+    );
+
+    const translateDialog = React.useCallback(
+      (section: string): string => {
+        return t(`dialog.${section}`);
+      },
+      [t]
+    );
+
     const updateDialog = useDialogStore((state) => {
       return state.updateDialog;
     });
 
     const shortcuts: [string, string][] = React.useMemo(() => {
       return [
-        ["Ctrl/Cmd + Z", t("actions.undo")],
-        ["Ctrl/Cmd + Shift + Z / Y", t("actions.redo")],
-        ["Ctrl/Cmd + C", t("actions.copyLayer")],
-        ["Ctrl/Cmd + V", t("actions.pasteLayer")],
-        ["Ctrl/Cmd + D", t("dialog.shortcutDuplicate")],
-        ["Ctrl/Cmd + O", t("actions.open")],
-        ["Ctrl/Cmd + S", t("actions.export")],
-        ["Ctrl/Cmd + E", t("actions.editJson")],
-        ["Delete", t("dialog.shortcutDelete")],
-        ["I", t("dialog.shortcutInspect")],
-        ["?", t("dialog.shortcutOpen")],
+        ["Ctrl/Cmd + Z", translateAction("undo")],
+        ["Ctrl/Cmd + Shift + Z / Y", translateAction("redo")],
+        ["Ctrl/Cmd + C", translateAction("copy")],
+        ["Ctrl/Cmd + V", translateAction("paste")],
+        ["Ctrl/Cmd + D", translateDialog("shortcutDuplicate")],
+        ["Ctrl/Cmd + O", translateAction("open")],
+        ["Ctrl/Cmd + S", translateAction("export")],
+        ["Ctrl/Cmd + E", translateAction("editJson")],
+        ["Delete", translateDialog("shortcutDelete")],
+        ["I", translateDialog("shortcutInspect")],
+        ["?", translateDialog("shortcutOpen")],
       ];
-    }, [t]);
+    }, [translateAction, translateDialog]);
 
     const close = React.useCallback((): void => {
       updateDialog({
         shortcuts: false,
       });
-    }, [updateDialog]);
+    }, []);
 
     return (
       <Dialog open={open} onClose={close} fullWidth maxWidth="xs">
-        <DialogTitle>{t("dialog.shortcutsTitle")}</DialogTitle>
+        <DialogTitle>{translateDialog("shortcutsTitle")}</DialogTitle>
 
         <DialogContent dividers>
           <List dense disablePadding>
@@ -69,11 +83,11 @@ export const ShortcutsDialog = React.memo(
 
         <DialogActions>
           <TooltipButton
-            title={t("actions.close")}
+            title={translateAction("close")}
             variant={"text"}
             onClick={close}
           >
-            {t("actions.close")}
+            {translateAction("close")}
           </TooltipButton>
         </DialogActions>
       </Dialog>

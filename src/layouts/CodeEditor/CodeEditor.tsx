@@ -52,7 +52,7 @@ export const CodeEditor = React.memo((): React.JSX.Element => {
         replaceStyle(value as StyleSpecification);
       },
     };
-  }, [replaceStyle, updateDialog]);
+  }, []);
 
   const styles = React.useMemo(() => {
     return {
@@ -71,7 +71,7 @@ export const CodeEditor = React.memo((): React.JSX.Element => {
     <Box component="section" sx={styles.root}>
       <JSONEditor
         embedded
-        title={t("code.title")}
+        title={t("dialog.code.title")}
         value={style as unknown as JSONValue}
         onClose={handler.close}
         headerExtra={
@@ -88,10 +88,10 @@ export const CodeEditor = React.memo((): React.JSX.Element => {
             }
             label={
               issues.length
-                ? t("status.issues", {
+                ? t("bottomBar.status.issues", {
                     count: issues.length,
                   })
-                : t("status.valid")
+                : t("bottomBar.status.valid")
             }
           />
         }

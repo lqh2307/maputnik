@@ -1,4 +1,5 @@
 import { ThemeMode } from "../components/AppTheme";
+import { Language } from "../types/Language";
 
 /** Configuration constant for image process url. */
 export const IMAGE_PROCESS_URL: string =
@@ -47,7 +48,7 @@ export const MAP_STYLES = (window as any).MAP_STYLES || [
 export const MAP_STYLE_DEFAULT: string = MAP_STYLES[0].url;
 
 /** Configuration constant for default language. */
-export const DEFAULT_LANGUAGE: string = "vietnamese";
+export const DEFAULT_LANGUAGE: Language = "vi";
 
 /** Configuration constant for default theme mode. */
 export const DEFAULT_THEME_MODE: ThemeMode = "white";

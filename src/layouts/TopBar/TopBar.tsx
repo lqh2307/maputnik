@@ -4,6 +4,10 @@ import { TopBarAction } from "./Action";
 import { TopBarTools } from "./Tools";
 import { TopBarIO } from "./IO";
 import { TopBarGeocoding } from "./Geocoding";
+import { TopBarGeneralSetting } from "./GeneralSetting";
+import { TopBarHelp } from "./Help";
+import { TopBarClose } from "./Close";
+import { TopBarProfile } from "./Profile";
 import { useElementResize } from "../../hooks";
 import React from "react";
 
@@ -26,6 +30,7 @@ export const TopBar = React.memo((): React.JSX.Element => {
     return {
       root: {
         display: "flex",
+        flexDirection: "row",
         width: "100%",
         height: "100%",
         minWidth: 0,
@@ -39,10 +44,28 @@ export const TopBar = React.memo((): React.JSX.Element => {
         overflowX: "auto",
         overflowY: "hidden",
         minWidth: 0,
-        width: "100%",
+        width: "90%",
         height: "100%",
         boxSizing: "border-box",
         px: 1,
+      },
+      profile: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
+        width: "10%",
+        minWidth: 48,
+        height: "100%",
+        boxSizing: "border-box",
+        borderLeft: 1,
+        borderColor: "divider",
+      },
+      group: {
+        display: "flex",
+        alignItems: "center",
+        flexShrink: 0,
+        gap: 0.5,
       },
     };
   }, []);
@@ -64,19 +87,36 @@ export const TopBar = React.memo((): React.JSX.Element => {
         sx={menuSx}
       >
         {/* File actions */}
-        <TopBarIO />
+        <Stack direction="row" sx={styles.group}>
+          <TopBarIO />
+        </Stack>
 
-        {/* History and layer clipboard */}
-        <TopBarHistory />
+        {/* Editing and style data */}
+        <Stack direction="row" sx={styles.group}>
+          <TopBarHistory />
 
-        {/* JSON, source, and style tools */}
-        <TopBarTools compact={compact} />
+          <TopBarTools compact={compact} />
+        </Stack>
 
-        {/* Location search */}
-        <TopBarGeocoding />
+        {/* Map search and viewport actions */}
+        <Stack direction="row" sx={styles.group}>
+          <TopBarGeocoding />
 
-        {/* Map interaction and global editor actions */}
-        <TopBarAction compact={compact} />
+          <TopBarAction compact={compact} />
+        </Stack>
+
+        {/* Application actions */}
+        <Stack direction="row" sx={styles.group}>
+          <TopBarGeneralSetting />
+
+          <TopBarHelp />
+
+          <TopBarClose />
+        </Stack>
+      </Stack>
+
+      <Stack direction="row" spacing={1} sx={styles.profile}>
+        <TopBarProfile />
       </Stack>
     </Box>
   );

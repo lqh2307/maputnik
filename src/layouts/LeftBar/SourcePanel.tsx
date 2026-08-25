@@ -2,16 +2,29 @@ import {
   AddRounded,
   DeleteOutlineRounded,
   EditRounded,
-  StorageRounded,
+  ExpandMoreRounded,
+  SearchRounded,
 } from "@mui/icons-material";
-import { Alert, Box, Chip, Paper, Stack, Typography } from "@mui/material";
-import { SourceSpecification } from "maplibre-gl";
+import {
+  Alert,
+  Box,
+  Collapse,
+  InputAdornment,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { LayerSpecification, SourceSpecification } from "maplibre-gl";
 import React from "react";
 import { TooltipButton } from "../../components/TooltipButton";
+import { TextInput } from "../../components/TextInput";
 import { useGlobalStore } from "../../stores";
 import { SourceEditor } from "../Dialog/SourceEditor";
 import { SourceDraft } from "../Dialog/Types";
+import { LayerDragState } from "./Types";
+import { LayerRow } from "./LayerRow";
 import { useTranslation } from "react-i18next";
+import { TOOLBAR_ICON_BUTTON_STYLE } from "../../configs";
 
 /** Renders the searchable source list and source editor entry points. */
 export const SourcePanel = React.memo((): React.JSX.Element => {
@@ -29,6 +42,11 @@ export const SourcePanel = React.memo((): React.JSX.Element => {
     return state.deleteSource;
   });
 
+  const [search, setSearch] = React.useState("");
+  const [collapsedSources, setCollapsedSources] = React.useState<Set<string>>(
+    new Set()
+  );
+  const [dragState, setDragState] = React.useState<LayerDragState>({});
   const [adding, setAdding] = React.useState(false);
   const [draft, setDraft] = React.useState<SourceDraft>();
 
@@ -51,8 +69,24 @@ export const SourcePanel = React.memo((): React.JSX.Element => {
         setAdding(false);
         setDraft(undefined);
       },
+      search: (value: string): void => {
+        setSearch(value);
+      },
+      toggle: (id: string) => {
+        return (): void => {
+          setCollapsedSources((current) => {
+            const next = new Set(current);
+            if (next.has(id)) {
+              next.delete(id);
+            } else {
+              next.add(id);
+            }
+            return next;
+          });
+        };
+      },
     };
-  }, [deleteSource]);
+  }, []);
 
   const styles = React.useMemo(() => {
     return {
@@ -74,17 +108,33 @@ export const SourcePanel = React.memo((): React.JSX.Element => {
         boxShadow: "0 2px 8px rgba(15, 23, 42, 0.06)",
         zIndex: 1,
       },
-      headerRow: {
-        alignItems: "center",
-      },
-      title: {
-        flex: 1,
-      },
-      iconButton: {
-        minWidth: 34,
-        width: 34,
-        height: 34,
+      addButton: {
+        mt: 1,
+        minHeight: 32,
         p: 0,
+        color: "text.secondary",
+        ...TOOLBAR_ICON_BUTTON_STYLE,
+      },
+      action: {
+        minWidth: 28,
+        width: 28,
+        height: 28,
+        p: 0,
+        color: "text.secondary",
+        ...TOOLBAR_ICON_BUTTON_STYLE,
+      },
+      deleteAction: {
+        minWidth: 28,
+        width: 28,
+        height: 28,
+        p: 0,
+        color: "error.main",
+        ...TOOLBAR_ICON_BUTTON_STYLE,
+        "&&:hover": {
+          ...TOOLBAR_ICON_BUTTON_STYLE["&&:hover"],
+          borderColor: "error.main",
+          color: "error.main",
+        },
       },
       list: {
         flex: 1,
@@ -94,12 +144,31 @@ export const SourcePanel = React.memo((): React.JSX.Element => {
         bgcolor: "background.default",
       },
       source: {
-        p: 1.25,
         borderColor: "divider",
         bgcolor: "background.paper",
+        overflow: "hidden",
       },
       sourceHeader: {
+        minHeight: 62,
+        p: 1.25,
+        display: "flex",
         alignItems: "center",
+        gap: 0.75,
+        cursor: "pointer",
+        "&:hover": {
+          bgcolor: "action.hover",
+        },
+      },
+      expand: (collapsed: boolean) => {
+        return {
+          fontSize: 18,
+          transform: collapsed ? "rotate(-90deg)" : "none",
+          transition: "transform 120ms",
+        };
+      },
+      sourceLayers: {
+        p: 0.75,
+        bgcolor: "background.default",
       },
       sourceId: {
         flex: 1,
@@ -110,12 +179,6 @@ export const SourcePanel = React.memo((): React.JSX.Element => {
         display: "block",
         mt: 0.25,
       },
-      action: {
-        minWidth: 28,
-        width: 28,
-        height: 28,
-        p: 0,
-      },
       empty: {
         py: 5,
         color: "text.secondary",
@@ -124,54 +187,84 @@ export const SourcePanel = React.memo((): React.JSX.Element => {
     };
   }, []);
 
+  const query = search.trim().toLowerCase();
+  const sourceGroups = React.useMemo(() => {
+    return Object.entries(sources)
+      .map(([id, source]) => {
+        const sourceTypeLabel = t(
+          `common.sourceType.${source.type}`
+        ).toLowerCase();
+        const sourceTypeValue = source.type.replace(/[-_]/g, " ").toLowerCase();
+        const sourceMatches =
+          !query ||
+          id.toLowerCase().includes(query) ||
+          sourceTypeValue.includes(query) ||
+          sourceTypeLabel.includes(query);
+        const sourceLayers = layers.filter((layer: LayerSpecification) => {
+          return "source" in layer && layer.source === id;
+        });
+        const visibleLayers = sourceMatches
+          ? sourceLayers
+          : sourceLayers.filter((layer) => {
+              return layer.id.toLowerCase().includes(query);
+            });
+
+        return {
+          id,
+          source,
+          sourceMatches,
+          layers: visibleLayers,
+        };
+      })
+      .filter((group) => {
+        return !query || group.sourceMatches || group.layers.length > 0;
+      });
+  }, [layers, query, sources, t]);
+
   return (
     <>
       <Box component="aside" sx={styles.root}>
         <Box sx={styles.header}>
-          <Stack direction="row" spacing={1} sx={styles.headerRow}>
-            <StorageRounded fontSize="small" />
+          <TextInput
+            value={search}
+            onChange={handler.search}
+            multiline={false}
+            placeholder={t("leftBar.sources.search")}
+            fullWidth
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchRounded fontSize={"small"} />
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
 
-            <Typography variant="subtitle2" sx={styles.title}>
-              {t("sources.title")}
-            </Typography>
-
-            <TooltipButton
-              title={t("sources.add")}
-              variant="contained"
-              icon={<AddRounded />}
-              aria-label={t("sources.add")}
-              fullWidth={false}
-              onClick={handler.add}
-              sx={styles.iconButton}
-            />
-          </Stack>
+          <TooltipButton
+            title={t("leftBar.sources.add")}
+            variant="outlined"
+            icon={<AddRounded />}
+            fullWidth
+            onClick={handler.add}
+            sx={styles.addButton}
+          />
         </Box>
 
         <Box sx={styles.list}>
           <Stack spacing={1}>
-            {Object.entries(sources).map(([id, source]) => {
-              const layerCount = layers.filter((layer) => {
-                return "source" in layer && layer.source === id;
-              }).length;
+            {sourceGroups.map(({ id, source, layers: sourceLayers }) => {
+              const collapsed = collapsedSources.has(id);
+              const sourceTypeLabel = t(`common.sourceType.${source.type}`);
 
               return (
                 <Paper key={id} variant="outlined" sx={styles.source}>
-                  <Stack
-                    direction="row"
-                    spacing={0.75}
-                    sx={styles.sourceHeader}
-                  >
-                    <Box
-                      sx={{
-                        minWidth: 0,
-                        flex: 1,
-                      }}
-                    >
-                      <Typography
-                        variant="subtitle2"
-                        noWrap
-                        sx={styles.sourceId}
-                      >
+                  <Box onClick={handler.toggle(id)} sx={styles.sourceHeader}>
+                    <ExpandMoreRounded sx={styles.expand(collapsed)} />
+
+                    <Box sx={styles.sourceId}>
+                      <Typography variant="subtitle2" noWrap>
                         {id}
                       </Typography>
                       <Typography
@@ -179,44 +272,62 @@ export const SourcePanel = React.memo((): React.JSX.Element => {
                         color="text.secondary"
                         sx={styles.sourceSummary}
                       >
-                        {t("sources.summary", {
-                          type: source.type,
-                          count: layerCount,
+                        {t("leftBar.sources.summary", {
+                          type: sourceTypeLabel,
+                          count: sourceLayers.length,
                         })}
                       </Typography>
                     </Box>
 
-                    <Chip size="small" label={source.type} />
-
                     <TooltipButton
-                      title={t("sources.edit")}
-                      icon={<EditRounded fontSize="small" />}
-                      aria-label={t("sources.edit")}
+                      title={t("leftBar.sources.edit")}
+                      icon={<EditRounded fontSize={"small"} />}
                       fullWidth={false}
-                      onClick={() => {
-                        return handler.edit(id, source);
+                      onClick={(_value, event) => {
+                        event.stopPropagation();
+                        handler.edit(id, source);
                       }}
                       sx={styles.action}
                     />
 
                     <TooltipButton
-                      title={t("sources.delete")}
-                      icon={<DeleteOutlineRounded fontSize="small" />}
-                      aria-label={t("sources.delete")}
+                      title={t("leftBar.sources.delete")}
+                      icon={<DeleteOutlineRounded fontSize={"small"} />}
                       fullWidth={false}
-                      color="error"
-                      onClick={() => {
-                        return handler.remove(id);
+                      onClick={(_value, event) => {
+                        event.stopPropagation();
+                        handler.remove(id);
                       }}
-                      sx={styles.action}
+                      sx={styles.deleteAction}
                     />
-                  </Stack>
+                  </Box>
+
+                  {sourceLayers.length > 0 && (
+                    <Collapse in={!collapsed} unmountOnExit>
+                      <Stack spacing={0.25} sx={styles.sourceLayers}>
+                        {sourceLayers.map((layer) => {
+                          return (
+                            <LayerRow
+                              key={layer.id}
+                              layer={layer}
+                              dragState={dragState}
+                              setDragState={setDragState}
+                            />
+                          );
+                        })}
+                      </Stack>
+                    </Collapse>
+                  )}
                 </Paper>
               );
             })}
 
-            {!Object.keys(sources).length && (
-              <Alert severity="info">{t("sources.empty")}</Alert>
+            {!sourceGroups.length && (
+              <Alert severity="info">
+                {Object.keys(sources).length
+                  ? t("leftBar.sources.noMatch")
+                  : t("leftBar.sources.empty")}
+              </Alert>
             )}
           </Stack>
         </Box>

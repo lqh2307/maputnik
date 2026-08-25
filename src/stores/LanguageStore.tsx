@@ -1,5 +1,6 @@
 import { LanguageAction, LanguageStore } from "./Types";
 import { DEFAULT_LANGUAGE } from "../configs";
+import { Language } from "../types/Language";
 import i18n from "../locales/i18n";
 import { create } from "zustand";
 
@@ -12,9 +13,9 @@ export const useLanguageStore = create<LanguageStore & LanguageAction>()((
   // =========================
 
   /** Updates the application language and syncs with i18n. */
-  function setLanguage(language: string): void {
+  function setLanguage(language: Language): void {
     set((state) => {
-      if (language !== "english" && language !== "vietnamese") {
+      if (language !== "en" && language !== "vi") {
         return state;
       }
 

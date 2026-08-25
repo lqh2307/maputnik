@@ -19,7 +19,7 @@ export const SpecObjectEditor = React.memo(
   ({ value, specs, onChange, exclude = [] }: SpecObjectEditorProp) => {
     const excluded = React.useMemo(() => {
       return new Set(exclude);
-    }, [exclude]);
+    }, [...exclude]);
 
     const entries = React.useMemo(() => {
       return Object.entries(specs)
@@ -39,6 +39,19 @@ export const SpecObjectEditor = React.memo(
         });
     }, [excluded, specs, value]);
 
+    const changeHandlers = React.useMemo(() => {
+      return new Map(
+        entries.map(([name]) => {
+          return [
+            name,
+            (nextValue: unknown): void => {
+              onChange(name, nextValue);
+            },
+          ] as const;
+        })
+      );
+    }, [entries, onChange]);
+
     return (
       <Box>
         {entries.map(([name, spec]) => {
@@ -48,9 +61,7 @@ export const SpecObjectEditor = React.memo(
               name={name}
               spec={spec}
               value={value?.[name]}
-              onChange={(nextValue) => {
-                onChange(name, nextValue);
-              }}
+              onChange={changeHandlers.get(name)!}
             />
           );
         })}

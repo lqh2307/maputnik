@@ -1,13 +1,13 @@
-import {
-  AddRounded,
-  FileDownloadRounded,
-  FileOpenRounded,
-} from "@mui/icons-material";
 import { useDialogStore, useGlobalStore } from "../../stores";
 import { ToolbarAction } from "./ToolbarAction";
-import { ButtonGroup } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { ButtonGroup } from "@mui/material";
 import React from "react";
+import {
+  FileDownloadRounded,
+  FileOpenRounded,
+  AddRounded,
+} from "@mui/icons-material";
 
 /** Renders file and IO actions: New style, Open style, and Export style. */
 export const TopBarIO = React.memo((): React.JSX.Element => {
@@ -20,6 +20,13 @@ export const TopBarIO = React.memo((): React.JSX.Element => {
   const updateDialog = useDialogStore((state) => {
     return state.updateDialog;
   });
+
+  const translate = React.useCallback(
+    (section: string): string => {
+      return t(`topBar.actions.${section}`);
+    },
+    [t]
+  );
 
   const handler = React.useMemo(() => {
     return {
@@ -37,24 +44,24 @@ export const TopBarIO = React.memo((): React.JSX.Element => {
         });
       },
     };
-  }, [newStyle, updateDialog]);
+  }, []);
 
   return (
     <ButtonGroup size={"small"} variant={"text"}>
       <ToolbarAction
-        title={t("actions.new")}
+        title={translate("new")}
         icon={<AddRounded />}
         onClick={handler.newStyle}
       />
 
       <ToolbarAction
-        title={t("actions.open")}
+        title={translate("open")}
         icon={<FileOpenRounded />}
         onClick={handler.open}
       />
 
       <ToolbarAction
-        title={t("actions.export")}
+        title={translate("export")}
         icon={<FileDownloadRounded />}
         onClick={handler.export}
       />

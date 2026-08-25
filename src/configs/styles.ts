@@ -61,6 +61,36 @@ export const TEXT_BUTTON: CSSProperties = {
   fontSize: "10px",
 };
 
+/** Small secondary dialog text styling. */
+export const DIALOG_SUB_TEXT: SxProps<Theme> = {
+  fontSize: "10px",
+  color: "text.secondary",
+};
+
+/** Shared outlined icon-button styling used by the top toolbar and list actions. */
+export const TOOLBAR_ICON_BUTTON_STYLE = {
+  border: 1,
+  borderColor: "divider",
+  borderRadius: 1,
+  bgcolor: "background.paper",
+  boxShadow: "0 1px 2px rgba(15, 23, 42, 0.08)",
+  "&&:hover": {
+    outline: "none",
+    borderColor: "primary.main",
+    color: "primary.main",
+    bgcolor: "action.hover",
+    boxShadow: "0 3px 8px rgba(15, 23, 42, 0.14)",
+    transform: "translateY(-1px)",
+  },
+  "&.Mui-disabled": {
+    opacity: 1,
+    borderColor: "divider",
+    color: "text.disabled",
+    bgcolor: "action.hover",
+    boxShadow: "none",
+  },
+};
+
 /** Dialog title styling sx. */
 export const DIALOG_TITLE: SxProps<Theme> = {
   fontSize: "16px",

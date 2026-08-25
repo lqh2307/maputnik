@@ -46,6 +46,13 @@ export const TopBarHistory = React.memo((): React.JSX.Element => {
     return state.pasteLayer;
   });
 
+  const translate = React.useCallback(
+    (section: string): string => {
+      return t(`topBar.actions.${section}`);
+    },
+    [t]
+  );
+
   const handler = React.useMemo(() => {
     return {
       undo: (): void => {
@@ -63,33 +70,33 @@ export const TopBarHistory = React.memo((): React.JSX.Element => {
         pasteLayer();
       },
     };
-  }, [copyLayer, pasteLayer, redo, selectedLayerId, undo]);
+  }, [selectedLayerId]);
 
   return (
     <ButtonGroup size={"small"} variant={"text"}>
       <ToolbarAction
-        title={t("actions.undo")}
+        title={translate("undo")}
         icon={<UndoRounded />}
         onClick={handler.undo}
         disabled={!canUndo}
       />
 
       <ToolbarAction
-        title={t("actions.redo")}
+        title={translate("redo")}
         icon={<RedoRounded />}
         onClick={handler.redo}
         disabled={!canRedo}
       />
 
       <ToolbarAction
-        title={t("actions.copyLayer")}
+        title={translate("copy")}
         icon={<ContentCopyRounded />}
         onClick={handler.copy}
         disabled={!selectedLayerId}
       />
 
       <ToolbarAction
-        title={t("actions.pasteLayer")}
+        title={translate("paste")}
         icon={<ContentPasteRounded />}
         onClick={handler.paste}
         disabled={!canPaste}

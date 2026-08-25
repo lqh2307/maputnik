@@ -18,14 +18,21 @@ import { SettingsDialogProp } from "./Types";
 import { useTranslation } from "react-i18next";
 import React from "react";
 
+const EMPTY_STYLE = {
+  version: 8,
+  sources: {},
+  layers: [],
+} as StyleSpecification;
+
 /** Renders the schema-driven root style editor and complete JSON fallback. */
 export const SettingsDialog = React.memo(
   ({ open = false }: SettingsDialogProp): React.JSX.Element => {
     const { t } = useTranslation();
 
-    const style = useGlobalStore((state) => {
-      return state.style;
-    });
+    const style =
+      useGlobalStore((state) => {
+        return open ? state.style : undefined;
+      }) ?? EMPTY_STYLE;
 
     const updateDialog = useDialogStore((state) => {
       return state.updateDialog;
@@ -45,7 +52,7 @@ export const SettingsDialog = React.memo(
       updateDialog({
         settings: false,
       });
-    }, [updateDialog]);
+    }, []);
 
     const handler = React.useMemo(() => {
       return {
@@ -70,7 +77,7 @@ export const SettingsDialog = React.memo(
           }
         },
       };
-    }, [replaceStyle, updateStyleValue]);
+    }, []);
 
     const styles = React.useMemo(() => {
       return {
@@ -130,11 +137,11 @@ export const SettingsDialog = React.memo(
 
         <DialogActions>
           <TooltipButton
-            title={t("actions.close")}
+            title={t("topBar.actions.close")}
             variant={"text"}
             onClick={close}
           >
-            {t("actions.close")}
+            {t("topBar.actions.close")}
           </TooltipButton>
         </DialogActions>
       </Dialog>

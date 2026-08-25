@@ -31,6 +31,7 @@ export const globalSchema: object = {
     },
     language: {
       type: "string",
+      enum: ["en", "vi"],
     },
     themeMode: {
       enum: ["black", "blue", "grey", "white", "system", "light", "dark"],

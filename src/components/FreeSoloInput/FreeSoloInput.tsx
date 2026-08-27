@@ -67,10 +67,11 @@ export const FreeSoloInput = React.memo(
 
     const handleSelect = React.useCallback(
       (_: React.SyntheticEvent, option: FreeSoloInputOption | string): void => {
-        const newVal: string =
+        const newVal: string = (
           typeof option === "string"
             ? String(option ?? defaultValue)
-            : String(option?.value ?? defaultValue);
+            : String(option?.value ?? defaultValue)
+        ).trim();
 
         setLocalValue(newVal);
 
@@ -85,14 +86,14 @@ export const FreeSoloInput = React.memo(
 
     const handleInput = React.useCallback(
       (_: React.SyntheticEvent, value: string): void => {
-        const newVal: string = String(value ?? defaultValue);
+        const newVal: string = String(value ?? defaultValue).trim();
 
         setLocalValue(newVal);
 
         if (delay > 0) {
-          debouncedEmitInput(value);
+          debouncedEmitInput(newVal);
         } else {
-          onChange?.(value, false);
+          onChange?.(newVal, false);
         }
       },
       [delay, debouncedEmitInput, onChange, defaultValue]
@@ -104,7 +105,7 @@ export const FreeSoloInput = React.memo(
         gap: icon ? "1rem" : undefined,
         alignItems: "center",
         width: "100%",
-        display: display,
+        display,
       };
     }, [display, icon]);
 
@@ -151,13 +152,13 @@ export const FreeSoloInput = React.memo(
                   ...(params.slotProps ?? {}),
                   inputLabel: {
                     ...(params.slotProps?.inputLabel ?? {}),
-                    shrink: shrink,
+                    shrink,
                   },
                   htmlInput: {
                     ...(params.slotProps?.htmlInput ?? {}),
-                    min: min,
-                    max: max,
-                    step: step,
+                    min,
+                    max,
+                    step,
                   },
                 }}
               />

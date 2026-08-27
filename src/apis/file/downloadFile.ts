@@ -1,6 +1,5 @@
 import { requestToURL } from "../../utils/Request";
-import { IMAGE_STORAGE_URL } from "../../configs";
-import { DEFAULT_TIMEOUT } from "./constants";
+import { DEFAULT_REQUEST_TIMEOUT, IMAGE_STORAGE_URL } from "../../configs";
 import { DownloadFileOption } from "./Types";
 import { AxiosResponse } from "axios";
 
@@ -16,7 +15,7 @@ export async function downloadFile(
   return await requestToURL({
     method: "GET",
     url: `${IMAGE_STORAGE_URL}/files/${options.id}/download`,
-    timeout: options.timeout ?? DEFAULT_TIMEOUT,
+    timeout: options.timeout ?? DEFAULT_REQUEST_TIMEOUT,
     signal: options.controller?.signal,
     responseType: options.responseType,
   });

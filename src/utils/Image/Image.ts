@@ -11,6 +11,29 @@ import { Vector2d } from "konva/lib/types";
 import { hasAnyFields } from "../Object";
 import { isURL } from "../Request";
 
+export type MediaElement = HTMLImageElement | HTMLVideoElement;
+
+/**
+ * Releases a blob URL attached to an image or video element.
+ *
+ * This accepts media created by the Maputnik loaders, which store blob URLs in
+ * the element's `src` property.
+ */
+export function revokeMediaObjectURL(media?: MediaElement): void {
+  const objectURL: string | undefined = media?.src;
+  if (!objectURL?.startsWith("blob:")) {
+    return;
+  }
+
+  if (media instanceof HTMLVideoElement) {
+    media.pause();
+    media.removeAttribute("src");
+    media.load();
+  }
+
+  URL.revokeObjectURL(objectURL);
+}
+
 /************************************* To Blob *************************************/
 
 /**

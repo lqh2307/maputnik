@@ -3,6 +3,7 @@ import { TooltipButton } from "../../components/TooltipButton";
 import { BasicDialog } from "../../components/BasicDialog";
 import { ThemeMode } from "../../components/AppTheme";
 import { GeneralSetttingDialogProp } from "./Types";
+import translation from "../../locales/english/translation.json";
 import { DIALOG_CONTENT, DIALOG_TITLE, TEXT_BUTTON } from "../../configs";
 import { useDialogStore, useLanguageStore, useThemeStore } from "../../stores";
 import { CloseTwoTone } from "@mui/icons-material";
@@ -33,19 +34,17 @@ export const GeneralSetttingDialog = React.memo(
     });
 
     const options = React.useMemo(() => {
-      const themeOptions: SelectInputOption[] = [
-        "system",
-        "black",
-        "blue",
-        "grey",
-        "white",
-      ].map((value) => {
+      const themeOptions: SelectInputOption[] = Object.keys(
+        translation.common.themeMode
+      ).map((value) => {
         return {
           value,
           title: t(`common.themeMode.${value}`),
         };
       });
-      const languageOptions: SelectInputOption[] = ["en", "vi"].map((value) => {
+      const languageOptions: SelectInputOption[] = Object.keys(
+        translation.common.language
+      ).map((value) => {
         return {
           value,
           title: t(`common.language.${value}`),

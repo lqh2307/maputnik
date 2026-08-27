@@ -44,7 +44,7 @@ useThemeStore
 └── actions: setTheme
 
 useLanguageStore
-├── language: "en" | "vi"
+├── language: "english" | "vietnamese"
 └── actions: setLanguage
 ```
 

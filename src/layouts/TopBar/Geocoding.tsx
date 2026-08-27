@@ -170,7 +170,7 @@ export const TopBarGeocoding = React.memo((): React.JSX.Element => {
         const response = await searchGeocoding({
           query,
           controller,
-          language,
+          language: language === "english" ? "en" : "vi",
           limit: RESULT_LIMIT,
           proximity: "ip",
           fuzzyMatch: true,

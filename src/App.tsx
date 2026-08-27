@@ -1,4 +1,5 @@
 import { useEventListener } from "./hooks";
+import { FULL_VIEWPORT } from "./configs";
 import { Box } from "@mui/material";
 import { Editor } from "./layouts";
 import React from "react";
@@ -33,18 +34,8 @@ export default function App(): React.JSX.Element {
     passive: false,
   });
 
-  const styles = React.useMemo(() => {
-    return {
-      box: {
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
-      },
-    };
-  }, []);
-
   return (
-    <Box className={"App"} sx={styles.box}>
+    <Box className={"App"} sx={FULL_VIEWPORT}>
       <Editor />
     </Box>
   );

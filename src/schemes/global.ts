@@ -29,13 +29,6 @@ export const globalSchema: object = {
     newTab: {
       type: "boolean",
     },
-    language: {
-      type: "string",
-      enum: ["en", "vi"],
-    },
-    themeMode: {
-      enum: ["black", "blue", "grey", "white", "system", "light", "dark"],
-    },
     maxHistory: {
       type: "number",
     },

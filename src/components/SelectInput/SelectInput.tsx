@@ -46,7 +46,7 @@ export const SelectInput = React.memo(
             },
           },
           paper: {
-            onScroll: onScroll,
+            onScroll,
             ...(menuProps.slotProps?.paper ?? {}),
             sx: {
               zIndex: 1550,
@@ -98,7 +98,7 @@ export const SelectInput = React.memo(
 
     const handleChange = React.useCallback(
       (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const newVal: string = String(e.target.value ?? defaultValue);
+        const newVal: string = String(e.target.value ?? defaultValue).trim();
 
         setLocalValue(newVal);
 
@@ -113,7 +113,7 @@ export const SelectInput = React.memo(
 
     const stackSx = React.useMemo(() => {
       return {
-        display: display,
+        display,
         flexDirection: "row",
         gap: icon ? "1rem" : undefined,
         alignItems: "center",
@@ -137,11 +137,11 @@ export const SelectInput = React.memo(
         ...slotProps,
         inputLabel: {
           ...inputLabel,
-          shrink: shrink,
+          shrink,
         },
         select: {
           ...selectSlotProps,
-          onOpen: onOpen,
+          onOpen,
           MenuProps: mergedMenuProps,
         },
       };

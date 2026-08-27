@@ -44,17 +44,37 @@ export const DEFAULT_SLIDE_TRANSITION: SlideTransition = {
   easing: "ease-in-out",
 };
 
-/** Fill optional transition fields and constrain values loaded from documents. */
+/**
+ * Fill optional transition fields and constrain values loaded from documents.
+ * @param transition Partial transition from editor state or imported data.
+ * @returns Complete transition with bounded duration and defaults.
+ */
 export function normalizeSlideTransition(
   transition?: Partial<SlideTransition>
 ): Required<SlideTransition> {
   const duration = Number(transition?.duration);
+  const type = SLIDE_TRANSITION_TYPES.includes(
+    transition?.type as SlideTransitionType
+  )
+    ? (transition.type as SlideTransitionType)
+    : DEFAULT_SLIDE_TRANSITION.type;
+  const direction = SLIDE_TRANSITION_DIRECTIONS.includes(
+    transition?.direction as SlideTransitionDirection
+  )
+    ? (transition.direction as SlideTransitionDirection)
+    : DEFAULT_SLIDE_TRANSITION.direction;
+  const easing = SLIDE_TRANSITION_EASINGS.includes(
+    transition?.easing as NonNullable<SlideTransition["easing"]>
+  )
+    ? (transition.easing as NonNullable<SlideTransition["easing"]>)
+    : DEFAULT_SLIDE_TRANSITION.easing;
 
   return {
-    ...DEFAULT_SLIDE_TRANSITION,
-    ...transition,
+    type,
     duration: Number.isFinite(duration)
       ? min(5000, max(100, duration))
       : DEFAULT_SLIDE_TRANSITION.duration,
+    direction,
+    easing,
   } as Required<SlideTransition>;
 }

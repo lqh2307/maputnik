@@ -1,6 +1,5 @@
+import { DEFAULT_REQUEST_TIMEOUT, IMAGE_STORAGE_URL } from "../../configs";
 import { requestToURL } from "../../utils/Request";
-import { IMAGE_STORAGE_URL } from "../../configs";
-import { DEFAULT_TIMEOUT } from "./constants";
 import { CreateReportOption } from "./Types";
 import { AxiosResponse } from "axios";
 
@@ -20,7 +19,7 @@ export async function createReport(
     url: `${IMAGE_STORAGE_URL}/reports`,
     body: option,
     responseType: "json",
-    timeout: options.timeout ?? DEFAULT_TIMEOUT,
+    timeout: options.timeout ?? DEFAULT_REQUEST_TIMEOUT,
     signal: controller?.signal,
   });
 }

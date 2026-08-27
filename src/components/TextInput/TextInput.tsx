@@ -34,7 +34,7 @@ export const TextInput = React.memo(
 
     const handleChange = React.useCallback(
       (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
-        const newVal: string = String(e.target.value ?? defaultValue);
+        const newVal: string = String(e.target.value ?? defaultValue).trim();
 
         setLocalValue(newVal);
 
@@ -79,7 +79,7 @@ export const TextInput = React.memo(
 
     const stackSx = React.useMemo(() => {
       return {
-        display: display,
+        display,
         flexDirection: "row",
         gap: icon ? "1rem" : undefined,
         alignItems: "center",
@@ -94,12 +94,12 @@ export const TextInput = React.memo(
         ...slotProps,
         inputLabel: {
           ...inputLabel,
-          shrink: shrink,
+          shrink,
         },
         htmlInput: {
           ...htmlInputProps,
-          minLength: minLength,
-          maxLength: maxLength,
+          minLength,
+          maxLength,
         },
       };
     }, [shrink, minLength, maxLength, slotProps]);

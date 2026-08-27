@@ -1,12 +1,15 @@
-import { isArray, isRecord } from "../../utils/Object";
-import { JSONValue } from "../../utils/Object";
+import { isArray, isRecord, JSONValue } from "../../utils/Object";
 
 export type JSONStats = {
   nodes: number;
   containers: number;
 };
 
-/** Counts all values and containers in a JSON structure. */
+/**
+ * Count nodes and container nodes in a JSON value.
+ * @param value JSON value to traverse recursively.
+ * @returns Node count and the subset representing arrays/objects.
+ */
 export function getJSONStats(value: JSONValue): JSONStats {
   if (isArray(value)) {
     return value.reduce<JSONStats>(
@@ -48,7 +51,11 @@ export function getJSONStats(value: JSONValue): JSONStats {
   };
 }
 
-/** Returns the editor color associated with a JSON value type. */
+/**
+ * Resolve the syntax-highlight color for a JSON value.
+ * @param value JSON value whose primitive/container type determines the color.
+ * @returns CSS color string used by the JSON editor.
+ */
 export function getJSONValueColor(value: JSONValue): string {
   if (value === null) {
     return "#64748b";
@@ -69,7 +76,12 @@ export function getJSONValueColor(value: JSONValue): string {
   return "#172033";
 }
 
-/** Adds line and column information when the JSON parser exposes a position. */
+/**
+ * Add line and column information to a JSON parse error when available.
+ * @param error Error thrown by `JSON.parse`.
+ * @param source Original JSON text used to calculate the position.
+ * @returns Error message with a one-based line and column suffix when possible.
+ */
 export function getJSONParseErrorMessage(error: Error, source: string): string {
   const position: number = Number(
     error.message.match(/position\s+(\d+)/i)?.[1]
@@ -85,12 +97,20 @@ export function getJSONParseErrorMessage(error: Error, source: string): string {
   return `${error.message} (line ${line}, column ${position - beforeError.lastIndexOf("\n")})`;
 }
 
-/** Normalizes thrown values before forwarding them to error callbacks. */
+/**
+ * Normalize an arbitrary thrown value into an `Error` instance.
+ * @param error Thrown value, which may not itself be an `Error`.
+ * @returns Existing error or a new error containing the value's string form.
+ */
 export function toError(error: unknown): Error {
   return error instanceof Error ? error : new Error(String(error));
 }
 
-/** Provides value label. */
+/**
+ * Build a compact label for a JSON value.
+ * @param value JSON value to describe.
+ * @returns `Array(n)`, `Object(n)`, `null`, or the primitive type name.
+ */
 export function valueLabel(value: JSONValue): string {
   if (isArray(value)) {
     return `Array(${value.length})`;

@@ -1,5 +1,5 @@
+import { DEFAULT_REQUEST_TIMEOUT } from "../../configs";
 import { requestToURL } from "../../utils/Request";
-import { DEFAULT_TIMEOUT } from "./constants";
 import { GetFontsOption } from "./Types";
 import { AxiosResponse } from "axios";
 
@@ -15,7 +15,7 @@ export async function getFonts(
   return await requestToURL({
     method: "GET",
     url: "./assets/fonts/fonts.json",
-    timeout: options.timeout ?? DEFAULT_TIMEOUT,
+    timeout: options.timeout ?? DEFAULT_REQUEST_TIMEOUT,
     signal: options.controller?.signal,
   });
 }

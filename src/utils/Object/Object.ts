@@ -4,12 +4,13 @@ import { JSONPath, JSONValue, ParseStringJSON, ParseStringXML } from "./Types";
  * Deep clone a JSON-serializable value via JSON stringify/parse.
  * Note: drops functions, `undefined`, `Date`, `Map`, `Set`, `BigInt`, and
  * loses prototypes. Only use for plain data objects/arrays.
- * @param {any} obj Input value to clone
- * @returns {any} Deeply cloned value, or `undefined`
+ * @param obj JSON-compatible object or array to clone. Unsupported values
+ *   (functions, `undefined`, dates, maps, sets, and prototypes) are omitted.
+ * @returns A detached JSON clone, or `undefined` when `obj` is omitted.
  *
  * @example
  * ```ts
- * deepClone(undefined); // Deeply cloned value, or `undefined`
+ * deepClone({ nested: { value: 1 } }); // detached object with the same data
  * ```
  */
 export function deepClone(obj?: any): any {
@@ -24,11 +25,11 @@ export function deepClone(obj?: any): any {
  * @param {any} obj Source object
  * @param {any} updates Partial object to merge in
  * @param {boolean} isDeepClone If true, deep clone `obj` before merging
- * @returns {any} New object containing merged properties
+ * @returns New object containing merged properties.
  *
  * @example
  * ```ts
- * updateObjects(undefined, undefined, false); // New object containing merged properties
+ * updateObjects({ enabled: false }, { enabled: true }, false); // { enabled: true }
  * ```
  */
 export function updateObjects(
@@ -457,7 +458,8 @@ export function isDifferentFields(
  * ```ts
  * parseStringJSON("value", undefined); // An object containing the parsed result and an optional error if parsing failed
  * ```
- * @param {JSONValue} fallback Input value.
+ * @param fallback Value returned when `value` is invalid JSON; omitted means
+ *   the result is `undefined`.
  */
 export function parseStringJSON(
   value: string,
@@ -479,9 +481,9 @@ export function parseStringJSON(
  * Parse an XML string and return the document or a fallback value if parsing
  * fails. XML parser errors are returned as `Error` instances, matching
  * `parseStringJSON`.
- * @param {string} value The XML string to parse
- * @param {Document} [fallback] The optional fallback document to return if parsing fails
- * @returns {ParseStringXML} The parsed XML document and an optional parse error
+ * @param value XML string to parse.
+ * @param fallback Optional document returned when parsing fails.
+ * @returns Parsed XML document plus an optional parse error.
  */
 export function parseStringXML(
   value: string,
@@ -902,9 +904,10 @@ export const normalizeJSONFileName = (fileName: string): string => {
 
 /**
  * Apply default values from `defaults` to `target` for any keys that are undefined in `target`.
- * @param target The target object to apply defaults to
- * @param [defaults] The object containing default values
- * @param [keys] Keys allowed to be copied from `defaults`
+ * @param target Target object to mutate.
+ * @param defaults Optional source of fallback values.
+ * @param keys Optional allow-list; when omitted, every key in defaults is used.
+ * @returns The same target reference after defaults are applied.
  */
 export function applyDefaults<T extends Record<string, any>>(
   target: T,
@@ -926,7 +929,11 @@ export function applyDefaults<T extends Record<string, any>>(
   return target;
 }
 
-/** Return an existing set or materialize another iterable as a set. */
+/**
+ * Return an existing set or materialize another iterable as a set.
+ * @param i Iterable to reuse or materialize.
+ * @returns The original set when possible, otherwise a new set.
+ */
 export function toSet<T>(i: Iterable<T>): Set<T> {
   return i instanceof Set ? i : new Set(i);
 }

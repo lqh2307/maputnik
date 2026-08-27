@@ -129,8 +129,8 @@ export const PopperButton = React.memo(
         justifyContent: "center",
         ...INTERACTIVE_HOVER_STYLE,
         cursor: draggable ? "grab" : undefined,
-        background: background,
-        outline: outline,
+        background,
+        outline,
         ...sx,
       };
     }, [sx, draggable, background, outline]);

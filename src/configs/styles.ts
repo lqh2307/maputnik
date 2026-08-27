@@ -15,6 +15,13 @@ export const ITEM_ICON: CSSProperties = {
   justifyContent: "center",
 };
 
+/** Full viewport sx. */
+export const FULL_VIEWPORT: CSSProperties = {
+  width: "100vw",
+  height: "100vh",
+  overflow: "hidden",
+};
+
 /** Reusable 100% width and height container sx. */
 export const FULL_SIZE: CSSProperties = {
   width: "100%",

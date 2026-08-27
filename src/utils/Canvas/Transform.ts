@@ -7,7 +7,7 @@ import { TransformOption } from "./Types";
  *
  * @example
  * ```ts
- * isHasTransition({}); // true when the condition is satisfied, otherwise false.
+ * isHasTransition({ x: 10 }); // true
  * ```
  */
 export function isHasTransition(option: TransformOption): boolean {
@@ -46,7 +46,7 @@ export function createResetTransition(
  *
  * @example
  * ```ts
- * isHasScale({}); // true when the condition is satisfied, otherwise false.
+ * isHasScale({ scaleX: 1.25 }); // true
  * ```
  */
 export function isHasScale(option: TransformOption): boolean {
@@ -86,7 +86,7 @@ export function createResetScale(option?: TransformOption): TransformOption {
  *
  * @example
  * ```ts
- * isHasSkew({}); // true when the condition is satisfied, otherwise false.
+ * isHasSkew({ skewY: 15 }); // true
  * ```
  */
 export function isHasSkew(option: TransformOption): boolean {
@@ -123,7 +123,7 @@ export function createResetSkew(option?: TransformOption): TransformOption {
  *
  * @example
  * ```ts
- * isHasTransform({}); // true when the condition is satisfied, otherwise false.
+ * isHasTransform({ rotation: 45 }); // true
  * ```
  */
 export function isHasTransform(option: TransformOption): boolean {
@@ -175,7 +175,7 @@ export function createResetTransform(
  *
  * @example
  * ```ts
- * isHasRotation({}); // true when the condition is satisfied, otherwise false.
+ * isHasRotation({ rotation: 45 }); // true
  * ```
  */
 export function isHasRotation(option: TransformOption): boolean {

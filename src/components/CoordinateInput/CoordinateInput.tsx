@@ -289,7 +289,7 @@ export const CoordinateInput = React.memo(
           },
           inputLabel: {
             ...inputLabel,
-            shrink: shrink,
+            shrink,
           },
           htmlInput: {
             ...htmlInputProps,
@@ -336,7 +336,7 @@ export const CoordinateInput = React.memo(
 
     const stackSx = React.useMemo(() => {
       return {
-        display: display,
+        display,
         flexDirection: isHorizontalLayout ? "row" : "column",
         gap: "0.5rem",
         alignItems: isHorizontalLayout ? "center" : "stretch",

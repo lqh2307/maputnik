@@ -1,5 +1,16 @@
 import { max, min } from "../Number";
 
+/** XML opening-tag marker used by the lightweight formatter. */
+const XML_OPEN_TAG_PATTERN: RegExp = /<\w/;
+/** XML closing-tag marker used by the lightweight formatter. */
+const XML_CLOSE_TAG_PATTERN: RegExp = /<\//;
+/** XML self-closing-tag marker used by the lightweight formatter. */
+const XML_SELF_CLOSING_TAG_PATTERN: RegExp = /\/>/;
+/** XML comment terminator. */
+const XML_COMMENT_END_PATTERN: RegExp = /-->/;
+/** CDATA section terminator. */
+const XML_CDATA_END_PATTERN: RegExp = /\]>/;
+
 /**
  * Inserts line breaks between XML tags with a lightweight, regex-based
  * formatter. It preserves adjacent opening/closing tags on one line and has
@@ -78,13 +89,16 @@ export function formatXML(str: string, indent?: string): string {
 
       // End comment, CDATA or DOCTYPE
       if (
-        part.search(/-->/) > -1 ||
-        part.search(/\]>/) > -1 ||
+        part.search(XML_COMMENT_END_PATTERN) > -1 ||
+        part.search(XML_CDATA_END_PATTERN) > -1 ||
         part.search(/!DOCTYPE/) > -1
       ) {
         inComment = false;
       }
-    } else if (part.search(/-->/) > -1 || part.search(/\]>/) > -1) {
+    } else if (
+      part.search(XML_COMMENT_END_PATTERN) > -1 ||
+      part.search(XML_CDATA_END_PATTERN) > -1
+    ) {
       // End comment or CDATA
       resultParts.push(part);
 
@@ -101,9 +115,9 @@ export function formatXML(str: string, indent?: string): string {
         deep = max(deep - 1, 0);
       }
     } else if (
-      part.search(/<\w/) > -1 &&
-      part.search(/<\//) === -1 &&
-      part.search(/\/>/) === -1
+      part.search(XML_OPEN_TAG_PATTERN) > -1 &&
+      part.search(XML_CLOSE_TAG_PATTERN) === -1 &&
+      part.search(XML_SELF_CLOSING_TAG_PATTERN) === -1
     ) {
       // Opening tag: <tag>
       if (inComment) {
@@ -113,15 +127,18 @@ export function formatXML(str: string, indent?: string): string {
 
         deep++;
       }
-    } else if (part.search(/<\w/) > -1 && part.search(/<\//) > -1) {
+    } else if (
+      part.search(XML_OPEN_TAG_PATTERN) > -1 &&
+      part.search(XML_CLOSE_TAG_PATTERN) > -1
+    ) {
       // Open and close on same line: <tag></tag>
       resultParts.push(inComment ? part : indentAt(deep) + part);
-    } else if (part.search(/<\//) > -1) {
+    } else if (part.search(XML_CLOSE_TAG_PATTERN) > -1) {
       // Closing tag: </tag>
       deep = max(deep - 1, 0);
 
       resultParts.push(inComment ? part : indentAt(deep) + part);
-    } else if (part.search(/\/>/) > -1) {
+    } else if (part.search(XML_SELF_CLOSING_TAG_PATTERN) > -1) {
       // Self-closing tag: <tag/>
       resultParts.push(inComment ? part : indentAt(deep) + part);
     } else if (part.search(/<\?/) > -1) {

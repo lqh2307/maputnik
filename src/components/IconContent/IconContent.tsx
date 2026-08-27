@@ -18,7 +18,7 @@ export const IconContent = React.memo(
         gap: icon ? "1rem" : undefined,
         alignItems: "center",
         width: "100%",
-        display: display,
+        display,
         ...sx,
       } as SxProps<Theme>;
     }, [sx, display, icon]);

@@ -1,6 +1,5 @@
+import { DEFAULT_REQUEST_TIMEOUT, IMAGE_STORAGE_URL } from "../../configs";
 import { requestToURL } from "../../utils/Request";
-import { IMAGE_STORAGE_URL } from "../../configs";
-import { DEFAULT_TIMEOUT } from "./constants";
 import { DeleteReportOption } from "./Types";
 import { AxiosResponse } from "axios";
 
@@ -16,7 +15,7 @@ export async function deleteReport(
   return await requestToURL({
     method: "DELETE",
     url: `${IMAGE_STORAGE_URL}/reports/${options.id}`,
-    timeout: options.timeout ?? DEFAULT_TIMEOUT,
+    timeout: options.timeout ?? DEFAULT_REQUEST_TIMEOUT,
     signal: options.controller?.signal,
   });
 }

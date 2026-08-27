@@ -8,15 +8,14 @@ const ESCAPED_STRING_VALUES: Readonly<Record<string, string>> = {
 
 /**
  * Normalize a string for case/diacritic-insensitive matching.
- * @param {string} s Input string
- * @param {"NFC" | "NFD" | "NFKC" | "NFKD"} [form] Unicode normalization form
- * @returns {string} Normalized string
+ * @param s Text to lowercase and normalize before matching.
+ * @param form Unicode normalization form passed to `String#normalize`.
+ * @returns Lowercase text with combining diacritical marks removed.
  *
  * @example
  * ```ts
- * normalizeString("value", undefined); // Normalized string
+ * normalizeString("Café", "NFD"); // "cafe"
  * ```
- * @param {"NFC" | "NFD" | "NFKC" | "NFKD"} form Input value.
  */
 export function normalizeString(
   s: string,
@@ -30,12 +29,12 @@ export function normalizeString(
 
 /**
  * Capitalize the first letter of each word.
- * @param {string} str Input string
- * @returns {string} Capitalized string
+ * @param str Text whose space-separated words should be capitalized.
+ * @returns Text with the first character of each word uppercased.
  *
  * @example
  * ```ts
- * capitalizeWords("value"); // Capitalized string
+ * capitalizeWords("incident response"); // "Incident Response"
  * ```
  */
 export function capitalizeWords(str: string): string {
@@ -48,8 +47,9 @@ export function capitalizeWords(str: string): string {
 }
 
 /**
- * Escapes all XML special characters so a string can be safely embedded in
- * XML or SVG text and attribute values.
+ * Escape all XML special characters for generated XML/SVG.
+ * @param value Text to escape before embedding in markup.
+ * @returns Text with ampersand, quote, apostrophe, angle-bracket entities.
  */
 export function escapeString(value: string): string {
   return value.replace(/[&"'<>]/g, (character) => {

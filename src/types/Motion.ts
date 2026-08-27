@@ -6,7 +6,15 @@ export type ShapeMotionStartMode =
   "on-click" | "with-previous" | "after-previous";
 
 /** Defines motion direction. */
-export type MotionDirection = "left" | "right" | "up" | "down";
+export type MotionDirection =
+  | "left"
+  | "right"
+  | "up"
+  | "down"
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right";
 
 /** Defines shape motion base. */
 export type ShapeMotionBase = {

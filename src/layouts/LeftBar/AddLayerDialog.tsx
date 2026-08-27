@@ -128,11 +128,11 @@ export const AddLayerDialog = React.memo(
 
         <DialogActions>
           <TooltipButton
-            title={t("topBar.actions.cancel")}
+            title={t("common.button.cancel")}
             variant={"text"}
             onClick={onClose}
           >
-            {t("topBar.actions.cancel")}
+            {t("common.button.cancel")}
           </TooltipButton>
 
           <TooltipButton

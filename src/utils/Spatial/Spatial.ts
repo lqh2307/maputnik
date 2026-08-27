@@ -30,17 +30,24 @@ import {
 } from "./Types";
 import {
   DEFAULT_TILE_SIZE,
-  SPHERICAL_RADIUS,
-  MAX_CAL_LAT,
+  TOTAL_DEGREES,
   DEFAULT_PPI,
   MAX_ZOOM,
   MIN_ZOOM,
   MAX_LAT,
   MAX_LON,
-  MAX_GM,
 } from "./Constants";
 
+/** Detect proj4 definitions that use geographic longitude/latitude units. */
 const GEOGRAPHIC_REGEX: RegExp = /\+proj=(?:longlat|latlong)\b/;
+/** Radius of the Earth in meters for spherical calculations. */
+const SPHERICAL_RADIUS: number = 6378137.0;
+/** Full turn in radians, used by spherical geometry formulas. */
+const TWO_PI = 2 * Math.PI;
+/** Circumference of the Earth in meters for spherical calculations. */
+const MAX_GM: number = TWO_PI * SPHERICAL_RADIUS;
+/** Maximum latitude supported by Web Mercator (EPSG:3857) in degrees. */
+const MAX_CAL_LAT: number = 85.051129;
 
 /**
  * https://epsg.io/4756
@@ -108,7 +115,7 @@ export function lonLat4326ToXY3857(coordinate: Coordinate): Vector2d {
         Math.tan(
           (Math.PI *
             (limitValue(coordinate.lat, -MAX_CAL_LAT, MAX_CAL_LAT) + MAX_LAT)) /
-            (2 * MAX_LON)
+            TOTAL_DEGREES
         )
       ) * SPHERICAL_RADIUS,
   };
@@ -153,17 +160,17 @@ export function getXYZFromLonLatZ(option: XYZFromLonLatZOption): TileXYZ {
   const maxTile: number = 1 << option.z;
 
   let x =
-    (0.5 + limitValue(option.lng, -MAX_LON, MAX_LON) / (2 * MAX_LON)) * maxTile;
+    (0.5 + limitValue(option.lng, -MAX_LON, MAX_LON) / TOTAL_DEGREES) * maxTile;
   let y =
     (0.5 -
       Math.log(
         Math.tan(
           (Math.PI *
             (limitValue(option.lat, -MAX_CAL_LAT, MAX_CAL_LAT) + MAX_LAT)) /
-            (2 * MAX_LON)
+            TOTAL_DEGREES
         )
       ) /
-        (2 * Math.PI)) *
+        TWO_PI) *
     maxTile;
 
   if (option.scheme === "tms") {
@@ -227,10 +234,9 @@ export function getLonLatFromXYZ(option: LonLatFromXYZOption): Coordinate {
   }
 
   return {
-    lng: 2 * MAX_LON * (option.x / maxTile - 0.5),
+    lng: TOTAL_DEGREES * (option.x / maxTile - 0.5),
     lat:
-      (2 *
-        MAX_LON *
+      (TOTAL_DEGREES *
         Math.atan(Math.exp(Math.PI * (1 - (2 * option.y) / maxTile)))) /
         Math.PI -
       MAX_LAT,
@@ -404,7 +410,7 @@ export function calculateSize(option: CalculateSizeOption): WindowSize {
     option.zoom ??
     scaleToZoom({
       scale: option.scale,
-      tileSize: tileSize,
+      tileSize,
       ppi: option.ppi,
     });
 
@@ -448,7 +454,7 @@ export function calculateBBox(option: CalculateBBoxOption): BBox {
         option.zoom ??
           scaleToZoom({
             scale: option.scale,
-            tileSize: tileSize,
+            tileSize,
             ppi: option.ppi,
           })
       ));
@@ -648,7 +654,7 @@ export function getIntersectBBox(bbox1: BBox, bbox2: BBox): BBox {
  *
  * @example
  * ```ts
- * isIntersectBBoxs([0, 0, 1, 1], [0, 0, 1, 1]); // true when the condition is satisfied, otherwise false.
+ * isIntersectBBoxs([0, 0, 1, 1], [0.5, 0.5, 2, 2]); // true
  * ```
  */
 export function isIntersectBBoxs(bbox1: BBox, bbox2: BBox): boolean {
@@ -672,7 +678,7 @@ export function isIntersectBBoxs(bbox1: BBox, bbox2: BBox): boolean {
  *
  * @example
  * ```ts
- * isIntersectBBoxPoint([0, 0, 1, 1], { x: 0, y: 0 }); // true when the condition is satisfied, otherwise false.
+ * isIntersectBBoxPoint([0, 0, 1, 1], { lng: 0.5, lat: 0.5 }); // true
  * ```
  */
 export function isIntersectBBoxPoint(
@@ -821,7 +827,7 @@ export function createLonLat4326ToPixelTransform(
           option.zoom ??
             scaleToZoom({
               scale: option.scale,
-              tileSize: tileSize,
+              tileSize,
               ppi: option.ppi,
             })
         ));
@@ -910,7 +916,7 @@ export function createPixelToLonLat4326Transform(
           option.zoom ??
             scaleToZoom({
               scale: option.scale,
-              tileSize: tileSize,
+              tileSize,
               ppi: option.ppi,
             })
         ));
@@ -1028,93 +1034,4 @@ export function transformBBoxSRS(option: TransformSRSOption): BBox {
 
     return;
   }
-}
-
-/**
- * Ensure a ring of points is closed by checking if the first and last points are the same.
- * If they are not the same, append the first point to the end of the array to close the ring.
- * @param {Point[]} ring Array of points [x, y]
- * @returns {Point[]} The original ring if it's already closed, or a new array with the first point appended if it was not closed
- *
- * @example
- * ```ts
- * makeValidCloseRing([]); // The original ring if it's already closed, or a new array with the first point appended if it was not closed
- * ```
- */
-export function makeValidCloseRing(ring: Point[]): Point[] {
-  const first: Point = ring[0];
-  const last: Point = ring[ring.length - 1];
-
-  if (first[0] === last[0] && first[1] === last[1]) {
-    return ring;
-  }
-
-  const newRing: Point[] = ring.slice();
-  newRing.push(first);
-
-  return newRing;
-}
-
-/**
- * Calculate the area of a polygon defined by an array of rings (arrays of points).
- * Uses the shoelace formula to calculate the area of the outer ring (first array of points) and ignores holes.
- * @param {Point[][]} coords Array of rings, where each ring is an array of points [x, y]
- * @returns {number} The area of the polygon
- *
- * @example
- * ```ts
- * getPolygonArea([]); // The area of the polygon
- * ```
- */
-export function getPolygonArea(coords: Point[][]): number {
-  const ring: Point[] = makeValidCloseRing(coords[0]);
-
-  if (ring.length < 4) {
-    return 0;
-  }
-
-  let area: number = 0;
-
-  for (let i = 0; i < ring.length - 1; i++) {
-    area += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
-  }
-
-  return Math.abs(area) * 0.5;
-}
-
-/**
- * Calculate the centroid of a polygon defined by an array of rings (arrays of points).
- * Uses the formula for polygon centroids, which accounts for the shape of the polygon.
- * Only considers the outer ring (first array of points) and ignores holes.
- * @param {Point[][]} coords Array of rings, where each ring is an array of points [x, y]
- * @returns {Point} The centroid [x, y] of the polygon
- *
- * @example
- * ```ts
- * getPolygonCentroid([]); // The centroid [x, y] of the polygon
- * ```
- */
-export function getPolygonCentroid(coords: Point[][]): Point {
-  let area: number = 0;
-  let x: number = 0;
-  let y: number = 0;
-
-  const ring: Point[] = makeValidCloseRing(coords[0]);
-
-  for (let i = 0; i < ring.length - 1; i++) {
-    const f: number = ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
-
-    x += (ring[i][0] + ring[i + 1][0]) * f;
-    y += (ring[i][1] + ring[i + 1][1]) * f;
-
-    area += f;
-  }
-
-  area *= 0.5;
-
-  if (!area) {
-    return ring[0];
-  }
-
-  return [x / (6 * area), y / (6 * area)];
 }

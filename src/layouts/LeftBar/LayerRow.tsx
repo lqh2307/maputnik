@@ -19,13 +19,6 @@ export const LayerRow = React.memo(
   ({ layer, dragState, setDragState }: LayerRowProp): React.JSX.Element => {
     const { t } = useTranslation();
 
-    const translate = React.useCallback(
-      (section: string): string => {
-        return t(`topBar.actions.${section}`);
-      },
-      [t]
-    );
-
     const selected = useGlobalStore((state) => {
       return state.selectedLayerId === layer.id;
     });
@@ -336,7 +329,7 @@ export const LayerRow = React.memo(
 
         <Stack direction="row" spacing={0.25} sx={styles.actions}>
           <TooltipButton
-            title={translate(hidden ? "show" : "hide")}
+            title={t(`common.button.${hidden ? "show" : "hide"}`)}
             icon={
               hidden ? (
                 <VisibilityOffRounded sx={styles.actionIcon} />
@@ -349,7 +342,7 @@ export const LayerRow = React.memo(
           />
 
           <TooltipButton
-            title={translate("copy")}
+            title={t("common.button.copy")}
             color={clipboardLayerId === layer.id ? "primary" : "inherit"}
             icon={<ContentCopyRounded sx={styles.copyIcon} />}
             onClick={handler.copy}
@@ -357,7 +350,7 @@ export const LayerRow = React.memo(
           />
 
           <TooltipButton
-            title={translate("delete")}
+            title={t("common.button.delete")}
             color={"error"}
             icon={<DeleteOutlineRounded sx={styles.actionIcon} />}
             onClick={handler.remove}

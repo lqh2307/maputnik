@@ -52,6 +52,11 @@ type JSONTreeRowStyleOptions = {
   value: JSONValue;
 };
 
+/**
+ * Build styles for one JSON tree row from its expansion and depth state.
+ * @param options Row state including value type, label and nesting depth.
+ * @returns MUI-compatible style object for the row.
+ */
 export const createJSONTreeRowStyles = ({
   canExpand,
   name,
@@ -208,6 +213,11 @@ type JSONEditorStyleOptions = {
   sourcePaneWidthPx: number;
 };
 
+/**
+ * Build the responsive style map for the JSON editor shell and panes.
+ * @param options Editor state used to derive layout, resizing and visibility styles.
+ * @returns MUI-compatible style object for the editor.
+ */
 export const createJSONEditorStyles = ({
   copySucceeded,
   embedded,

@@ -1,3 +1,19 @@
+import { SVG_WHITESPACE_PATTERN } from "../SVG/Constants";
+
+/** Absolute image URL accepted from clipboard HTML/text. */
+const CLIPBOARD_IMAGE_URL_PATTERN: RegExp =
+  /^(?:https?:\/\/|blob:|data:image\/)/i;
+/** URL-like scheme check used before resolving relative clipboard sources. */
+const CLIPBOARD_IMAGE_SCHEME_PATTERN: RegExp =
+  /^(?:https?:|blob:|data:image\/)/i;
+/** Fast marker for HTML containing an image element. */
+const CLIPBOARD_IMAGE_MARKER_PATTERN: RegExp = /<img\b/i;
+/** Fallback matcher for image tags when DOMParser is unavailable. */
+const CLIPBOARD_IMAGE_TAG_PATTERN: RegExp = /<img\b[^>]*>/gi;
+/** Fallback matcher for src-like attributes on an image tag. */
+const CLIPBOARD_IMAGE_ATTRIBUTE_PATTERN: RegExp =
+  /\b(?:src|data-src|data-original)\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+))/i;
+
 /** Minimal drag-event shape shared by React and native browser handlers. */
 export type DataTransferEvent = {
   dataTransfer?: DataTransfer;
@@ -8,19 +24,29 @@ export type ClipboardScope = "shapes" | "tabs";
 
 let activeEditorClipboardScope: ClipboardScope;
 
-/** Mark the editor area currently under the pointer as the clipboard owner. */
+/**
+ * Mark the editor area currently under the pointer as the clipboard owner.
+ * @param scope Clipboard scope that should receive native shortcuts.
+ */
 export function setClipboardScope(scope: ClipboardScope): void {
   activeEditorClipboardScope = scope;
 }
 
-/** Clear a clipboard owner without accidentally clearing a newer owner. */
+/**
+ * Clear a clipboard owner without accidentally clearing a newer owner.
+ * @param scope Scope attempting to release ownership.
+ */
 export function clearClipboardScope(scope: ClipboardScope): void {
   if (activeEditorClipboardScope === scope) {
     activeEditorClipboardScope = undefined;
   }
 }
 
-/** Return whether `scope` currently owns editor clipboard shortcuts. */
+/**
+ * Return whether `scope` currently owns editor clipboard shortcuts.
+ * @param scope Scope to test.
+ * @returns Whether the scope is hovered or was most recently registered.
+ */
 export function isEditorClipboardScopeActive(scope: ClipboardScope): boolean {
   if (typeof document !== "undefined") {
     const hoveredScope: Element = document.querySelector(
@@ -51,11 +77,11 @@ export async function getImageBlobsFromClipboard(
   try {
     const mime: string = "image/";
 
-    let blobs: Blob[] = [];
+    const blobs: Blob[] = [];
 
     if (e?.clipboardData) {
       if (e.clipboardData.files?.length) {
-        for (const file of Array.from(e.clipboardData.files)) {
+        for (const file of e.clipboardData.files) {
           if (file.type.startsWith(mime)) {
             blobs.push(file);
           }
@@ -63,25 +89,31 @@ export async function getImageBlobsFromClipboard(
       }
 
       if (!blobs.length && e.clipboardData.items?.length) {
-        for (const item of Array.from(e.clipboardData.items)) {
+        for (const item of e.clipboardData.items) {
           if (item.type.startsWith(mime)) {
             const blob: File = item.getAsFile();
             if (blob) {
               blobs.push(blob);
+
+              break;
             }
           }
         }
       }
     }
 
-    if (!blobs.length && navigator.clipboard?.read) {
+    if (
+      !blobs.length &&
+      typeof navigator !== "undefined" &&
+      navigator.clipboard?.read
+    ) {
       for (const item of await navigator.clipboard.read()) {
-        for (const type of item.types) {
-          if (type.startsWith(mime)) {
-            blobs.push(await item.getType(type));
+        const imageType: string = item.types.find((type) => {
+          return type.startsWith(mime);
+        });
 
-            break;
-          }
+        if (imageType) {
+          blobs.push(await item.getType(imageType));
         }
       }
     }
@@ -146,15 +178,107 @@ export type ClipboardContent = {
   textPlain: string;
   /** All available image blobs. */
   imageBlobs: Blob[];
+  /** Image sources found in clipboard HTML or a direct image URL. */
+  imageSources: string[];
 };
+
+/** Normalize a source copied from an HTML image before it is loaded. */
+function normalizeClipboardImageSource(
+  value: string,
+  baseURL?: string
+): string {
+  let source: string = value?.trim();
+
+  if (!source || source.startsWith("#")) {
+    return;
+  }
+
+  if (source.startsWith("//")) {
+    source = `${
+      typeof location !== "undefined" && location.protocol
+        ? location.protocol
+        : "https:"
+    }${source}`;
+  } else if (baseURL && !CLIPBOARD_IMAGE_SCHEME_PATTERN.test(source)) {
+    try {
+      source = new URL(source, baseURL).toString();
+    } catch {
+      return;
+    }
+  }
+
+  return CLIPBOARD_IMAGE_URL_PATTERN.test(source) ? source : undefined;
+}
+
+/** Extract image URLs from HTML/plain-text clipboard representations. */
+function appendClipboardImageSources(
+  sources: string[],
+  textHTML: string,
+  textPlain: string
+): void {
+  const sourceCount: number = sources.length;
+  const addSource = (value: string, baseURL?: string): void => {
+    const source: string = normalizeClipboardImageSource(value, baseURL);
+
+    if (source && !sources.includes(source)) {
+      sources.push(source);
+    }
+  };
+
+  if (textHTML && CLIPBOARD_IMAGE_MARKER_PATTERN.test(textHTML)) {
+    try {
+      const parsedHTML: Document =
+        typeof DOMParser !== "undefined"
+          ? new DOMParser().parseFromString(textHTML, "text/html")
+          : undefined;
+      const baseURL: string =
+        parsedHTML?.querySelector("base")?.href ??
+        (typeof document !== "undefined" ? document.baseURI : undefined);
+
+      if (parsedHTML) {
+        parsedHTML.querySelectorAll("img").forEach((image) => {
+          addSource(image.getAttribute("src"), baseURL);
+          addSource(image.getAttribute("data-src"), baseURL);
+          addSource(image.getAttribute("data-original"), baseURL);
+
+          const srcSet: string = image.getAttribute("srcset");
+          if (srcSet) {
+            addSource(srcSet.trim().split(SVG_WHITESPACE_PATTERN)[0], baseURL);
+          }
+        });
+      }
+    } catch {
+      // Fall back to the lightweight parser below when DOMParser is unavailable.
+    }
+
+    if (sources.length === sourceCount) {
+      let imageTagMatch: RegExpExecArray;
+
+      while ((imageTagMatch = CLIPBOARD_IMAGE_TAG_PATTERN.exec(textHTML))) {
+        const sourceMatch: RegExpExecArray =
+          CLIPBOARD_IMAGE_ATTRIBUTE_PATTERN.exec(imageTagMatch[0]);
+        addSource(sourceMatch?.[1] ?? sourceMatch?.[2] ?? sourceMatch?.[3]);
+      }
+    }
+  }
+
+  // Some browsers expose only the copied image URL as text/plain.
+  if (
+    sources.length === sourceCount &&
+    textPlain &&
+    !textPlain.includes("\n")
+  ) {
+    addSource(textPlain);
+  }
+}
 
 /**
  * Read text and images from one clipboard snapshot.
  *
  * Native paste events are read synchronously from `clipboardData`. For a
- * programmatic paste, `navigator.clipboard.read()` is invoked once and all
- * supported MIME types are extracted from the returned items. `readText()` is
- * used only when the richer read API is unavailable.
+ * programmatic paste, `navigator.clipboard.read()` is invoked once; image
+ * blobs are preferred and HTML is parsed only when no image blob is present.
+ * `readText()` is used only when the richer read API is unavailable.
  *
  * @param event - Optional native paste event.
  * @returns Plain text and image blobs from the same clipboard snapshot.
@@ -165,6 +289,7 @@ export async function getClipboardContent(
   const content: ClipboardContent = {
     textPlain: "",
     imageBlobs: [],
+    imageSources: [],
   };
 
   try {
@@ -172,15 +297,15 @@ export async function getClipboardContent(
       content.textPlain = event.clipboardData.getData("text/plain");
 
       if (event.clipboardData.files?.length) {
-        content.imageBlobs = Array.from(event.clipboardData.files).filter(
-          (file) => {
-            return file.type.startsWith("image/");
+        for (const file of event.clipboardData.files) {
+          if (file.type.startsWith("image/")) {
+            content.imageBlobs.push(file);
           }
-        );
+        }
       }
 
       if (!content.imageBlobs.length && event.clipboardData.items?.length) {
-        for (const item of Array.from(event.clipboardData.items)) {
+        for (const item of event.clipboardData.items) {
           if (!item.type.startsWith("image/")) {
             continue;
           }
@@ -189,10 +314,23 @@ export async function getClipboardContent(
 
           if (image) {
             content.imageBlobs.push(image);
+
+            break;
           }
         }
       }
 
+      if (!content.imageBlobs.length) {
+        appendClipboardImageSources(
+          content.imageSources,
+          event.clipboardData.getData("text/html"),
+          content.textPlain
+        );
+      }
+
+      // Keep native paste handling synchronous. If the browser exposes a
+      // richer image Blob only through navigator.clipboard, pasteShapes will
+      // request it only after direct data/HTML loading fails.
       return content;
     }
 
@@ -202,14 +340,41 @@ export async function getClipboardContent(
 
     if (navigator.clipboard.read) {
       const items: ClipboardItems = await navigator.clipboard.read();
+      const hasImageType: boolean = items.some((item) => {
+        return item.types.some((type) => {
+          return type.startsWith("image/");
+        });
+      });
 
       for (const item of items) {
-        for (const type of item.types) {
-          if (!content.textPlain && type === "text/plain") {
-            content.textPlain = await (await item.getType(type)).text();
-          } else if (type.startsWith("image/")) {
-            content.imageBlobs.push(await item.getType(type));
-          }
+        const plainTextType: string = item.types.find((type) => {
+          return type === "text/plain";
+        });
+
+        const htmlType: string = item.types.find((type) => {
+          return type === "text/html";
+        });
+
+        const imageType: string = item.types.find((type) => {
+          return type.startsWith("image/");
+        });
+
+        if (!content.textPlain && plainTextType) {
+          content.textPlain = await (await item.getType(plainTextType)).text();
+        }
+
+        if (htmlType && !hasImageType) {
+          const textHTML: string = await (await item.getType(htmlType)).text();
+
+          appendClipboardImageSources(
+            content.imageSources,
+            textHTML,
+            content.textPlain
+          );
+        }
+
+        if (imageType) {
+          content.imageBlobs.push(await item.getType(imageType));
         }
       }
 
@@ -220,9 +385,31 @@ export async function getClipboardContent(
       content.textPlain = await navigator.clipboard.readText();
     }
 
+    appendClipboardImageSources(content.imageSources, "", content.textPlain);
+
     return content;
   } catch (error) {
     console.error("Error reading clipboard content:", error);
+
+    // Some browsers expose `readText()` while denying the richer `read()`
+    // permission. Keep text-based editor payloads (including cross-tab image
+    // payloads) pasteable in that case.
+    if (
+      !event?.clipboardData &&
+      typeof navigator !== "undefined" &&
+      navigator.clipboard?.readText
+    ) {
+      try {
+        content.textPlain = await navigator.clipboard.readText();
+        appendClipboardImageSources(
+          content.imageSources,
+          "",
+          content.textPlain
+        );
+      } catch {
+        // Return the content collected before the permission failure.
+      }
+    }
 
     return content;
   }
@@ -230,12 +417,12 @@ export async function getClipboardContent(
 
 /**
  * Check if the clipboard contains image data.
- * @param {ClipboardEvent} e Optional paste event (falls back to Clipboard API)
- * @returns {Promise<boolean>} True if an image exists
+ * @param e Optional paste event; omitted uses the asynchronous Clipboard API.
+ * @returns true when at least one image MIME item/source is available.
  *
  * @example
  * ```ts
- * await hasImageInClipboard(event); // true when the condition is satisfied, otherwise false.
+ * await hasImageInClipboard(event); // true when an image is available
  * ```
  */
 export async function hasImageInClipboard(
@@ -246,19 +433,27 @@ export async function hasImageInClipboard(
 
     if (e?.clipboardData) {
       if (e.clipboardData.files?.length) {
-        return Array.from(e.clipboardData.files).some((file) => {
-          return file.type.startsWith(mime);
-        });
+        for (const file of e.clipboardData.files) {
+          if (file.type.startsWith(mime)) {
+            return true;
+          }
+        }
+
+        return false;
       }
 
       if (e.clipboardData.items?.length) {
-        return Array.from(e.clipboardData.items).some((item) => {
-          return item.type.startsWith(mime);
-        });
+        for (const item of e.clipboardData.items) {
+          if (item.type.startsWith(mime)) {
+            return true;
+          }
+        }
+
+        return false;
       }
     }
 
-    if (navigator.clipboard?.read) {
+    if (typeof navigator !== "undefined" && navigator.clipboard?.read) {
       return (await navigator.clipboard.read()).some((item) => {
         return item.types.some((type) => {
           return type.startsWith(mime);
@@ -274,12 +469,12 @@ export async function hasImageInClipboard(
 
 /**
  * Check if the clipboard contains plain text.
- * @param {ClipboardEvent} e Optional paste event (falls back to Clipboard API)
- * @returns {Promise<boolean>} True if text exists
+ * @param e Optional paste event; omitted uses the asynchronous Clipboard API.
+ * @returns true when plain text is available.
  *
  * @example
  * ```ts
- * await hasTextPlainInClipboard(event); // true when the condition is satisfied, otherwise false.
+ * await hasTextPlainInClipboard(event); // true when text is available
  * ```
  */
 export async function hasTextPlainInClipboard(
@@ -373,11 +568,11 @@ export async function getImageBlobsFromDataTransfer(
   try {
     const mime: string = "image/";
 
-    let blobs: Blob[] = [];
+    const blobs: Blob[] = [];
 
     if (e.dataTransfer) {
       if (e.dataTransfer.files?.length) {
-        for (const file of Array.from(e.dataTransfer.files)) {
+        for (const file of e.dataTransfer.files) {
           if (file.type.startsWith(mime)) {
             blobs.push(file);
           }
@@ -385,7 +580,7 @@ export async function getImageBlobsFromDataTransfer(
       }
 
       if (!blobs.length && e.dataTransfer.items?.length) {
-        for (const item of Array.from(e.dataTransfer.items)) {
+        for (const item of e.dataTransfer.items) {
           if (item.type.startsWith(mime)) {
             const blob: File = item.getAsFile();
             if (blob) {
@@ -428,7 +623,7 @@ export async function getTextPlainFromDataTransfer(
       }
 
       if (!plainText && e.dataTransfer.items?.length) {
-        for (const item of Array.from(e.dataTransfer.items)) {
+        for (const item of e.dataTransfer.items) {
           if (item.type === mime) {
             const blob: File = item.getAsFile();
             if (blob) {

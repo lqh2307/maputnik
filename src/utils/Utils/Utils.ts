@@ -1,6 +1,7 @@
 import { Format, Unit } from "../../types/Common";
 import { WindowSize } from "../../types/Window";
 import { ToFromPixelOption } from "./Types";
+import { DEFAULT_PPI } from "../Spatial";
 import mime from "mime";
 
 /**
@@ -151,7 +152,7 @@ export function convertLength(value: number, from: Unit, to: Unit): number {
 export function toPixel(option: ToFromPixelOption): number {
   const value: number =
     (option.value *
-      (option.ppi ?? 96) *
+      (option.ppi ?? DEFAULT_PPI) *
       (UNIT_FACTORS[option.unit] ?? UNIT_FACTORS["m"])) /
     0.0254;
 
@@ -171,7 +172,8 @@ export function toPixel(option: ToFromPixelOption): number {
 export function fromPixel(option: ToFromPixelOption): number {
   const value: number =
     (option.value * 0.0254) /
-    ((option.ppi ?? 96) * (UNIT_FACTORS[option.unit] ?? UNIT_FACTORS["m"]));
+    ((option.ppi ?? DEFAULT_PPI) *
+      (UNIT_FACTORS[option.unit] ?? UNIT_FACTORS["m"]));
 
   return option.round ? Math.round(value) : value;
 }

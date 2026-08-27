@@ -180,7 +180,7 @@ export const SourcesDialog = React.memo(
                         </Box>
 
                         <TooltipButton
-                          title={t("topBar.actions.edit")}
+                          title={t("common.button.edit")}
                           icon={<EditRounded fontSize={"small"} />}
                           fullWidth={false}
                           onClick={handler.editClick(id, source)}
@@ -188,7 +188,7 @@ export const SourcesDialog = React.memo(
                         />
 
                         <TooltipButton
-                          title={t("topBar.actions.delete")}
+                          title={t("common.button.delete")}
                           icon={<DeleteOutlineRounded fontSize={"small"} />}
                           fullWidth={false}
                           onClick={handler.deleteClick(id)}
@@ -208,11 +208,11 @@ export const SourcesDialog = React.memo(
 
           <DialogActions>
             <TooltipButton
-              title={t("topBar.actions.close")}
+              title={t("common.button.close")}
               variant={"text"}
               onClick={close}
             >
-              {t("topBar.actions.close")}
+              {t("common.button.close")}
             </TooltipButton>
           </DialogActions>
         </Dialog>

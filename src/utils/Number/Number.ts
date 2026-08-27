@@ -1,10 +1,15 @@
 import { CoordinateFormat, DMSH, Hemisphere } from "../../types/Common";
 import { CreateRangeNumber } from "./Types";
 
+/** Match the first signed integer token in free-form text. */
 const INTEGER_REGEX: RegExp = /-?\d+/;
+/** Match the first signed decimal token in free-form text. */
 const FLOAT_REGEX: RegExp = /-?\d+(\.\d+)?/;
+/** Match all numeric components of a degrees/minutes/seconds string. */
 const DMS_NUMBER_REGEX: RegExp = /[-+]?\d+(?:\.\d+)?/g;
+/** Match a cardinal hemisphere suffix. */
 const DMS_HEMISPHERE_REGEX: RegExp = /[NSEW]/i;
+/** Match signed decimal/scientific number tokens. */
 const NUMBER_PATTERN: RegExp = /[-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?/g;
 
 export const DEFAULT_TOLERANCE: number = 1e-9;
@@ -65,10 +70,10 @@ export function parseNumber(
 
 /**
  * Clamp a number within min/max bounds.
- * @param {number} value Input value
- * @param {number} min Minimum bound
- * @param {number} max Maximum bound
- * @returns {number} Clamped value
+ * @param value Number to constrain.
+ * @param min Optional inclusive lower bound.
+ * @param max Optional inclusive upper bound.
+ * @returns `value` constrained to the supplied bounds.
  * @example
  * limitValue(12, 0, 10); // 10
  * limitValue(-2, 0, 10); // 0
@@ -90,8 +95,8 @@ export function limitValue(value: number, min?: number, max?: number): number {
 
 /**
  * Get the maximum value in an array.
- * @param {number[]} values Input values
- * @returns {number} Max value, or undefined if empty
+ * @param values Numbers to scan.
+ * @returns The largest number, or `undefined` when `values` is empty.
  * @example
  * maxValue([1, 7, 3]); // 7
  * maxValue([-4, -2, -9]); // -2
@@ -113,8 +118,8 @@ export function maxs(values: number[]): number {
 
 /**
  * Get the minimum value in an array.
- * @param {number[]} values Input values
- * @returns {number} Min value, or undefined if empty
+ * @param values Numbers to scan.
+ * @returns The smallest number, or `undefined` when `values` is empty.
  * @example
  * minValue([1, 7, 3]); // 1
  * minValue([-4, -2, -9]); // -9
@@ -136,10 +141,11 @@ export function mins(values: number[]): number {
 
 /**
  * Extract a number from a string.
- * @param {string} strNumber Input string
- * @param {boolean} isFloat If true, matches floats; otherwise integers
- * @param {number} defaultNumber Default if no match (default: 0)
- * @returns {number} Parsed value or default
+ * @param strNumber Text containing the number to extract.
+ * @param isFloat When `true`, accept a decimal token; otherwise match an
+ *   integer token.
+ * @param defaultNumber Value returned when no token is found (default `0`).
+ * @returns The first matching number or `defaultNumber`.
  * @example
  * fixNumber("width: 42px"); // 42
  * fixNumber("left: -42px"); // -42
@@ -258,8 +264,8 @@ export function convertDEGToDMSH(deg: number, isLon?: boolean): DMSH {
 
   return {
     degree: isLon !== undefined ? degree : normalized >= 0 ? degree : -degree,
-    minute: minute,
-    second: second,
+    minute,
+    second,
     hemisphere:
       isLon !== undefined
         ? isLon
@@ -339,9 +345,9 @@ export function convertDMSHStringToDEG(dmshString: string): number {
   const [degree, minute = 0, second = 0]: number[] = values;
 
   return convertDMSHToDEG({
-    degree: degree,
-    minute: minute,
-    second: second,
+    degree,
+    minute,
+    second,
     hemisphere: dmshString
       .match(DMS_HEMISPHERE_REGEX)?.[0]
       ?.toUpperCase() as Hemisphere,
@@ -517,9 +523,9 @@ export function min(a: number, b: number): number {
 /**
  * Round a decimal number to the specified number of fraction digits.
  * Integers are returned unchanged.
- * @param {number} value Input value
- * @param {number} digits Number of fraction digits to keep
- * @returns {number} Rounded number
+ * @param value Decimal number to round.
+ * @param digits Number of fractional digits to retain.
+ * @returns Rounded number (integers are returned unchanged).
  * @example
  * roundDecimal(4.135, 2); // 4.14
  * roundDecimal(4, 2); // 4
@@ -536,9 +542,10 @@ export function roundDecimal(value: number, digits: number): number {
 
 /**
  * Round a number to the nearest multiple of the provided divisor.
- * @param {number} value Input value
- * @param {number} divisor Multiple step to round to
- * @returns {number} Nearest multiple of divisor
+ * @param value Number to round.
+ * @param divisor Positive or negative interval whose nearest multiple is
+ *   required; zero leaves `value` unchanged.
+ * @returns The nearest multiple of `divisor`.
  * @example
  * roundToMultiple(4.13, 0.25); // 4.25
  * roundToMultiple(4.1, 0.25); // 4

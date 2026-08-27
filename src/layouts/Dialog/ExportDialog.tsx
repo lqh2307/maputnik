@@ -102,13 +102,13 @@ export const ExportDialog = React.memo(
         <DialogActions>
           <TooltipButton
             title={
-              copied ? t("topBar.actions.copied") : t("topBar.actions.copy")
+              copied ? t("topBar.actions.copied") : t("common.button.copy")
             }
             variant={"text"}
             startIcon={<ContentCopyRounded />}
             onClick={copy}
           >
-            {copied ? t("topBar.actions.copied") : t("topBar.actions.copy")}
+            {copied ? t("topBar.actions.copied") : t("common.button.copy")}
           </TooltipButton>
 
           <TooltipButton
@@ -121,11 +121,11 @@ export const ExportDialog = React.memo(
           </TooltipButton>
 
           <TooltipButton
-            title={t("topBar.actions.close")}
+            title={t("common.button.close")}
             variant={"text"}
             onClick={close}
           >
-            {t("topBar.actions.close")}
+            {t("common.button.close")}
           </TooltipButton>
         </DialogActions>
       </Dialog>

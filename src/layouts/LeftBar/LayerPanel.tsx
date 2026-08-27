@@ -230,7 +230,7 @@ export const LayerPanel = React.memo((): React.JSX.Element => {
         </Stack>
 
         <TooltipButton
-          title={t("topBar.actions.add")}
+          title={t("common.button.add")}
           variant={"outlined"}
           icon={<AddRounded />}
           fullWidth

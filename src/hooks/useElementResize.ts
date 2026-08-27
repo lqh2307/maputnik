@@ -2,7 +2,9 @@ import React from "react";
 
 /**
  * Track element size with a resize listener.
- * @returns {void}
+ * @param ref Element ref to observe.
+ * @param func Callback invoked with the latest resize entry.
+ * @returns Nothing; the hook manages observer setup/cleanup.
  */
 export function useElementResize<T extends HTMLElement>(
   ref: React.RefObject<T>,

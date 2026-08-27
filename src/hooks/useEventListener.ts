@@ -1,7 +1,13 @@
 import { EventCallbackHandler } from "./Types";
 import React from "react";
 
-/** React hook for event listener. */
+/**
+ * React hook for one stable event listener.
+ * @param target EventTarget to observe.
+ * @param eventName Event type, such as click or keydown.
+ * @param callback Handler invoked with each event.
+ * @param options Native listener options.
+ */
 export function useEventListener(
   target: EventTarget,
   eventName: string,

@@ -1,7 +1,6 @@
+import { DEFAULT_REQUEST_TIMEOUT, IMAGE_STORAGE_URL } from "../../configs";
 import { requestToURL } from "../../utils/Request";
-import { IMAGE_STORAGE_URL } from "../../configs";
 import { getFileExt } from "../../utils/File";
-import { DEFAULT_TIMEOUT } from "./constants";
 import { UpdateFileOption } from "./Types";
 import { AxiosResponse } from "axios";
 import FormData from "form-data";
@@ -25,7 +24,7 @@ export async function updateFile(
     method: "PUT",
     url: `${IMAGE_STORAGE_URL}/files/${options.id}`,
     body: form,
-    timeout: options.timeout ?? DEFAULT_TIMEOUT,
+    timeout: options.timeout ?? DEFAULT_REQUEST_TIMEOUT,
     signal: options.controller?.signal,
   });
 }

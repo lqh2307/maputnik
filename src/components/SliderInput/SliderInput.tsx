@@ -51,7 +51,7 @@ export const SliderInput = React.memo(
 
     const stackSx = React.useMemo(() => {
       return {
-        display: display,
+        display,
         flexDirection: "row",
         gap: icon ? "1rem" : undefined,
         alignItems: "center",

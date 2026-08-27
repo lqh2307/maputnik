@@ -350,7 +350,24 @@
       }
     },
     "newTab": {
-      "title": "Trang mới"
+      "title": "Trang mới",
+      "children": {
+        "create": {
+          "title": "Tạo mới"
+        },
+        "title": {
+          "title": "Tiêu đề"
+        },
+        "note": {
+          "title": "Ghi chú"
+        },
+        "fromBackgroundImage": {
+          "title": "Từ nền ảnh"
+        },
+        "fromBackgroundMap": {
+          "title": "Từ nền bản đồ"
+        }
+      }
     },
     "setting": {
       "title": "Cài đặt",
@@ -502,21 +519,6 @@
         }
       }
     },
-    "generalSetting": {
-      "title": "Cài đặt chung",
-      "children": {
-        "theme": {
-          "title": "Giao diện"
-        },
-        "language": {
-          "title": "Ngôn ngữ"
-        }
-      }
-    },
-    "profile": {
-      "title": "Hồ sơ",
-      "message": "Trình chỉnh sửa này chưa tích hợp thông tin hồ sơ."
-    },
     "guide": {
       "title": "Hướng dẫn",
       "children": {
@@ -531,6 +533,59 @@
             },
             "group": {
               "title": "Gom nhóm"
+            }
+          }
+        },
+        "canvas": {
+          "title": "Canvas và điều hướng",
+          "children": {
+            "selection": {
+              "title": "Chọn đối tượng"
+            },
+            "navigation": {
+              "title": "Điều hướng"
+            },
+            "zoom": {
+              "title": "Thu phóng"
+            }
+          }
+        },
+        "style": {
+          "title": "Kiểu dáng và thuộc tính",
+          "children": {
+            "properties": {
+              "title": "Thuộc tính"
+            },
+            "layers": {
+              "title": "Thứ tự lớp"
+            }
+          }
+        },
+        "media": {
+          "title": "Ảnh, băng hình và cắt",
+          "children": {
+            "insert": {
+              "title": "Chèn media"
+            },
+            "crop": {
+              "title": "Cắt hình"
+            },
+            "erase": {
+              "title": "Tẩy vùng"
+            }
+          }
+        },
+        "document": {
+          "title": "Thiết lập bản vẽ",
+          "children": {
+            "tabs": {
+              "title": "Tab và mẫu"
+            },
+            "background": {
+              "title": "Nền"
+            },
+            "grid": {
+              "title": "Lưới và đường căn"
             }
           }
         },
@@ -553,6 +608,20 @@
               "title": "Văn bản"
             }
           }
+        }
+      }
+    },
+    "release": {
+      "title": "Có gì mới",
+      "children": {
+        "version": {
+          "title": "Phiên bản"
+        },
+        "summary": {
+          "title": "Tóm tắt"
+        },
+        "changes": {
+          "title": "Thay đổi trong phiên bản này"
         }
       }
     },
@@ -589,6 +658,15 @@
                 "multiLine": {
                   "title": "Nhiều đường"
                 },
+                "table": {
+                  "title": "Bảng"
+                },
+                "svg": {
+                  "title": "SVG"
+                },
+                "symbol": {
+                  "title": "Ký hiệu"
+                },
                 "freeDrawing": {
                   "title": "Vẽ tự do"
                 }
@@ -605,6 +683,15 @@
                 },
                 "group": {
                   "title": "Gom nhóm"
+                },
+                "transform": {
+                  "title": "Biến đổi"
+                },
+                "style": {
+                  "title": "Kiểu dáng"
+                },
+                "crop": {
+                  "title": "Cắt và tẩy"
                 }
               }
             },
@@ -622,6 +709,12 @@
             },
             "other": {
               "title": "Các tính năng khác"
+            },
+            "workspace": {
+              "title": "Không gian làm việc và bản vẽ"
+            },
+            "presentation": {
+              "title": "Trình chiếu và 3D"
             }
           }
         },
@@ -851,16 +944,16 @@
         }
       },
       "messages": {
-        "invalidAccessToken": "Không tìm thấy access_token hoặc token đã hết hạn.",
-        "timeout": "Yêu cầu quá thời gian. Vui lòng chọn khoảng thời gian ngắn hơn.",
         "loadError": "Không thể tải quỹ đạo mục tiêu.",
-        "requiredRange": "Vui lòng nhập đầy đủ thời gian bắt đầu và kết thúc.",
-        "invalidRange": "Thời gian bắt đầu không được lớn hơn thời gian kết thúc.",
         "empty": "Không có dữ liệu quỹ đạo.",
         "selectRange": "Chọn khoảng thời gian và nhấn Tìm kiếm để tải quỹ đạo.",
         "noMatchingTargetId": "Không tìm thấy mục tiêu phù hợp với bộ lọc.",
         "historyLoadError": "Không thể tải lịch sử vị trí mục tiêu.",
         "insufficientHistory": "Không đủ điểm lịch sử để vẽ quỹ đạo.",
+        "invalidAccessToken": "Không tìm thấy access_token hoặc token đã hết hạn.",
+        "timeout": "Yêu cầu quá thời gian. Vui lòng chọn khoảng thời gian ngắn hơn.",
+        "requiredRange": "Vui lòng nhập đầy đủ thời gian bắt đầu và kết thúc.",
+        "invalidRange": "Thời gian bắt đầu không được lớn hơn thời gian kết thúc.",
         "mapUnavailable": "Canvas hiện tại không có bản đồ để chuyển đổi tọa độ."
       }
     },
@@ -892,22 +985,82 @@
         }
       },
       "messages": {
-        "invalidAccessToken": "Không tìm thấy access_token hoặc token đã hết hạn.",
-        "timeout": "Yêu cầu quá thời gian.",
         "loadError": "Không thể tải bức tranh nội địa.",
         "empty": "Không có dữ liệu bức tranh nội địa.",
+        "noCoordinate": "Sự kiện không có tọa độ để vẽ lên bản đồ.",
+        "drawSuccess": "Đã vẽ sự kiện lên bản đồ.",
+        "drawError": "Không thể vẽ sự kiện lên bản đồ.",
+        "invalidAccessToken": "Không tìm thấy access_token hoặc token đã hết hạn.",
+        "timeout": "Yêu cầu quá thời gian.",
         "requiredRange": "Vui lòng nhập đầy đủ thời gian bắt đầu và kết thúc.",
         "invalidRange": "Thời gian bắt đầu không được lớn hơn thời gian kết thúc.",
-        "noCoordinate": "Sự kiện không có tọa độ để vẽ lên bản đồ.",
-        "mapUnavailable": "Canvas hiện tại không có bản đồ để chuyển đổi tọa độ.",
-        "drawSuccess": "Đã vẽ sự kiện lên bản đồ.",
-        "drawError": "Không thể vẽ sự kiện lên bản đồ."
+        "mapUnavailable": "Canvas hiện tại không có bản đồ để chuyển đổi tọa độ."
       },
       "enums": {
         "dangerImpact": {
           "NGHIEM_TRONG": "Nghiêm trọng",
           "TRUNG_BINH": "Trung bình",
           "DANG_CHU_Y": "Đáng chú ý"
+        }
+      }
+    },
+    "profile": {
+      "title": "Thông tin cá nhân",
+      "children": {
+        "fullName": {
+          "title": "Họ và tên"
+        },
+        "username": {
+          "title": "Tên đăng nhập"
+        },
+        "id": {
+          "title": "Mã định danh"
+        },
+        "rank": {
+          "title": "Cấp bậc"
+        },
+        "position": {
+          "title": "Chức vụ"
+        },
+        "unit": {
+          "title": "Đơn vị"
+        },
+        "email": {
+          "title": "Thư điện tử"
+        },
+        "phone": {
+          "title": "Số điện thoại"
+        },
+        "status": {
+          "title": "Trạng thái"
+        },
+        "description": {
+          "title": "Ghi chú"
+        },
+        "createdAt": {
+          "title": "Ngày tạo"
+        },
+        "updatedAt": {
+          "title": "Cập nhật lần cuối"
+        },
+        "refresh": {
+          "title": "Tải lại"
+        }
+      },
+      "messages": {
+        "loadError": "Không thể tải thông tin cá nhân.",
+        "noUserFound": "Không tìm thấy thông tin chi tiết người dùng."
+      },
+      "message": "Trình chỉnh sửa này chưa tích hợp thông tin hồ sơ."
+    },
+    "generalSetting": {
+      "title": "Cài đặt chung",
+      "children": {
+        "theme": {
+          "title": "Giao diện"
+        },
+        "language": {
+          "title": "Ngôn ngữ"
         }
       }
     },
@@ -1558,6 +1711,17 @@
         }
       }
     },
+    "additionalInformation": {
+      "title": "Thông tin bổ sung",
+      "children": {
+        "targetTrajectory": {
+          "title": "Lịch sử quỹ đạo"
+        },
+        "onLandEvent": {
+          "title": "Bức tranh nội địa"
+        }
+      }
+    },
     "targetTrajectory": {
       "title": "Lịch sử quỹ đạo",
       "children": {
@@ -1889,28 +2053,28 @@
           "title": "Biến đổi",
           "children": {
             "offsetX": {
-              "title": "Dịch trục X"
+              "title": "Dịch X"
             },
             "offsetY": {
-              "title": "Dịch trục Y"
+              "title": "Dịch Y"
             },
             "rotationX": {
-              "title": "Xoay trục X (°)"
+              "title": "Xoay X (°)"
             },
             "rotationY": {
-              "title": "Xoay trục Y (°)"
+              "title": "Xoay Y (°)"
             },
             "rotation": {
-              "title": "Xoay trục Z (°)"
+              "title": "Xoay Z (°)"
             },
             "scaleX": {
-              "title": "Tỷ lệ trục X"
+              "title": "Tỷ lệ X"
             },
             "scaleY": {
-              "title": "Tỷ lệ trục Y"
+              "title": "Tỷ lệ Y"
             },
             "scaleZ": {
-              "title": "Tỷ lệ trục Z"
+              "title": "Tỷ lệ Z"
             }
           }
         },
@@ -3356,7 +3520,11 @@
           "left": "Trái",
           "right": "Phải",
           "up": "Lên",
-          "down": "Xuống"
+          "down": "Xuống",
+          "top-left": "Trên trái",
+          "top-right": "Trên phải",
+          "bottom-left": "Dưới trái",
+          "bottom-right": "Dưới phải"
         },
         "easing": {
           "linear": "Tuyến tính",
@@ -3434,6 +3602,27 @@
     }
   },
   "common": {
+    "militaryRank": {
+      "DAI_TUONG": "Đại tướng",
+      "THUONG_TUONG": "Thượng tướng",
+      "TRUNG_TUONG": "Trung tướng",
+      "THIEU_TUONG": "Thiếu tướng",
+      "DAI_TA": "Đại tá",
+      "THUONG_TA": "Thượng tá",
+      "TRUNG_TA": "Trung tá",
+      "THIEU_TA": "Thiếu tá",
+      "DAI_UY": "Đại úy",
+      "THUONG_UY": "Thượng úy",
+      "TRUNG_UY": "Trung úy",
+      "THIEU_UY": "Thiếu úy"
+    },
+    "message": {
+      "invalidAccessToken": "Không tìm thấy access_token hoặc token đã hết hạn.",
+      "timeout": "Yêu cầu quá thời gian.",
+      "requiredRange": "Vui lòng nhập đầy đủ thời gian bắt đầu và kết thúc.",
+      "invalidRange": "Thời gian bắt đầu không được lớn hơn thời gian kết thúc.",
+      "mapUnavailable": "Canvas hiện tại không có bản đồ để chuyển đổi tọa độ."
+    },
     "button": {
       "save": "Lưu",
       "close": "Đóng",
@@ -3628,6 +3817,8 @@
       "landscape": "Ngang"
     },
     "language": {
+      "vietnamese": "Tiếng Việt",
+      "english": "Tiếng Anh",
       "en": "Tiếng Anh",
       "vi": "Tiếng Việt"
     },
@@ -3801,27 +3992,55 @@
     "guideManipulationAdd": "Chọn loại hình (ví dụ: hình tròn, mũi tên, chữ nhật) trên thanh công cụ phía trên sau đó nhấp chuột hoặc kéo thả trên màn hình để tạo đối tượng. Với công cụ vẽ tự do, bạn có thể vẽ trực tiếp bằng cách nhấp và di chuyển chuột.",
     "guideManipulationEdit": "Nhấp chuột để chọn một đối tượng chỉnh sửa. Bạn có thể kéo, thay đổi kích thước bằng chuột hoặc thay đổi các thuộc tính bên trong đối tượng được hiển thị thên thanh công cụ bên phải.",
     "guideManipulationGroup": "Giữ phím Ctrl và nhấp chuột để chọn nhiều đối tượng cần gom nhóm. Sau đó nhấp chuột chọn gom nhóm trên thanh công cụ.",
+    "guideCanvasSelection": "Nhấp vào một đối tượng để chọn. Giữ Ctrl/Cmd khi nhấp để chọn nhiều đối tượng hoặc dùng Ctrl/Cmd + A để chọn tất cả.",
+    "guideCanvasNavigation": "Kéo đối tượng để di chuyển. Sử dụng các điều khiển của stage để di chuyển vùng làm việc và giữ canvas ở vị trí thuận tiện.",
+    "guideCanvasZoom": "Sử dụng nút thu phóng, Ctrl/Cmd + con lăn chuột hoặc các phím tắt. Nhấn Ctrl/Cmd + 0 để vừa bản vẽ với màn hình.",
+    "guideStyleProperties": "Chọn một đối tượng rồi dùng bảng bên phải để thay đổi màu nền, đường viền, độ trong suốt, văn bản, bóng, bộ lọc, biến đổi và các thuộc tính khác.",
+    "guideStyleLayers": "Sử dụng các thao tác lớp để đưa đối tượng lên trước, xuống sau, lên đầu hoặc xuống cuối.",
+    "guideMediaInsert": "Thêm ảnh và băng hình từ thiết bị hoặc liên kết. Có thể thêm SVG, biểu tượng, ký hiệu quân sự, bảng và nội dung bản đồ từ các công cụ tương ứng.",
+    "guideMediaCrop": "Chọn ảnh, SVG hoặc băng hình, bật Cắt hình rồi kéo hoặc biến đổi lớp phủ cắt. Dùng Khôi phục để xóa biến đổi cắt.",
+    "guideMediaErase": "Bật công cụ Tẩy và vẽ lên đối tượng để xóa các vùng mong muốn. Nhấn Esc để kết thúc.",
+    "guideDocumentTabs": "Sử dụng các tab để quản lý nhiều bản vẽ trong cùng một không gian. Lưu các đối tượng thường dùng thành mẫu hoặc thành phần để thêm vào bản vẽ khác.",
+    "guideDocumentBackground": "Dùng phần thiết lập Stage để đổi nền canvas, thêm ảnh hoặc bản đồ và điều chỉnh kích thước cùng hệ tọa độ.",
+    "guideDocumentGrid": "Cấu hình lưới, đường căn, khung và kích thước stage trên thanh công cụ để căn chỉnh đối tượng và chuẩn bị vùng bản vẽ.",
     "guideSave": "Sử dụng chức năng Nhập/Xuất để lưu bản vẽ dưới nhiều định dạng hoặc mở lại các bản vẽ đã lưu từ thiết bị hoặc đám mây.",
     "guideTemplate": "Bạn có thể lưu một hoặc nhiều đối tượng thành mẫu/thành phần con để tái sử dụng cho các bản vẽ khác.",
     "aboutIntroduction": "Đây là một công cụ trực quan hỗ trợ người dùng tạo, chỉnh sửa và quản lý nội dung một cách nhanh chóng, hiệu quả. Với giao diện thân thiện, công cụ cho phép thao tác trực tiếp trên màn hình, giúp bạn dễ dàng vẽ các hình học cơ bản, thực hiện vẽ tự do, chèn ảnh, thêm văn bản, sử dụng biểu tượng hoặc chèn băng hình.",
-    "aboutVersion": "Phiên bản hiện tại: 1.0.0.",
+    "aboutVersion": "Phiên bản hiện tại: {{version}}.",
     "aboutFeatureObjectBasic": "Đường thẳng, mũi tên, hình tròn, hình chữ nhật, đa giác lồi, đa giác lõm, hình vòng, hình rẻ quạt, đường cong bậc hai và bậc ba.",
     "aboutFeatureObjectText": "Thêm các đoạn văn bản để mô tả, chú thích hoặc đặt tiêu đề cho bản vẽ.",
     "aboutFeatureObjectImage": "Chèn ảnh từ thiết bị hoặc liên kết để minh họa hoặc bổ sung nội dung trực quan.",
     "aboutFeatureObjectIcon": "Thư viện với hơn 3000 biểu tượng đa dạng, có thể sử dụng để làm nổi bật hoặc bổ sung cho bản vẽ.",
     "aboutFeatureObjectVideo": "Chèn băng hình từ thiết bị hoặc liên kết để nâng cao tính trực quan và sinh động.",
     "aboutFeatureObjectMultiLine": "Cho phép người dùng vẽ nhiều đường trên màn hình.",
+    "aboutFeatureObjectTable": "Tạo bảng có thể chỉnh sửa với hàng, cột, gộp ô, văn bản và kiểu dáng tùy chỉnh.",
+    "aboutFeatureObjectSVG": "Nhập nội dung SVG, giữ lại đường vector, màu sắc và cấu trúc có thể chỉnh sửa trong phạm vi hỗ trợ.",
+    "aboutFeatureObjectSymbol": "Thêm các biểu tượng dùng lại và ký hiệu quân sự từ thư viện tích hợp.",
     "aboutFeatureObjectFreeDrawing": "Cho phép người dùng vẽ tay tự do trên màn hình, phù hợp cho phác thảo hoặc sáng tạo nhanh.",
     "aboutFeatureManipulationAdd": "Thêm đối tượng mới bằng thao tác nhấp chuột hoặc kéo thả trực tiếp vào khu vực làm việc.",
     "aboutFeatureManipulationEdit": "Hỗ trợ các thao tác chỉnh sửa: kéo, thay đổi kích thước của một hay nhiều đối tượng cùng lúc, chỉnh sửa chi tiết nội dung của đối tượng.",
     "aboutFeatureManipulationGroup": "Hỗ trợ gom nhóm các đối tượng.",
+    "aboutFeatureManipulationTransform": "Di chuyển, thay đổi kích thước, xoay, lật, nghiêng, căn chỉnh, phân bố và thay đổi thứ tự một hoặc nhiều đối tượng.",
+    "aboutFeatureManipulationStyle": "Thiết lập màu nền, đường viền, văn bản, độ trong suốt, bóng, bộ lọc, màu sắc và các thuộc tính hiển thị khác.",
+    "aboutFeatureManipulationCrop": "Cắt các đối tượng dựa trên ảnh và tẩy vùng chọn trong khi vẫn giữ đối tượng gốc có thể chỉnh sửa.",
     "aboutFeatureTemplate": "Cho phép lưu các đối tượng hoặc bản vẽ thành mẫu/thành phần con để tái sử dụng.",
     "aboutFeatureIO": "Hỗ trợ nhập/xuất dữ liệu từ/đến thiết bị, đám mây với nhiều định dạng để chia sẻ hoặc lưu trữ.",
     "aboutFeatureShortcut": "Hệ thống phím tắt giúp thao tác nhanh hơn, tiết kiệm thời gian cho người dùng chuyên nghiệp.",
     "aboutFeatureHistory": "Tự động lưu lại lịch sử thao tác, cho phép hoàn tác (undo) hoặc làm lại (redo) khi cần.",
     "aboutFeatureOther": "Thay đổi màu nền, hiển thị đường căn chỉnh, bật/tắt ô lưới, và nhiều tính năng hữu ích khác.",
+    "aboutFeatureWorkspace": "Quản lý nhiều tab, nền bản đồ hoặc ảnh, lưới, khung, hệ tọa độ và các thiết lập cấp bản vẽ.",
+    "aboutFeaturePresentation": "Xem bản vẽ ở chế độ trình chiếu và kiểm tra nội dung được hỗ trợ trong chế độ xem 3D tương tác.",
     "aboutComingSoonImprove": "Tối ưu cho hiệu năng tốt hơn.",
     "aboutLicense": "Sản phẩm được phát triển và sở hữu bản quyền bởi Viettel HighTech.",
+    "releaseSummary": "Phiên bản này tập trung vào quy trình chỉnh sửa an toàn và nhất quán hơn: dùng chung kết xuất worker, biến đổi media đáng tin cậy, giữ nguyên nội dung canvas sau khi lưu và bổ sung tài liệu hướng dẫn rõ ràng hơn.",
+    "releaseVersion": "Phiên bản {{version}}",
+    "releaseNotes": [
+      "Dùng chung các tiện ích kết xuất cho pipeline worker xử lý ảnh, băng hình và PDF.",
+      "Worker tái sử dụng dữ liệu media đã giải mã hiệu quả hơn và hỗ trợ nhiều nguồn dữ liệu hơn.",
+      "Khôi phục cắt hình đưa ảnh, SVG và băng hình về đúng biến đổi ban đầu một cách an toàn.",
+      "Sau khi lưu, nội dung bản vẽ hiện tại vẫn được giữ nguyên trên canvas.",
+      "Guide và About được bổ sung đầy đủ thông tin hơn về trình biên tập."
+    ],
     "confirmClose": "Xác nhận đóng?",
     "confirmLogout": "Xác nhận đăng xuất?",
     "app": {

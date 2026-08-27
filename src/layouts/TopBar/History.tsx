@@ -48,7 +48,9 @@ export const TopBarHistory = React.memo((): React.JSX.Element => {
 
   const translate = React.useCallback(
     (section: string): string => {
-      return t(`topBar.actions.${section}`);
+      return ["copy", "paste"].includes(section)
+        ? t(`common.button.${section}`)
+        : t(`topBar.actions.${section}`);
     },
     [t]
   );

@@ -1,8 +1,8 @@
 /**
  * Get a value from local storage by key.
  * @param {string} key Storage key
- * @param {T} [fallback] Optional fallback value if key is missing
- * @returns {T} Parsed value, or undefined if missing
+ * @param fallback Optional value returned when the key is missing.
+ * @returns Parsed JSON value, or fallback when missing.
  *
  * @example
  * ```ts
@@ -10,9 +10,15 @@
  * ```
  */
 export function getValue<T>(key: string, fallback?: T): T {
-  const value: string = localStorage.getItem(key);
+  try {
+    const value: string = localStorage.getItem(key);
 
-  return value ? JSON.parse(value) : fallback;
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    console.warn("Error getting value from local storage");
+
+    return fallback;
+  }
 }
 
 /**
@@ -27,7 +33,11 @@ export function getValue<T>(key: string, fallback?: T): T {
  * ```
  */
 export function setValue(key: string, value: any): void {
-  return localStorage.setItem(key, JSON.stringify(value));
+  try {
+    return localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    console.warn("Error setting value in local storage");
+  }
 }
 
 /**

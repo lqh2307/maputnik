@@ -14,7 +14,7 @@ export const TopBarClose = React.memo((): React.JSX.Element => {
 
   return (
     <ToolbarAction
-      title={t("topBar.actions.close")}
+      title={t("common.button.close")}
       icon={<CloseRounded />}
       color="error"
       onClick={close}

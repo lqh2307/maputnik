@@ -47,7 +47,7 @@ export const NumberInput = React.memo(
         gap: icon ? "1rem" : undefined,
         alignItems: "center",
         width: "100%",
-        display: display,
+        display,
       };
     }, [display, icon]);
 
@@ -58,13 +58,13 @@ export const NumberInput = React.memo(
         ...slotProps,
         inputLabel: {
           ...inputLabel,
-          shrink: shrink,
+          shrink,
         },
         htmlInput: {
           ...htmlInputProps,
-          min: min,
-          max: max,
-          step: step,
+          min,
+          max,
+          step,
         },
       };
     }, [shrink, min, max, step, slotProps]);

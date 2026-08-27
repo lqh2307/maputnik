@@ -22,7 +22,9 @@ export const ShortcutsDialog = React.memo(
 
     const translateAction = React.useCallback(
       (section: string): string => {
-        return t(`topBar.actions.${section}`);
+        return ["copy", "paste", "close"].includes(section)
+          ? t(`common.button.${section}`)
+          : t(`topBar.actions.${section}`);
       },
       [t]
     );

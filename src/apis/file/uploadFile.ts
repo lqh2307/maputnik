@@ -1,7 +1,6 @@
+import { DEFAULT_REQUEST_TIMEOUT, IMAGE_STORAGE_URL } from "../../configs";
 import { requestToURL } from "../../utils/Request";
-import { IMAGE_STORAGE_URL } from "../../configs";
 import { getFileExt } from "../../utils/File";
-import { DEFAULT_TIMEOUT } from "./constants";
 import { UploadFileOption } from "./Types";
 import { AxiosResponse } from "axios";
 import FormData from "form-data";
@@ -25,7 +24,7 @@ export async function uploadFile(
     method: "POST",
     url: `${IMAGE_STORAGE_URL}/files`,
     body: form,
-    timeout: options.timeout ?? DEFAULT_TIMEOUT,
+    timeout: options.timeout ?? DEFAULT_REQUEST_TIMEOUT,
     signal: options.controller?.signal,
   });
 }

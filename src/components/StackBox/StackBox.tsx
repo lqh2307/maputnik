@@ -12,7 +12,7 @@ export const StackBox = React.memo(
   }: StackBoxProp): React.JSX.Element => {
     const stackSx: SxProps<Theme> = React.useMemo(() => {
       return {
-        display: display,
+        display,
         flexDirection: "row",
         gap: "0.5rem",
         alignItems: "center",

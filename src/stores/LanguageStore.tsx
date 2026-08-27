@@ -15,7 +15,7 @@ export const useLanguageStore = create<LanguageStore & LanguageAction>()((
   /** Updates the application language and syncs with i18n. */
   function setLanguage(language: Language): void {
     set((state) => {
-      if (language !== "en" && language !== "vi") {
+      if (language !== "english" && language !== "vietnamese") {
         return state;
       }
 

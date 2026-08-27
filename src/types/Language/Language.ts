@@ -1,2 +1,2 @@
 /** Supported application language codes. */
-export type Language = "en" | "vi";
+export type Language = "english" | "vietnamese";

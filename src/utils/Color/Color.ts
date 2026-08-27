@@ -2,7 +2,8 @@ import Color, { ColorInstance } from "color";
 import { RGBA } from "../../types/Color";
 import { limitValue } from "../Number";
 
-const COLOR_REGEX: RegExp =
+/** Shared token matcher for hex, rgb[a], hsl[a] and named colors. */
+export const COLOR_TOKEN_PATTERN: RegExp =
   /(#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})\b|rgba?\([^)]+\)|hsla?\([^)]+\)|\b[a-zA-Z]+\b)/g;
 
 /**
@@ -89,8 +90,8 @@ export function createRandomRGBAString(): string {
 
 /**
  * Extract valid color tokens from a string.
- * @param {string} str Input string
- * @returns {string[]} Array of color strings
+ * @param str Text that may contain hex, rgb/rgba, hsl/hsla, or named colors.
+ * @returns Every color token found in `str`, in source order.
  *
  * @example
  * ```ts
@@ -100,7 +101,7 @@ export function createRandomRGBAString(): string {
 export function extractColors(str: string): string[] {
   const result: string[] = [];
 
-  const matches: RegExpMatchArray = str.match(COLOR_REGEX);
+  const matches: RegExpMatchArray = str.match(COLOR_TOKEN_PATTERN);
   if (!matches) {
     return result;
   }

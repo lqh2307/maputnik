@@ -350,7 +350,24 @@
       }
     },
     "newTab": {
-      "title": "New Page"
+      "title": "New Page",
+      "children": {
+        "create": {
+          "title": "Create"
+        },
+        "title": {
+          "title": "Title"
+        },
+        "note": {
+          "title": "Note"
+        },
+        "fromBackgroundImage": {
+          "title": "From Background Image"
+        },
+        "fromBackgroundMap": {
+          "title": "From Background Map"
+        }
+      }
     },
     "setting": {
       "title": "Setting",
@@ -502,21 +519,6 @@
         }
       }
     },
-    "generalSetting": {
-      "title": "General settings",
-      "children": {
-        "theme": {
-          "title": "Theme"
-        },
-        "language": {
-          "title": "Language"
-        }
-      }
-    },
-    "profile": {
-      "title": "Profile",
-      "message": "Profile information is not available in this editor."
-    },
     "guide": {
       "title": "Guide",
       "children": {
@@ -531,6 +533,59 @@
             },
             "group": {
               "title": "Group"
+            }
+          }
+        },
+        "canvas": {
+          "title": "Canvas and Navigation",
+          "children": {
+            "selection": {
+              "title": "Selection"
+            },
+            "navigation": {
+              "title": "Navigation"
+            },
+            "zoom": {
+              "title": "Zoom"
+            }
+          }
+        },
+        "style": {
+          "title": "Style and Properties",
+          "children": {
+            "properties": {
+              "title": "Properties"
+            },
+            "layers": {
+              "title": "Layers"
+            }
+          }
+        },
+        "media": {
+          "title": "Media and Crop",
+          "children": {
+            "insert": {
+              "title": "Insert media"
+            },
+            "crop": {
+              "title": "Crop"
+            },
+            "erase": {
+              "title": "Erase"
+            }
+          }
+        },
+        "document": {
+          "title": "Document Setup",
+          "children": {
+            "tabs": {
+              "title": "Tabs and templates"
+            },
+            "background": {
+              "title": "Background"
+            },
+            "grid": {
+              "title": "Grid and guides"
             }
           }
         },
@@ -553,6 +608,20 @@
               "title": "Text"
             }
           }
+        }
+      }
+    },
+    "release": {
+      "title": "What's new",
+      "children": {
+        "version": {
+          "title": "Version"
+        },
+        "summary": {
+          "title": "Summary"
+        },
+        "changes": {
+          "title": "Changes in this version"
         }
       }
     },
@@ -589,6 +658,15 @@
                 "multiLine": {
                   "title": "Multi Line"
                 },
+                "table": {
+                  "title": "Table"
+                },
+                "svg": {
+                  "title": "SVG"
+                },
+                "symbol": {
+                  "title": "Symbols"
+                },
                 "freeDrawing": {
                   "title": "Free Drawing"
                 }
@@ -605,6 +683,15 @@
                 },
                 "group": {
                   "title": "Group"
+                },
+                "transform": {
+                  "title": "Transform"
+                },
+                "style": {
+                  "title": "Style"
+                },
+                "crop": {
+                  "title": "Crop and Erase"
                 }
               }
             },
@@ -622,6 +709,12 @@
             },
             "other": {
               "title": "Other Features"
+            },
+            "workspace": {
+              "title": "Workspace and Document"
+            },
+            "presentation": {
+              "title": "Presentation and 3D"
             }
           }
         },
@@ -851,16 +944,16 @@
         }
       },
       "messages": {
-        "invalidAccessToken": "The access token was not found or has expired.",
-        "timeout": "The request timed out. Please select a shorter time range.",
         "loadError": "Unable to load target trajectories.",
-        "requiredRange": "Please enter both the start and end times.",
-        "invalidRange": "The start time cannot be later than the end time.",
         "empty": "No trajectory data found.",
         "selectRange": "Select a time range and click Search to load trajectories.",
         "noMatchingTargetId": "No targets match the selected filters.",
         "historyLoadError": "Unable to load the target position history.",
         "insufficientHistory": "There are not enough history points to draw the trajectory.",
+        "invalidAccessToken": "The access token was not found or has expired.",
+        "timeout": "The request timed out. Please select a shorter time range.",
+        "requiredRange": "Please enter both the start and end times.",
+        "invalidRange": "The start time cannot be later than the end time.",
         "mapUnavailable": "The current canvas has no map for coordinate conversion."
       }
     },
@@ -892,22 +985,82 @@
         }
       },
       "messages": {
-        "invalidAccessToken": "The access token was not found or has expired.",
-        "timeout": "The request timed out.",
         "loadError": "Unable to load on-land picture data.",
         "empty": "No on-land picture data found.",
+        "noCoordinate": "This event has no coordinate to draw on the map.",
+        "drawSuccess": "The event has been drawn on the map.",
+        "drawError": "Unable to draw the event on the map.",
+        "invalidAccessToken": "The access token was not found or has expired.",
+        "timeout": "The request timed out.",
         "requiredRange": "Please enter both the start and end times.",
         "invalidRange": "The start time cannot be later than the end time.",
-        "noCoordinate": "This event has no coordinate to draw on the map.",
-        "mapUnavailable": "The current canvas has no map for coordinate conversion.",
-        "drawSuccess": "The event has been drawn on the map.",
-        "drawError": "Unable to draw the event on the map."
+        "mapUnavailable": "The current canvas has no map for coordinate conversion."
       },
       "enums": {
         "dangerImpact": {
           "NGHIEM_TRONG": "Critical",
           "TRUNG_BINH": "Medium",
           "DANG_CHU_Y": "Attention"
+        }
+      }
+    },
+    "profile": {
+      "title": "User Profile",
+      "children": {
+        "fullName": {
+          "title": "Full Name"
+        },
+        "username": {
+          "title": "Username"
+        },
+        "id": {
+          "title": "User ID"
+        },
+        "rank": {
+          "title": "Rank"
+        },
+        "position": {
+          "title": "Position"
+        },
+        "unit": {
+          "title": "Unit"
+        },
+        "email": {
+          "title": "Email"
+        },
+        "phone": {
+          "title": "Phone"
+        },
+        "status": {
+          "title": "Status"
+        },
+        "description": {
+          "title": "Notes"
+        },
+        "createdAt": {
+          "title": "Created At"
+        },
+        "updatedAt": {
+          "title": "Last Updated"
+        },
+        "refresh": {
+          "title": "Refresh"
+        }
+      },
+      "messages": {
+        "loadError": "Unable to load user profile.",
+        "noUserFound": "User details not found."
+      },
+      "message": "Profile information is not available in this editor."
+    },
+    "generalSetting": {
+      "title": "General settings",
+      "children": {
+        "theme": {
+          "title": "Theme"
+        },
+        "language": {
+          "title": "Language"
         }
       }
     },
@@ -1555,6 +1708,17 @@
       "common": {
         "notification": {
           "title": "Notification"
+        }
+      }
+    },
+    "additionalInformation": {
+      "title": "Additional information",
+      "children": {
+        "targetTrajectory": {
+          "title": "Target trajectory history"
+        },
+        "onLandEvent": {
+          "title": "On-land picture"
         }
       }
     },
@@ -3356,7 +3520,11 @@
           "left": "Left",
           "right": "Right",
           "up": "Up",
-          "down": "Down"
+          "down": "Down",
+          "top-left": "Top Left",
+          "top-right": "Top Right",
+          "bottom-left": "Bottom Left",
+          "bottom-right": "Bottom Right"
         },
         "easing": {
           "linear": "Linear",
@@ -3434,6 +3602,27 @@
     }
   },
   "common": {
+    "militaryRank": {
+      "DAI_TUONG": "General",
+      "THUONG_TUONG": "Senior Lieutenant General",
+      "TRUNG_TUONG": "Lieutenant General",
+      "THIEU_TUONG": "Major General",
+      "DAI_TA": "Senior Colonel",
+      "THUONG_TA": "Colonel",
+      "TRUNG_TA": "Lieutenant Colonel",
+      "THIEU_TA": "Major",
+      "DAI_UY": "Captain",
+      "THUONG_UY": "Senior Lieutenant",
+      "TRUNG_UY": "Lieutenant",
+      "THIEU_UY": "Junior Lieutenant"
+    },
+    "message": {
+      "invalidAccessToken": "The access token was not found or has expired.",
+      "timeout": "The request timed out.",
+      "requiredRange": "Please enter both the start and end times.",
+      "invalidRange": "The start time cannot be later than the end time.",
+      "mapUnavailable": "The current canvas has no map for coordinate conversion."
+    },
     "button": {
       "save": "Save",
       "close": "Close",
@@ -3628,6 +3817,8 @@
       "landscape": "Landscape"
     },
     "language": {
+      "vietnamese": "Vietnamese",
+      "english": "English",
       "en": "English",
       "vi": "Vietnamese"
     },
@@ -3801,27 +3992,55 @@
     "guideManipulationAdd": "Select a shape type (ex: circle, arrow, rectangle) from the top toolbar, then click or drag on the screen to create an object. With the free drawing tool, you can draw directly by clicking and moving the mouse.",
     "guideManipulationEdit": "Click on an object to select it for editing. You can drag, resize with the mouse, or change its properties displayed in the right-hand toolbar.",
     "guideManipulationGroup": "Hold down the Ctrl key and click to select multiple objects you want to group. Then click the group button on the toolbar.",
+    "guideCanvasSelection": "Click an object to select it. Hold Ctrl/Cmd while clicking to select multiple objects, or use Ctrl/Cmd + A to select everything.",
+    "guideCanvasNavigation": "Drag objects to move them. Use the stage controls to pan the workspace and keep the canvas centered while working.",
+    "guideCanvasZoom": "Use the zoom buttons, Ctrl/Cmd + mouse wheel, or the shortcut keys. Press Ctrl/Cmd + 0 to fit the drawing to the screen.",
+    "guideStyleProperties": "Select an object and use the right-hand panel to change its fill, stroke, opacity, text, shadow, filter, transform, and other properties.",
+    "guideStyleLayers": "Use the layer actions to move objects forward or backward, bring them to the front, or send them to the back.",
+    "guideMediaInsert": "Add images and videos from your device or a link. SVGs, icons, military symbols, tables, and map content can also be added from the available tools.",
+    "guideMediaCrop": "Select an image, SVG, or video, activate Crop, then drag or transform the crop overlay. Use Restore to remove the crop transform.",
+    "guideMediaErase": "Activate the Eraser tool and draw over an object to remove selected areas. Leave the tool with Esc when finished.",
+    "guideDocumentTabs": "Use tabs to keep multiple drawings in one workspace. Save reusable objects as templates or components and add them to other drawings.",
+    "guideDocumentBackground": "Use Stage settings to change the canvas background, add an image or map, and adjust its size and coordinate settings.",
+    "guideDocumentGrid": "Configure the grid, guide lines, frame, and stage size from the top toolbar to align objects and prepare the drawing area.",
     "guideSave": "Use the Import/Export function to save drawings in various formats or reopen saved drawings from your device or the cloud.",
     "guideTemplate": "You can save one or multiple objects as a template/component for reuse in other drawings.",
     "aboutIntroduction": "This is an intuitive tool that helps users create, edit, and manage content quickly and efficiently. With a user-friendly interface, the tool allows direct interaction on the screen, making it easy to draw basic shapes, perform freehand drawing, insert images, add text, use icons, or insert videos.",
-    "aboutVersion": "Current version: 1.0.0.",
+    "aboutVersion": "Current version: {{version}}.",
     "aboutFeatureObjectBasic": "Line, arrow, circle, rectangle, convex polygon, concave polygon, ring, sector, quadratic and bezier curve.",
     "aboutFeatureObjectText": "Add text blocks for descriptions, annotations, or titles within the drawing.",
     "aboutFeatureObjectImage": "Insert images from your device or via links to illustrate or enhance visual content.",
     "aboutFeatureObjectIcon": "A library with over 3000 diverse icons that can be used to highlight or complement your drawings.",
     "aboutFeatureObjectVideo": "Insert videos from your device or via links to enhance visualization and interactivity.",
     "aboutFeatureObjectMultiLine": "Allows drawing multi lines on the screen.",
+    "aboutFeatureObjectTable": "Create editable tables with configurable rows, columns, cell spans, text, and styling.",
+    "aboutFeatureObjectSVG": "Import SVG content while preserving vector paths, colors, and editable structure where supported.",
+    "aboutFeatureObjectSymbol": "Add reusable icons and military symbols from the built-in symbol libraries.",
     "aboutFeatureObjectFreeDrawing": "Allows drawing freely on the screen, suitable for sketching or quick creative work.",
     "aboutFeatureManipulationAdd": "Add new objects by clicking or dragging and dropping them directly into the workspace.",
     "aboutFeatureManipulationEdit": "Supports editing actions: dragging, resizing one or multiple objects at once, and modifying object details.",
     "aboutFeatureManipulationGroup": "Supports grouping objects.",
+    "aboutFeatureManipulationTransform": "Move, resize, rotate, flip, skew, align, distribute, and reorder one or multiple objects.",
+    "aboutFeatureManipulationStyle": "Configure fills, strokes, text, opacity, shadows, filters, colors, and other visual properties.",
+    "aboutFeatureManipulationCrop": "Crop image-based objects and erase selected regions while keeping the original object editable.",
     "aboutFeatureTemplate": "Allows saving objects or drawings as templates/components for reuse.",
     "aboutFeatureIO": "Supports importing/exporting data from/to devices and cloud in multiple formats for sharing or storage.",
     "aboutFeatureShortcut": "A system of shortcuts that enables faster operations, saving time for professional users.",
     "aboutFeatureHistory": "Automatically saves operation history, allowing you to undo or redo when necessary.",
     "aboutFeatureOther": "Changing background color, displaying alignment guides, toggling grid, and many other useful features.",
+    "aboutFeatureWorkspace": "Manage multiple tabs, map or image backgrounds, grids, frames, coordinate systems, and document-level settings.",
+    "aboutFeaturePresentation": "Preview drawings in presentation mode and inspect supported content in the interactive 3D view.",
     "aboutComingSoonImprove": "Improving for better performance.",
     "aboutLicense": "This product is developed and copyrighted by Viettel HighTech.",
+    "releaseSummary": "This version focuses on a safer and more consistent editing workflow: shared worker rendering, reliable media transforms, preserved canvas content after saving, and clearer in-app documentation.",
+    "releaseVersion": "Version {{version}}",
+    "releaseNotes": [
+      "Shared rendering utilities now power the image, video, and PDF worker pipelines.",
+      "Worker rendering reuses decoded media more efficiently and supports more source formats.",
+      "Restoring a crop safely returns image-based media to its original transform.",
+      "Saving a drawing keeps the current canvas content available after the save completes.",
+      "The Guide and About dialogs now provide more complete information about the editor."
+    ],
     "confirmClose": "Confirm close?",
     "confirmLogout": "Confirm logout?",
     "app": {

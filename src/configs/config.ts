@@ -10,6 +10,9 @@ export const IMAGE_STORAGE_URL: string =
 /** Configuration constant for collab konva ws. */
 export const COLLAB_KONVA_WS: string =
   (window as any).COLLAB_KONVA_WS || "ws://localhost:8386";
+/** Configuration constant for security url. */
+export const SECURITY_URL: string =
+  (window as any).SECURITY_URL || "https://release.c4i.vn/security";
 
 /** Default spatial reference used by stage content. */
 export const DEFAULT_SRID: string = "EPSG:4326";
@@ -48,7 +51,22 @@ export const MAP_STYLES = (window as any).MAP_STYLES || [
 export const MAP_STYLE_DEFAULT: string = MAP_STYLES[0].url;
 
 /** Configuration constant for default language. */
-export const DEFAULT_LANGUAGE: Language = "vi";
+export const DEFAULT_LANGUAGE: Language = "vietnamese";
 
 /** Configuration constant for default theme mode. */
 export const DEFAULT_THEME_MODE: ThemeMode = "white";
+
+/** Configuration constant for default request timeout. */
+export const DEFAULT_REQUEST_TIMEOUT: number =
+  (window as any).DEFAULT_REQUEST_TIMEOUT || 30000;
+
+/** MapTiler forward-geocoding endpoint. */
+export const MAPTILER_GEOCODING_URL: string =
+  (window as any).MAPTILER_GEOCODING_URL ||
+  "https://api.maptiler.com/geocoding";
+
+/** Default timeout for MapTiler geocoding suggestions. */
+export const DEFAULT_TIMEOUT: number =
+  (window as any).DEFAULT_GEOCODING_TIMEOUT || 30000;
+
+export const MAPTILER_DEFAULT_TOKEN = "get_your_own_OpIi9ZULNHzrESv6T2vL";

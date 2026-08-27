@@ -22,6 +22,8 @@
     "@mui/icons-material": "9.3.1",
     "@mui/lab": "9.0.0-beta.8",
     "@mui/material": "9.3.1",
+    "@react-three/drei": "10.7.8",
+    "@react-three/fiber": "9.7.0",
     "@y/websocket-server": "0.1.5",
     "ajv": "8.20.0",
     "axios": "1.19.0",
@@ -54,6 +56,7 @@
     "svgo": "4.0.2",
     "svgpath": "2.6.0",
     "three": "0.185.1",
+    "workerpool": "10.0.3",
     "y-websocket": "3.1.0",
     "yjs": "13.6.32",
     "zustand": "5.0.15"
@@ -92,7 +95,8 @@
     "start": "cross-env GENERATE_SOURCEMAP=false NODE_OPTIONS=--no-deprecation CHOKIDAR_USEPOLLING=true WATCHPACK_POLLING=true craco start",
     "dev": "cross-env GENERATE_SOURCEMAP=false NODE_OPTIONS=--no-deprecation CHOKIDAR_USEPOLLING=true WATCHPACK_POLLING=true craco start",
     "build": "cross-env GENERATE_SOURCEMAP=false NODE_OPTIONS=--no-deprecation craco build",
-    "lint": "eslint \"src/**/*.{json,js,ts,tsx,css}\"",
+    "lint:check": "eslint \"src/**/*.{json,js,ts,tsx,css}\"",
+    "lint:fix": "eslint \"src/**/*.{json,js,ts,tsx,css}\" --fix",
     "format": "prettier --write \"src/**/*.{json,js,ts,tsx,css}\"",
     "newest": "npx npm-check-updates -u && npx json -I -f package.json -e \"if(this.dependencies){Object.keys(this.dependencies).forEach(k=>this.dependencies[k]=this.dependencies[k].replace(/^[~^]/,''))} if(this.devDependencies){Object.keys(this.devDependencies).forEach(k=>this.devDependencies[k]=this.devDependencies[k].replace(/^[~^]/,''))}\"",
     "prepare": "husky"

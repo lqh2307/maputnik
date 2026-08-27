@@ -1,4 +1,4 @@
-import { loadVideoSrc } from "../../utils/Image";
+import { loadVideoSrc, revokeMediaObjectURL } from "../../utils/Image";
 import { LoadingVideoProp } from "./Types";
 import React from "react";
 import {
@@ -25,6 +25,7 @@ export const LoadingVideo = React.memo(
   }: LoadingVideoProp): React.JSX.Element => {
     const [video, setVideo] = React.useState<string>(undefined);
     const [videoLoading, setVideoLoading] = React.useState<boolean>(false);
+    const loadedVideoRef = React.useRef<HTMLVideoElement>(undefined);
 
     React.useEffect(() => {
       let mounted = true;
@@ -35,11 +36,15 @@ export const LoadingVideo = React.memo(
         }
 
         if (src instanceof Blob) {
-          loadVideoSrc(src)
+          loadVideoSrc(src, "objectURL")
             .then((img) => {
               if (!mounted) {
+                revokeMediaObjectURL(img);
+
                 return;
               }
+
+              loadedVideoRef.current = img;
 
               setVideo(img.src ?? fallbackSrc);
             })
@@ -53,6 +58,10 @@ export const LoadingVideo = React.memo(
 
           return () => {
             mounted = false;
+
+            revokeMediaObjectURL(loadedVideoRef.current);
+
+            loadedVideoRef.current = undefined;
           };
         } else {
           setVideo(src);
@@ -63,6 +72,10 @@ export const LoadingVideo = React.memo(
 
       return () => {
         mounted = false;
+
+        revokeMediaObjectURL(loadedVideoRef.current);
+
+        loadedVideoRef.current = undefined;
       };
     }, [src, fallbackSrc, loadingOnLoad]);
 
@@ -96,6 +109,10 @@ export const LoadingVideo = React.memo(
     const handleError = React.useCallback(
       (e: React.SyntheticEvent<HTMLVideoElement>) => {
         setVideoLoading(false);
+
+        revokeMediaObjectURL(loadedVideoRef.current);
+
+        loadedVideoRef.current = undefined;
 
         setVideo(fallbackSrc);
 

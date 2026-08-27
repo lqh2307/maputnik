@@ -1,4 +1,5 @@
 import { isHasRotation, isHasScale, isHasSkew } from "./Transform";
+import { getImageSourceSize, ImageSourceLike } from "./Render";
 import { detectContentTypeFromFormat } from "../Utils";
 import { ImageFormat } from "../../types/Common";
 import { createLineDash } from "../Shapes/Line";
@@ -459,26 +460,9 @@ export function drawImage(
   } else if (!fit || fit === "fill") {
     ctx.drawImage(image, 0, 0, width, height);
   } else {
-    const source = image as CanvasImageSource & {
-      naturalWidth?: number;
-      naturalHeight?: number;
-      videoWidth?: number;
-      videoHeight?: number;
-      displayWidth?: number;
-      displayHeight?: number;
-      width?: number;
-      height?: number;
-    };
-    const sourceWidth =
-      source.naturalWidth ??
-      source.videoWidth ??
-      source.displayWidth ??
-      source.width;
-    const sourceHeight =
-      source.naturalHeight ??
-      source.videoHeight ??
-      source.displayHeight ??
-      source.height;
+    const { width: sourceWidth, height: sourceHeight } = getImageSourceSize(
+      image as unknown as ImageSourceLike
+    );
 
     if (sourceWidth > 0 && sourceHeight > 0) {
       const scale =
@@ -653,6 +637,15 @@ export function drawArrow(
   }
 }
 
+/**
+ * Apply a shape transform to a 2D canvas context.
+ *
+ * Operations are applied in renderer order: translation, skew, scale and
+ * rotation. The context is mutated and returned for fluent drawing code.
+ * @param ctx Canvas context to transform.
+ * @param opt Optional transform attributes; omitted values use identity defaults.
+ * @returns The same transformed context.
+ */
 function transformCtx(
   ctx: CanvasRenderingContext2D,
   opt?: TransformOption

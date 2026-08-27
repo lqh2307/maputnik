@@ -4,12 +4,12 @@ import { RequestToURLOption } from "./Types";
 
 /**
  * Check if a string is a URL (blob, data, http, or https).
- * @param {string} data Input string
- * @returns {boolean} True if the string is a URL, false otherwise
+ * @param data Text to test for a supported URL scheme.
+ * @returns `true` for blob, data, HTTP, or HTTPS URLs; otherwise `false`.
  *
  * @example
  * ```ts
- * isURL("value"); // true when the condition is satisfied, otherwise false.
+ * isURL("https://example.com/image.png"); // true
  * ```
  */
 export function isURL(data: string): boolean {
@@ -48,7 +48,10 @@ export function abortRequest(
   }
 }
 
-/** Throw a standard abort error when a cancellable operation was aborted. */
+/**
+ * Throw a standard abort error when a cancellable operation was aborted.
+ * @param signal Optional signal associated with the operation.
+ */
 export function throwIfAborted(signal?: AbortSignal): void {
   if (signal?.aborted) {
     throw new DOMException("The operation was aborted.", "AbortError");

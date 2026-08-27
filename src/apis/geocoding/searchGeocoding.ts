@@ -1,12 +1,12 @@
-import { requestToURL } from "../../utils/Request";
 import { runtimeTokens } from "../../configs/runtime";
+import { requestToURL } from "../../utils/Request";
+import { SearchGeocodingOption } from "./Types";
 import { AxiosResponse } from "axios";
 import {
-  DEFAULT_TIMEOUT,
   MAPTILER_DEFAULT_TOKEN,
   MAPTILER_GEOCODING_URL,
-} from "./constants";
-import { SearchGeocodingOption } from "./Types";
+  DEFAULT_TIMEOUT,
+} from "../../configs";
 
 /** Returns the configured MapTiler API key, ignoring the demo placeholder. */
 export function getMapTilerApiKey(): string | undefined {

@@ -59,7 +59,7 @@ export const TooltipRadio = React.memo(
         gap: "0.5rem",
         alignItems: "center",
         width: "100%",
-        display: display,
+        display,
       };
     }, [display]);
 

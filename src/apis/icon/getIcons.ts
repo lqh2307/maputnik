@@ -1,5 +1,5 @@
+import { DEFAULT_REQUEST_TIMEOUT } from "../../configs";
 import { requestToURL } from "../../utils/Request";
-import { DEFAULT_TIMEOUT } from "./constants";
 import { GetIconsOption } from "./Types";
 import { AxiosResponse } from "axios";
 
@@ -16,7 +16,7 @@ export async function getIcons(
     method: "GET",
     url: `./assets/icons/${options.type}.json`,
     responseType: "json",
-    timeout: options.timeout ?? DEFAULT_TIMEOUT,
+    timeout: options.timeout ?? DEFAULT_REQUEST_TIMEOUT,
     signal: options.controller?.signal,
   });
 }

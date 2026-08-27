@@ -46,7 +46,7 @@ export const ColorInput = React.memo(
         ...slotProps,
         input: {
           ...inputSlotProps,
-          disableUnderline: disableUnderline,
+          disableUnderline,
         },
       };
     }, [slotProps, disableUnderline]);
@@ -57,13 +57,13 @@ export const ColorInput = React.memo(
         gap: icon ? "1rem" : undefined,
         alignItems: "center",
         width: "100%",
-        display: display,
+        display,
       };
     }, [display, icon]);
 
     const handleChange = React.useCallback(
       (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const newVal: string = String(e.target.value ?? defaultValue);
+        const newVal: string = String(e.target.value ?? defaultValue).trim();
 
         setLocalValue(newVal);
 

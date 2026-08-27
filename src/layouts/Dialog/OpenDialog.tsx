@@ -355,11 +355,11 @@ export const OpenDialog = React.memo(
 
         <DialogActions>
           <TooltipButton
-            title={t("topBar.actions.close")}
+            title={t("common.button.close")}
             variant={"text"}
             onClick={close}
           >
-            {t("topBar.actions.close")}
+            {t("common.button.close")}
           </TooltipButton>
         </DialogActions>
       </Dialog>

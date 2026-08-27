@@ -1,6 +1,5 @@
+import { DEFAULT_REQUEST_TIMEOUT, IMAGE_STORAGE_URL } from "../../configs";
 import { requestToURL } from "../../utils/Request";
-import { IMAGE_STORAGE_URL } from "../../configs";
-import { DEFAULT_TIMEOUT } from "./constants";
 import { SearchReportOption } from "./Types";
 import { AxiosResponse } from "axios";
 
@@ -16,7 +15,7 @@ export async function searchReport(
   const { desc, controller, size, page, ...filters }: SearchReportOption =
     options;
 
-  let url = `${IMAGE_STORAGE_URL}/reports/search?page[size]=${size ?? 9999}&page[page]=0${page ?? 0}`;
+  let url = `${IMAGE_STORAGE_URL}/reports/search?page[size]=${size ?? 9999}&page[page]=${page ?? 0}`;
 
   for (const field in filters) {
     url += `&filter[${field}]=${filters[field]}`;
@@ -28,9 +27,9 @@ export async function searchReport(
 
   return await requestToURL({
     method: "GET",
-    url: url,
+    url,
     responseType: "json",
-    timeout: options.timeout ?? DEFAULT_TIMEOUT,
+    timeout: options.timeout ?? DEFAULT_REQUEST_TIMEOUT,
     signal: controller?.signal,
   });
 }

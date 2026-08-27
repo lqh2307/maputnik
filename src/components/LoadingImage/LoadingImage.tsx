@@ -1,4 +1,4 @@
-import { loadImageSrc } from "../../utils/Image";
+import { loadImageSrc, revokeMediaObjectURL } from "../../utils/Image";
 import { LoadingImageProp } from "./Types";
 import React from "react";
 import {
@@ -27,6 +27,7 @@ export const LoadingImage = React.memo(
   }: LoadingImageProp): React.JSX.Element => {
     const [image, setImage] = React.useState<string>(undefined);
     const [imageLoading, setImageLoading] = React.useState<boolean>(false);
+    const loadedImageRef = React.useRef<HTMLImageElement>(undefined);
 
     React.useEffect(() => {
       let mounted = true;
@@ -37,11 +38,15 @@ export const LoadingImage = React.memo(
         }
 
         if (src instanceof Blob) {
-          loadImageSrc(src)
+          loadImageSrc(src, "objectURL")
             .then((img) => {
               if (!mounted) {
+                revokeMediaObjectURL(img);
+
                 return;
               }
+
+              loadedImageRef.current = img;
 
               setImage(img.src ?? fallbackSrc);
             })
@@ -55,6 +60,9 @@ export const LoadingImage = React.memo(
 
           return () => {
             mounted = false;
+
+            revokeMediaObjectURL(loadedImageRef.current);
+            loadedImageRef.current = undefined;
           };
         } else {
           setImage(src);
@@ -65,12 +73,20 @@ export const LoadingImage = React.memo(
 
       return () => {
         mounted = false;
+
+        revokeMediaObjectURL(loadedImageRef.current);
+
+        loadedImageRef.current = undefined;
       };
     }, [src, fallbackSrc, loadingOnLoad]);
 
     const onErrorHandler = React.useCallback(
       (e: React.SyntheticEvent<HTMLImageElement>): void => {
         setImageLoading(false);
+
+        revokeMediaObjectURL(loadedImageRef.current);
+
+        loadedImageRef.current = undefined;
 
         setImage(fallbackSrc);
 
@@ -127,7 +143,7 @@ export const LoadingImage = React.memo(
     const boxFullSx = React.useMemo(() => {
       return {
         position: "relative",
-        display: display,
+        display,
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
